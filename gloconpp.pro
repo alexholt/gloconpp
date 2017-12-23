@@ -15,7 +15,8 @@ SOURCES += \
     glocon.cpp \
     territory.cpp \
     renderer.cpp \
-    model.cpp
+    model.cpp \
+    gamestate.cpp
 
 HEADERS += \
     jsconsole.h \
@@ -25,7 +26,8 @@ HEADERS += \
     territory.h \
     pathstate.h \
     renderer.h \
-    model.h
+    model.h \
+    gamestate.h
 
 DISTFILES += \
     main.qml \
@@ -38,3 +40,5 @@ RESOURCES += \
     gloconpp.qrc
 
 DESTDIR = build
+
+LFLAGS += -v

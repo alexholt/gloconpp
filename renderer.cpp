@@ -2,6 +2,7 @@
 
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   connect(this, &QQuickItem::windowChanged, this, &Renderer::handleWindowChanged);
+  m_timer.start();
 }
 
 void Renderer::setViewportSize(const QSize & size) {
@@ -34,6 +35,25 @@ void Renderer::initializeMap() {
   m_worldMap.loadMap();
 }
 
+void Renderer::update() {
+  qlonglong elapsed = m_timer.elapsed();
+
+  if (elapsed > 0LL) {
+    double currentFPS = 1.0F / (double(elapsed) / 1000.0F);
+    m_fps += currentFPS / m_fpsUpdateCounter;
+
+    if (m_fpsUpdateCounter == 60) {
+      emit fpsChanged(m_fps);
+      m_fpsUpdateCounter = 1;
+      m_fps = currentFPS;
+    }
+
+    m_fpsUpdateCounter++;
+  }
+
+  m_timer.restart();
+}
+
 void Renderer::paint() {
   if (!m_isInitialized) {
     initializeGL();
@@ -47,6 +67,8 @@ void Renderer::paint() {
   m_worldMap.render(this, m_camera.matrix().toTransform());
 
   window()->resetOpenGLState();
+  update();
+  window()->update();
 }
 
 void Renderer::render(Model& model) {
@@ -69,4 +91,13 @@ QOpenGLTexture* Renderer::createTexture(QImage* image) {
   texture->setMagnificationFilter(QOpenGLTexture::Linear);
   texture->setWrapMode(QOpenGLTexture::ClampToEdge);
   return texture;
+}
+
+int Renderer::fps() const {
+  return m_fps;
+}
+
+void Renderer::setFPS(int val) {
+  m_fps = val;
+  emit fpsChanged(m_fps);
 }

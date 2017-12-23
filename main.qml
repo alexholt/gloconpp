@@ -48,4 +48,11 @@ Item {
         }
     }
 
+    Text {
+      text: viewport.fps
+      anchors.top: parent.top
+      anchors.right: parent.right
+      font.family: "PT Mono"
+    }
+
 }

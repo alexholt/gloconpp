@@ -31,7 +31,6 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
     m_vertexVbo.create();
     m_vertexVbo.bind();
     m_vertexVbo.allocate(m_vertices, sizeof(m_vertices[0]) * 18);
-
     m_program->enableAttributeArray(0);
     m_program->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
 

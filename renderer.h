@@ -1,7 +1,9 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
+#include <QDateTime>
 #include <QDomDocument>
+#include <QElapsedTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
@@ -14,11 +16,15 @@
 
 class Renderer : public QQuickItem, public QOpenGLFunctions {
   Q_OBJECT
+  Q_PROPERTY (int fps READ fps WRITE setFPS NOTIFY fpsChanged)
 
 public:
   Renderer();
   void setViewportSize(const QSize &);
   QOpenGLTexture* createTexture(QImage*);
+  void update();
+  void setFPS(int fps);
+  int fps() const;
 
 private:
   void initializeGL();
@@ -30,9 +36,12 @@ private:
   Camera m_camera;
   bool m_isInitialized = false;
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
+  QElapsedTimer m_timer;
+  double m_fps = 60;
+  int m_fpsUpdateCounter = 1;
 
 signals:
-  void tChanged();
+  void fpsChanged(int);
 
 public slots:
   void sync();
