@@ -1,0 +1,740 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		B5827546CFDCC074CC108B0F /* Qt Preprocess */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6CC3B5D2136C7CD6A5CF5A59 /* Build configuration list for PBXNativeTarget "gloconpp" */;
+			buildPhases = (
+				5E618435888B9D49F8540165 /* Qt Qmake */,
+				7EF0942E79C014DCEC8976BC /* Qt Preprocessors */,
+			);
+			dependencies = (
+			);
+			name = "Qt Preprocess";
+			productName = "Qt Preprocess";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		229005B03D7F3D0141ECAF60 /* territory.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 5AC11022C188964E8A4C044A /* territory.cpp */; settings = {ATTRIBUTES = (); }; };
+		2329D9B09F34356147A2C88D /* moc_territory.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 23D7AC17C6259DAC51DDFA8C /* moc_territory.cpp */; settings = {ATTRIBUTES = (); }; };
+		39592CFD04153258DE965128 /* camera.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = A2A96E1720CA8A6CE025F0C5 /* camera.cpp */; settings = {ATTRIBUTES = (); }; };
+		3AC179E6FC9D0D05E1106051 /* QtNetwork.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = DCA8282F37FC54FFA0EC08F3 /* QtNetwork.framework */; };
+		3BA88FEA35DF9C5BF27541DB /* moc_camera.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 28EB2FC891E4BDEB868B47B7 /* moc_camera.cpp */; settings = {ATTRIBUTES = (); }; };
+		49508EC7EA6202E56EDB6684 /* QtCore.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 3EB41FB9A38BF959440C349E /* QtCore.framework */; };
+		4B23802790A60C55D768830E /* QtSvg.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 0AA196140F1C82D709B3B39E /* QtSvg.framework */; };
+		5082414B46462D3E6B2B348F /* model.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 8AEF6C6D02A3B814D67B4F02 /* model.cpp */; settings = {ATTRIBUTES = (); }; };
+		565201E35D9A6510B36DBADC /* QtGui.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 4589239EB90B36D8E93277B0 /* QtGui.framework */; };
+		568505837DBA75D45373E2E8 /* renderer.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 50CCC00E8778A5FAE3FC2DE6 /* renderer.cpp */; settings = {ATTRIBUTES = (); }; };
+		5841566D06FB389ACE2BA9EC /* QtXml.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = A5F0C33139FD586E485EAFC1 /* QtXml.framework */; };
+		592F2A17D8E136BC041401F3 /* jsconsole.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 226EBCA453A43D3122C29A46 /* jsconsole.cpp */; settings = {ATTRIBUTES = (); }; };
+		5EB235644F4083154A0D9515 /* moc_worldmap.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 326A4F25A993D6704747F2CA /* moc_worldmap.cpp */; settings = {ATTRIBUTES = (); }; };
+		7782E953B0FECE0880C4B617 /* QtWidgets.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = E060364DBC648B900CB6C3AE /* QtWidgets.framework */; };
+		8771A8C96E9C391044035D99 /* OpenGL.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = D4B32C2222F82AC56BADEB21 /* OpenGL.framework */; };
+		8D267F2E4776F0ECA2F49DC8 /* IOKit.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = A1A67BEAA744704B29168D39 /* IOKit.framework */; };
+		A4CCE83CC30B2C301B748E88 /* qrc_gloconpp.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 53A5EB7B6BB456AE853D8CA1 /* qrc_gloconpp.cpp */; settings = {ATTRIBUTES = (); }; };
+		A99B2AA0F9CBBDD12BA126A4 /* DiskArbitration.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 2B774D8E4178765CE52EAAF5 /* DiskArbitration.framework */; };
+		B16D599ECDED7A648DD21904 /* QtQml.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 0C043D88322AB9ABB38FAF78 /* QtQml.framework */; };
+		B412C58BB29E89BF408FCC0B /* glocon.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = B70DFF5AC98AA30E4A1E7C5F /* glocon.cpp */; settings = {ATTRIBUTES = (); }; };
+		B9EC0ABB62BD1E455DED4DC2 /* worldmap.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 9692CB4C7DDB455EADE10060 /* worldmap.cpp */; settings = {ATTRIBUTES = (); }; };
+		D2D6F98B91840F6BD06B6DB1 /* dummy.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = BA14E9F5F5C20D272A9EE3C4 /* dummy.cpp */; settings = {ATTRIBUTES = (); }; };
+		D9D516DF9973E9A0FF11AC80 /* QtQuick.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 82147F86E44729FB083AA443 /* QtQuick.framework */; };
+		E08E1B9BC865D720FC221057 /* main.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 8A434E9D2089BE13D6F6B6FF /* main.cpp */; settings = {ATTRIBUTES = (); }; };
+		E1D1D04639B79CF9384C0CFC /* moc_jsconsole.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 7D07370EC28287D7327CA916 /* moc_jsconsole.cpp */; settings = {ATTRIBUTES = (); }; };
+		E45E51A644D5FC9F942ECE55 /* AGL.framework in Link Binary With Libraries */ = {isa = PBXBuildFile; fileRef = 8D9815BDB5BD9F90D2BC05C5 /* AGL.framework */; };
+		F6D256A53BEF9BE5722E7629 /* moc_renderer.cpp in Compile Sources */ = {isa = PBXBuildFile; fileRef = 3F947AB94DD81D1A3FA0D139 /* moc_renderer.cpp */; settings = {ATTRIBUTES = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CC832F3D1FEE33A6009102A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6DB9C3763D02B1415CD9D565 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5827546CFDCC074CC108B0F;
+			remoteInfo = "Qt Preprocess";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		99542592E9780B9225F24AA8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0AA196140F1C82D709B3B39E /* QtSvg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtSvg.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtSvg.framework; sourceTree = "<absolute>"; };
+		0C043D88322AB9ABB38FAF78 /* QtQml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQml.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtQml.framework; sourceTree = "<absolute>"; };
+		0E73AD1632DB5EA401417DC3 /* renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = /Users/alexholt/workspace/gloconpp/renderer.h; sourceTree = "<absolute>"; };
+		0EED5331C08368D6C3D5243D /* worldmap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = worldmap.h; path = /Users/alexholt/workspace/gloconpp/worldmap.h; sourceTree = "<absolute>"; };
+		10631F80D22A63C84E3E6BC0 /* gloconpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gloconpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		17D79EDF6D731FB47D3E0D02 /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = camera.h; path = /Users/alexholt/workspace/gloconpp/camera.h; sourceTree = "<absolute>"; };
+		226EBCA453A43D3122C29A46 /* jsconsole.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = jsconsole.cpp; path = /Users/alexholt/workspace/gloconpp/jsconsole.cpp; sourceTree = "<absolute>"; };
+		23D7AC17C6259DAC51DDFA8C /* moc_territory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = moc_territory.cpp; path = /Users/alexholt/workspace/gloconpp/moc_territory.cpp; sourceTree = "<absolute>"; };
+		28C37733DC68DCB5BE081C63 /* model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = model.h; path = /Users/alexholt/workspace/gloconpp/model.h; sourceTree = "<absolute>"; };
+		28EB2FC891E4BDEB868B47B7 /* moc_camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = moc_camera.cpp; path = /Users/alexholt/workspace/gloconpp/moc_camera.cpp; sourceTree = "<absolute>"; };
+		2B774D8E4178765CE52EAAF5 /* DiskArbitration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiskArbitration.framework; path = /System/Library/Frameworks/DiskArbitration.framework; sourceTree = "<absolute>"; };
+		326A4F25A993D6704747F2CA /* moc_worldmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = moc_worldmap.cpp; path = /Users/alexholt/workspace/gloconpp/moc_worldmap.cpp; sourceTree = "<absolute>"; };
+		371F2E4BBCBBBB7FD7DC3AAF /* pathstate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = pathstate.h; path = /Users/alexholt/workspace/gloconpp/pathstate.h; sourceTree = "<absolute>"; };
+		3E835333E055E252531172A5 /* glocon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = glocon.h; path = /Users/alexholt/workspace/gloconpp/glocon.h; sourceTree = "<absolute>"; };
+		3EB41FB9A38BF959440C349E /* QtCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtCore.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtCore.framework; sourceTree = "<absolute>"; };
+		3F947AB94DD81D1A3FA0D139 /* moc_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = moc_renderer.cpp; path = /Users/alexholt/workspace/gloconpp/moc_renderer.cpp; sourceTree = "<absolute>"; };
+		4589239EB90B36D8E93277B0 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtGui.framework; sourceTree = "<absolute>"; };
+		491D789A95CB5F839419B75F /* .qmake.stash */ = {isa = PBXFileReference; lastKnownFileType = text; name = .qmake.stash; path = /Users/alexholt/workspace/gloconpp/.qmake.stash; sourceTree = "<absolute>"; };
+		50CCC00E8778A5FAE3FC2DE6 /* renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cpp; path = /Users/alexholt/workspace/gloconpp/renderer.cpp; sourceTree = "<absolute>"; };
+		53A5EB7B6BB456AE853D8CA1 /* qrc_gloconpp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = qrc_gloconpp.cpp; path = /Users/alexholt/workspace/gloconpp/qrc_gloconpp.cpp; sourceTree = "<absolute>"; };
+		5AC11022C188964E8A4C044A /* territory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = territory.cpp; path = /Users/alexholt/workspace/gloconpp/territory.cpp; sourceTree = "<absolute>"; };
+		7D07370EC28287D7327CA916 /* moc_jsconsole.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = moc_jsconsole.cpp; path = /Users/alexholt/workspace/gloconpp/moc_jsconsole.cpp; sourceTree = "<absolute>"; };
+		82147F86E44729FB083AA443 /* QtQuick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtQuick.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtQuick.framework; sourceTree = "<absolute>"; };
+		8A434E9D2089BE13D6F6B6FF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = /Users/alexholt/workspace/gloconpp/main.cpp; sourceTree = "<absolute>"; };
+		8AEF6C6D02A3B814D67B4F02 /* model.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = model.cpp; path = /Users/alexholt/workspace/gloconpp/model.cpp; sourceTree = "<absolute>"; };
+		8D9815BDB5BD9F90D2BC05C5 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
+		9692CB4C7DDB455EADE10060 /* worldmap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = worldmap.cpp; path = /Users/alexholt/workspace/gloconpp/worldmap.cpp; sourceTree = "<absolute>"; };
+		96AD5F33886C93A4C125631D /* jsconsole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = jsconsole.h; path = /Users/alexholt/workspace/gloconpp/jsconsole.h; sourceTree = "<absolute>"; };
+		A1A67BEAA744704B29168D39 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
+		A2A96E1720CA8A6CE025F0C5 /* camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = camera.cpp; path = /Users/alexholt/workspace/gloconpp/camera.cpp; sourceTree = "<absolute>"; };
+		A5F0C33139FD586E485EAFC1 /* QtXml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtXml.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtXml.framework; sourceTree = "<absolute>"; };
+		B70DFF5AC98AA30E4A1E7C5F /* glocon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = glocon.cpp; path = /Users/alexholt/workspace/gloconpp/glocon.cpp; sourceTree = "<absolute>"; };
+		BA14E9F5F5C20D272A9EE3C4 /* dummy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = dummy.cpp; path = /usr/local/Cellar/qt/5.10.0/mkspecs/features/data/dummy.cpp; sourceTree = "<absolute>"; };
+		C77648191E288BBA8E832978 /* territory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = territory.h; path = /Users/alexholt/workspace/gloconpp/territory.h; sourceTree = "<absolute>"; };
+		D0F7CA3D80F3B0AC472A3DF0 /* gloconpp.pro */ = {isa = PBXFileReference; lastKnownFileType = text; name = gloconpp.pro; path = /Users/alexholt/workspace/gloconpp/gloconpp.pro; sourceTree = "<absolute>"; };
+		D4B32C2222F82AC56BADEB21 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		DCA8282F37FC54FFA0EC08F3 /* QtNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtNetwork.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtNetwork.framework; sourceTree = "<absolute>"; };
+		E060364DBC648B900CB6C3AE /* QtWidgets.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtWidgets.framework; path = /usr/local/Cellar/qt/5.10.0/lib/QtWidgets.framework; sourceTree = "<absolute>"; };
+		F78FAC79A149818089C5ED27 /* gloconpp.qrc */ = {isa = PBXFileReference; lastKnownFileType = text; name = gloconpp.qrc; path = /Users/alexholt/workspace/gloconpp/gloconpp.qrc; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D1C883685E82D5676953459A /* Link Binary With Libraries */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9D516DF9973E9A0FF11AC80 /* QtQuick.framework in Link Binary With Libraries */,
+				565201E35D9A6510B36DBADC /* QtGui.framework in Link Binary With Libraries */,
+				49508EC7EA6202E56EDB6684 /* QtCore.framework in Link Binary With Libraries */,
+				A99B2AA0F9CBBDD12BA126A4 /* DiskArbitration.framework in Link Binary With Libraries */,
+				8D267F2E4776F0ECA2F49DC8 /* IOKit.framework in Link Binary With Libraries */,
+				B16D599ECDED7A648DD21904 /* QtQml.framework in Link Binary With Libraries */,
+				3AC179E6FC9D0D05E1106051 /* QtNetwork.framework in Link Binary With Libraries */,
+				4B23802790A60C55D768830E /* QtSvg.framework in Link Binary With Libraries */,
+				7782E953B0FECE0880C4B617 /* QtWidgets.framework in Link Binary With Libraries */,
+				5841566D06FB389ACE2BA9EC /* QtXml.framework in Link Binary With Libraries */,
+				8771A8C96E9C391044035D99 /* OpenGL.framework in Link Binary With Libraries */,
+				E45E51A644D5FC9F942ECE55 /* AGL.framework in Link Binary With Libraries */,
+			);
+			name = "Link Binary With Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25B08E2869634E9BCBA333A2 /* Generated Sources */ = {
+			isa = PBXGroup;
+			children = (
+				53A5EB7B6BB456AE853D8CA1 /* qrc_gloconpp.cpp */,
+				7D07370EC28287D7327CA916 /* moc_jsconsole.cpp */,
+				326A4F25A993D6704747F2CA /* moc_worldmap.cpp */,
+				28EB2FC891E4BDEB868B47B7 /* moc_camera.cpp */,
+				23D7AC17C6259DAC51DDFA8C /* moc_territory.cpp */,
+				3F947AB94DD81D1A3FA0D139 /* moc_renderer.cpp */,
+			);
+			name = "Generated Sources";
+			sourceTree = "<group>";
+		};
+		2EB56BE3C2D93CDAB0C52E67 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8A434E9D2089BE13D6F6B6FF /* main.cpp */,
+				226EBCA453A43D3122C29A46 /* jsconsole.cpp */,
+				9692CB4C7DDB455EADE10060 /* worldmap.cpp */,
+				A2A96E1720CA8A6CE025F0C5 /* camera.cpp */,
+				B70DFF5AC98AA30E4A1E7C5F /* glocon.cpp */,
+				5AC11022C188964E8A4C044A /* territory.cpp */,
+				50CCC00E8778A5FAE3FC2DE6 /* renderer.cpp */,
+				8AEF6C6D02A3B814D67B4F02 /* model.cpp */,
+				96AD5F33886C93A4C125631D /* jsconsole.h */,
+				0EED5331C08368D6C3D5243D /* worldmap.h */,
+				17D79EDF6D731FB47D3E0D02 /* camera.h */,
+				3E835333E055E252531172A5 /* glocon.h */,
+				C77648191E288BBA8E832978 /* territory.h */,
+				371F2E4BBCBBBB7FD7DC3AAF /* pathstate.h */,
+				0E73AD1632DB5EA401417DC3 /* renderer.h */,
+				28C37733DC68DCB5BE081C63 /* model.h */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		74B182DB50CB5611B5C1C297 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0F7CA3D80F3B0AC472A3DF0 /* gloconpp.pro */,
+				491D789A95CB5F839419B75F /* .qmake.stash */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		87DF60DE337FB58864343E39 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F78FAC79A149818089C5ED27 /* gloconpp.qrc */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		AF39DD055C3EF8226FBE929D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82147F86E44729FB083AA443 /* QtQuick.framework */,
+				4589239EB90B36D8E93277B0 /* QtGui.framework */,
+				3EB41FB9A38BF959440C349E /* QtCore.framework */,
+				2B774D8E4178765CE52EAAF5 /* DiskArbitration.framework */,
+				A1A67BEAA744704B29168D39 /* IOKit.framework */,
+				0C043D88322AB9ABB38FAF78 /* QtQml.framework */,
+				DCA8282F37FC54FFA0EC08F3 /* QtNetwork.framework */,
+				0AA196140F1C82D709B3B39E /* QtSvg.framework */,
+				E060364DBC648B900CB6C3AE /* QtWidgets.framework */,
+				A5F0C33139FD586E485EAFC1 /* QtXml.framework */,
+				D4B32C2222F82AC56BADEB21 /* OpenGL.framework */,
+				8D9815BDB5BD9F90D2BC05C5 /* AGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B8254625CFD509ED2A24A166 /* Sources [moc_predefs] */ = {
+			isa = PBXGroup;
+			children = (
+				BA14E9F5F5C20D272A9EE3C4 /* dummy.cpp */,
+			);
+			name = "Sources [moc_predefs]";
+			sourceTree = "<group>";
+		};
+		E8C543AB96796ECAA2E65C57 /* gloconpp */ = {
+			isa = PBXGroup;
+			children = (
+				2EB56BE3C2D93CDAB0C52E67 /* Sources */,
+				25B08E2869634E9BCBA333A2 /* Generated Sources */,
+				87DF60DE337FB58864343E39 /* Resources */,
+				B8254625CFD509ED2A24A166 /* Sources [moc_predefs] */,
+				74B182DB50CB5611B5C1C297 /* Supporting Files */,
+				AF39DD055C3EF8226FBE929D /* Frameworks */,
+				FE0A091FDBFB3E9C31B7A1BD /* Products */,
+			);
+			name = gloconpp;
+			sourceTree = "<group>";
+		};
+		FE0A091FDBFB3E9C31B7A1BD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				10631F80D22A63C84E3E6BC0 /* gloconpp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		21B8F4285E0C6312AF2F1169 /* gloconpp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CC3B5D2136C7CD6A5CF5A59 /* Build configuration list for PBXNativeTarget "gloconpp" */;
+			buildPhases = (
+				F7E50F631C51CD5B5DC0BC43 /* Compile Sources */,
+				D1C883685E82D5676953459A /* Link Binary With Libraries */,
+				9C316F444A62BF296E3E1F25 /* Project Copy */,
+				30414803F31797EB689AE508 /* Copy Bundle Resources */,
+				99542592E9780B9225F24AA8 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7FE4A9F05AC77341E8DF5AC1 /* PBXTargetDependency */,
+			);
+			name = gloconpp;
+			productInstallPath = build/;
+			productName = gloconpp;
+			productReference = 10631F80D22A63C84E3E6BC0 /* gloconpp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6DB9C3763D02B1415CD9D565 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = DAC4C1AA5EDEA1C85E9CA5E6 /* Build configuration list for PBXProject "gloconpp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E8C543AB96796ECAA2E65C57 /* gloconpp */;
+			productRefGroup = FE0A091FDBFB3E9C31B7A1BD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				21B8F4285E0C6312AF2F1169 /* gloconpp */,
+				B5827546CFDCC074CC108B0F /* Qt Preprocess */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		30414803F31797EB689AE508 /* Copy Bundle Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Copy Bundle Resources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5E618435888B9D49F8540165 /* Qt Qmake */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Qt Qmake";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/alexholt/workspace/gloconpp/ -f gloconpp.xcodeproj/qt_makeqmake.mak";
+			showEnvVarsInLog = 0;
+		};
+		7EF0942E79C014DCEC8976BC /* Qt Preprocessors */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "Qt Preprocessors";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/alexholt/workspace/gloconpp/ -f gloconpp.xcodeproj/qt_preprocess.mak";
+			showEnvVarsInLog = 0;
+		};
+		9C316F444A62BF296E3E1F25 /* Project Copy */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Project Copy";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -r $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/alexholt/workspace/gloconpp/build";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F7E50F631C51CD5B5DC0BC43 /* Compile Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E08E1B9BC865D720FC221057 /* main.cpp in Compile Sources */,
+				592F2A17D8E136BC041401F3 /* jsconsole.cpp in Compile Sources */,
+				B9EC0ABB62BD1E455DED4DC2 /* worldmap.cpp in Compile Sources */,
+				39592CFD04153258DE965128 /* camera.cpp in Compile Sources */,
+				B412C58BB29E89BF408FCC0B /* glocon.cpp in Compile Sources */,
+				229005B03D7F3D0141ECAF60 /* territory.cpp in Compile Sources */,
+				568505837DBA75D45373E2E8 /* renderer.cpp in Compile Sources */,
+				5082414B46462D3E6B2B348F /* model.cpp in Compile Sources */,
+				A4CCE83CC30B2C301B748E88 /* qrc_gloconpp.cpp in Compile Sources */,
+				E1D1D04639B79CF9384C0CFC /* moc_jsconsole.cpp in Compile Sources */,
+				5EB235644F4083154A0D9515 /* moc_worldmap.cpp in Compile Sources */,
+				3BA88FEA35DF9C5BF27541DB /* moc_camera.cpp in Compile Sources */,
+				2329D9B09F34356147A2C88D /* moc_territory.cpp in Compile Sources */,
+				F6D256A53BEF9BE5722E7629 /* moc_renderer.cpp in Compile Sources */,
+				D2D6F98B91840F6BD06B6DB1 /* dummy.cpp in Compile Sources */,
+			);
+			name = "Compile Sources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7FE4A9F05AC77341E8DF5AC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5827546CFDCC074CC108B0F /* Qt Preprocess */;
+			targetProxy = CC832F3D1FEE33A6009102A7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		339EE1B2CC4FC24589A0EA95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = x86_64;
+				"ARCHS[sdk=macosx*]" = x86_64;
+				CC = /Library/Developer/CommandLineTools/usr/bin/clang;
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/usr/local/Cellar/qt/5.10.0/lib,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					.,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQuick.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtSvg.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtWidgets.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtGui.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtNetwork.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtXml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtCore.framework/Headers,
+					.,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers,
+					"/usr/local/Cellar/qt/5.10.0/mkspecs/macx-clang",
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_DIR = "/Users/alexholt/workspace/gloconpp//build/";
+				LDPLUSPLUS = "/Library/Developer/CommandLineTools/usr/bin/clang++";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-O2",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-stdlib=libc++",
+					"-O2",
+					"-std=gnu++11",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_LDFLAGS = (
+					"-stdlib=libc++",
+					"-headerpad_max_install_names",
+					"-Wl,-rpath,@executable_path/Frameworks",
+					"-F/usr/local/Cellar/qt/5.10.0/lib",
+				);
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+				SYMROOT = /Users/alexholt/workspace/gloconpp/;
+			};
+			name = Release;
+		};
+		3AA6C32AC930069E80220CF1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = x86_64;
+				"ARCHS[sdk=macosx*]" = x86_64;
+				CC = /Library/Developer/CommandLineTools/usr/bin/clang;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/usr/local/Cellar/qt/5.10.0/lib,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					.,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQuick.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtSvg.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtWidgets.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtGui.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtNetwork.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtXml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtCore.framework/Headers,
+					.,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers,
+					"/usr/local/Cellar/qt/5.10.0/mkspecs/macx-clang",
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_DIR = "/Users/alexholt/workspace/gloconpp//build/";
+				LDPLUSPLUS = "/Library/Developer/CommandLineTools/usr/bin/clang++";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-O2",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-stdlib=libc++",
+					"-O2",
+					"-std=gnu++11",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_LDFLAGS = (
+					"-stdlib=libc++",
+					"-headerpad_max_install_names",
+					"-Wl,-rpath,@executable_path/Frameworks",
+					"-F/usr/local/Cellar/qt/5.10.0/lib",
+				);
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+				SYMROOT = /Users/alexholt/workspace/gloconpp/;
+			};
+			name = Debug;
+		};
+		6666AA5E688052234F6758D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"ARCHS[sdk=macosx*]" = x86_64;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		77418F46922677BB04ED38DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"ARCHS[sdk=iphonesimulator11.2]" = x86_64;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CC6E6FC21FEE368100A88BF9 /* Debug copy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = x86_64;
+				"ARCHS[sdk=macosx*]" = x86_64;
+				CC = /Library/Developer/CommandLineTools/usr/bin/clang;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/usr/local/Cellar/qt/5.10.0/lib,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					.,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQuick.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtSvg.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtWidgets.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtGui.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtQml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtNetwork.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtXml.framework/Headers,
+					/usr/local/Cellar/qt/5.10.0/lib/QtCore.framework/Headers,
+					.,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers,
+					/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers,
+					"/usr/local/Cellar/qt/5.10.0/mkspecs/macx-clang",
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_DIR = "/Users/alexholt/workspace/gloconpp//build/";
+				LDPLUSPLUS = "/Library/Developer/CommandLineTools/usr/bin/clang++";
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/qt/5.10.0/lib,
+					/System/Library/Frameworks/,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-pipe",
+					"-O2",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-stdlib=libc++",
+					"-O2",
+					"-std=gnu++11",
+					"-Wall",
+					"-W",
+					"-fPIC",
+					"-DQT_DISABLE_DEPRECATED_BEFORE=0x060000",
+					"-DQT_NO_DEBUG",
+					"-DQT_QUICK_LIB",
+					"-DQT_SVG_LIB",
+					"-DQT_WIDGETS_LIB",
+					"-DQT_GUI_LIB",
+					"-DQT_QML_LIB",
+					"-DQT_NETWORK_LIB",
+					"-DQT_XML_LIB",
+					"-DQT_CORE_LIB",
+				);
+				OTHER_LDFLAGS = (
+					"-stdlib=libc++",
+					"-headerpad_max_install_names",
+					"-Wl,-rpath,@executable_path/Frameworks",
+					"-F/usr/local/Cellar/qt/5.10.0/lib",
+				);
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+				SYMROOT = /Users/alexholt/workspace/gloconpp/;
+			};
+			name = "Debug copy";
+		};
+		CC6E6FC31FEE368100A88BF9 /* Debug copy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"ARCHS[sdk=iphonesimulator11.2]" = x86_64;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+			};
+			name = "Debug copy";
+		};
+		CC6E6FC41FEE368100A88BF9 /* Debug copy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				"ARCHS[sdk=iphonesimulator11.2]" = x86_64;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = gloconpp;
+				QT_LIBRARY_SUFFIX = "";
+				SDKROOT = macosx;
+			};
+			name = "Debug copy";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6CC3B5D2136C7CD6A5CF5A59 /* Build configuration list for PBXNativeTarget "gloconpp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				77418F46922677BB04ED38DD /* Debug */,
+				CC6E6FC31FEE368100A88BF9 /* Debug copy */,
+				CC6E6FC41FEE368100A88BF9 /* Debug copy */,
+				6666AA5E688052234F6758D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DAC4C1AA5EDEA1C85E9CA5E6 /* Build configuration list for PBXProject "gloconpp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AA6C32AC930069E80220CF1 /* Debug */,
+				CC6E6FC21FEE368100A88BF9 /* Debug copy */,
+				339EE1B2CC4FC24589A0EA95 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6DB9C3763D02B1415CD9D565 /* Project object */;
+}
