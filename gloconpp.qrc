@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>assets/maps/world.svg</file>
+        <file>assets/shaders/worldmap.frag</file>
+        <file>assets/shaders/worldmap.vert</file>
+    </qresource>
+</RCC>
