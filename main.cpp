@@ -34,7 +34,6 @@ int main(int argc, char **argv) {
   qmlRegisterType<JSConsole>("GloconPP", 1, 0, "JSConsole");
   qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "GameState", gameStateProvider);
 
-  view.showFullScreen();
   QSurfaceFormat format;
   format.setRenderableType(QSurfaceFormat::OpenGL);
   format.setProfile(QSurfaceFormat::CoreProfile);

@@ -3,56 +3,64 @@ import GloconPP 1.0
 
 Item {
 
-    width: 700
-    height: 800
+  width: 700
+  height: 800
 
-    Viewport {
-        id: viewport
-    }
+  Viewport {
+    id: viewport
+  }
 
-    Rectangle {
-        id: consoleBackground
-        color: Qt.rgba(0, 0, 0, 0.4)
-        height: parent.height / 5
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
+  Rectangle {
+    id: consoleBackground
+    color: Qt.rgba(0, 0, 0, 0.8)
+    height: parent.height / 5
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+  }
 
-    JSConsole {
-        id: jsConsole
-    }
+  JSConsole {
+    id: jsConsole
+  }
 
-    TextEdit {
-        id: consoleInput
+  TextEdit {
+    id: consoleInput
 
-        color: "green"
-        wrapMode: Text.WordWrap
-        text: jsConsole.text
-        font.family: "PT Mono"
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.top: consoleBackground.top
-        anchors.margins: 10
-        onTextChanged: jsConsole.text = consoleInput.text
+    color: "green"
+    wrapMode: Text.WordWrap
+    text: jsConsole.text
+    font.family: "PT Mono"
+    anchors.right: parent.right
+    anchors.left: parent.left
+    anchors.top: consoleBackground.top
+    anchors.margins: 10
+    onTextChanged: jsConsole.text = consoleInput.text
 
-        Keys.priority: Keys.BeforeItem
-        Keys.onPressed: {
-          if (
-            (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
-            (event.modifiers & Qt.ControlModifier)
+    Keys.priority: Keys.BeforeItem
+    Keys.onPressed: {
+      if (
+          (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
+          (event.modifiers & Qt.ControlModifier)
           ) {
-            consoleInput.text = jsConsole.evaluate();
-            return false;
-          }
-        }
+        consoleInput.text = jsConsole.evaluate();
+        return false;
+      }
     }
+  }
+
+  Rectangle {
+    color: Qt.rgba(0, 0, 0, 0.8)
+    height: 60
+    width: 60
+    anchors.top: parent.top
+    anchors.right: parent.right
 
     Text {
+      color: "green"
       text: viewport.fps
-      anchors.top: parent.top
-      anchors.right: parent.right
+      anchors.centerIn: parent
       font.family: "PT Mono"
+      font.pixelSize: 32
     }
-
+  }
 }

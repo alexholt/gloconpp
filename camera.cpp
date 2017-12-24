@@ -16,5 +16,5 @@ void Camera::setAspectRatio(qreal aspectRatio) {
 void Camera::updateMatrix() {
   m_matrix.setToIdentity();
   m_matrix.perspective(60, m_aspectRatio, 0.1, 20000);
-  //m_matrix.translate(m_position);
+  m_matrix.translate(m_position);
 }
