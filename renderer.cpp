@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+const float MOUSE_SCALE = 10000.0f;
+
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   connect(this, &QQuickItem::windowChanged, this, &Renderer::handleWindowChanged);
   m_timer.start();
@@ -74,20 +76,6 @@ void Renderer::paint() {
   window()->update();
 }
 
-void Renderer::render(Model& model) {
-
-  //QOpenGLShaderProgram* shader = m_shaders[model.getShaderName()];
-  //shader->bind();
-
-  //shader->setUniformValue("cameraMatrix", m_camera.matrix().toTransform());
-
-  //model.getTexture()->bind();
-
-  //shader->enableAttributeArray(model.getName().toStdString().c_str());
-
-  //glDrawArrays(GL_TRIANGLES, 0, model.getVertexCount());
-}
-
 QOpenGLTexture* Renderer::createTexture(QImage* image) {
   QOpenGLTexture *texture = new QOpenGLTexture(image->mirrored());
   texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
@@ -104,3 +92,23 @@ void Renderer::setFPS(int val) {
   m_fps = val;
   emit fpsChanged(m_fps);
 }
+
+void Renderer::onKeyPressed(Qt::Key key) {
+  qDebug() << "This key was pressed " << key;
+}
+
+void Renderer::onPanX(float x) {
+  qDebug() << "panning x " << x;
+  m_camera.translate(-x / MOUSE_SCALE, 0, 0);
+}
+
+void Renderer::onPanY(float y) {
+  qDebug() << "panning y " << y;
+  m_camera.translate(0, y / MOUSE_SCALE, 0);
+}
+
+void Renderer::zoom(float delta) {
+  qDebug() << "zoom delta " << delta;
+  m_camera.translate(0, 0, delta / MOUSE_SCALE);
+}
+

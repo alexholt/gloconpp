@@ -6,6 +6,23 @@ Item {
   width: 700
   height: 800
 
+  MouseArea {
+    anchors.fill: parent
+    onWheel: viewport.zoom(wheel.delta)
+
+    Flickable {
+      focus: true
+      //boundsBehavior: Flickable.StopAtBounds
+      anchors.fill: parent
+      contentWidth: 2000
+      contentHeight: 500
+      Keys.onPressed: viewport.onKeyPressed(event.key)
+
+      onContentXChanged: viewport.onPanX(contentX)
+      onContentYChanged: viewport.onPanY(contentY)
+    }
+  }
+
   Viewport {
     id: viewport
   }

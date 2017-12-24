@@ -18,3 +18,7 @@ void Camera::updateMatrix() {
   m_matrix.perspective(60, m_aspectRatio, 0.1, 20000);
   m_matrix.translate(m_position);
 }
+
+void Camera::translate(float x, float y, float z) {
+  m_position += QVector3D{x, y, z};
+}

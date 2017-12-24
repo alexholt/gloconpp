@@ -16,7 +16,7 @@
 
 class Renderer : public QQuickItem, public QOpenGLFunctions {
   Q_OBJECT
-  Q_PROPERTY (int fps READ fps WRITE setFPS NOTIFY fpsChanged)
+  Q_PROPERTY(int fps READ fps WRITE setFPS NOTIFY fpsChanged)
 
 public:
   Renderer();
@@ -46,6 +46,10 @@ signals:
 public slots:
   void sync();
   void paint();
+  void onKeyPressed(Qt::Key);
+  void onPanX(float);
+  void onPanY(float);
+  void zoom(float);
 
 private slots:
   void handleWindowChanged(QQuickWindow *win);

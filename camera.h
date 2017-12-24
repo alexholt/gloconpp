@@ -14,6 +14,7 @@ public:
   Camera();
   QMatrix4x4* matrix();
   void setAspectRatio(qreal);
+  void translate(float, float, float);
 
 private:
   QMatrix4x4 m_matrix;
