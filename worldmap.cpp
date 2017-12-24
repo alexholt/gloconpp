@@ -17,7 +17,7 @@ WorldMap::~WorldMap() {
 
 void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
   if (!m_isInitialized) {
-    glActiveTexture(GL_TEXTURE0);
+    renderer->glActiveTexture(GL_TEXTURE0);
     createTexture();
     m_program = new QOpenGLShaderProgram();
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/worldmap.vert");
@@ -51,17 +51,17 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
     m_isInitialized = true;
   }
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderer->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   m_program->bind();
 
   //m_texObject.bind();
   m_vao.bind();
-  glActiveTexture(GL_TEXTURE0);
+  renderer->glActiveTexture(GL_TEXTURE0);
   m_texture->bind();
   //glActiveTexture(GL_TEXTURE0);
 
-  glDrawArrays(GL_TRIANGLES, 0, sizeof(m_vertices) / sizeof(m_vertices[0]));
+  renderer->glDrawArrays(GL_TRIANGLES, 0, sizeof(m_vertices) / sizeof(m_vertices[0]));
 
   m_vao.release();
   m_texture->release();
@@ -138,7 +138,6 @@ QImage* WorldMap::createTexture() {
   m_texture = new QOpenGLTexture(tex->mirrored());
   m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
   m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
-  glActiveTexture(GL_TEXTURE0);
   m_texture->bind();
   return tex;
 }
