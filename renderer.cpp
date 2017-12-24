@@ -20,7 +20,9 @@ void Renderer::sync() {
   connect(window(), &QQuickWindow::beforeRendering, this, &Renderer::paint, Qt::DirectConnection);
   auto windowSize = window()->size();
   setViewportSize(windowSize * window()->devicePixelRatio());
-  m_camera.setAspectRatio(windowSize.width() / windowSize.height());
+  qreal width = windowSize.width();
+  qreal height = windowSize.height();
+  m_camera.setAspectRatio(width / height);
 }
 
 void Renderer::initializeGL() {
@@ -64,7 +66,8 @@ void Renderer::paint() {
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  m_worldMap.render(this, m_camera.matrix().toTransform());
+  QMatrix4x4* camera = m_camera.matrix();
+  m_worldMap.render(this, *camera);
 
   window()->resetOpenGLState();
   update();

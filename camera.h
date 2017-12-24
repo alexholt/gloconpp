@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <cassert>
 #include <cmath>
 #include <QMatrix4x4>
 #include <QObject>
@@ -11,18 +12,14 @@ class Camera : public QObject {
 
 public:
   Camera();
-  QMatrix4x4 matrix();
+  QMatrix4x4* matrix();
   void setAspectRatio(qreal);
 
 private:
   QMatrix4x4 m_matrix;
-  qreal m_aspectRatio = 2;
-  QVector3D m_position{-500, 300, -500};
+  qreal m_aspectRatio = 2.0f;
+  QVector3D m_position{0.25, 0, 0};
   void updateMatrix();
-
-signals:
-
-public slots:
 };
 
 #endif // CAMERA_H

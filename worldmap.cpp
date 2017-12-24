@@ -61,6 +61,7 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
   m_texture->bind();
   //glActiveTexture(GL_TEXTURE0);
 
+  m_program->setUniformValue("u_camera", cameraMatrix);
   renderer->glDrawArrays(GL_TRIANGLES, 0, sizeof(m_vertices) / sizeof(m_vertices[0]));
 
   m_vao.release();

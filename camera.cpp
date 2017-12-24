@@ -4,8 +4,8 @@ Camera::Camera() {
   updateMatrix();
 }
 
-QMatrix4x4 Camera::matrix() {
-  return m_matrix;
+QMatrix4x4* Camera::matrix() {
+  return &m_matrix;
 }
 
 void Camera::setAspectRatio(qreal aspectRatio) {
@@ -15,6 +15,6 @@ void Camera::setAspectRatio(qreal aspectRatio) {
 
 void Camera::updateMatrix() {
   m_matrix.setToIdentity();
-  //m_matrix.perspective(M_PI / 6, m_aspectRatio, 0.1, 20000);
+  m_matrix.perspective(60, m_aspectRatio, 0.1, 20000);
   //m_matrix.translate(m_position);
 }
