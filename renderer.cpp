@@ -4,7 +4,15 @@ const float MOUSE_SCALE = 10000.0f;
 
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   connect(this, &QQuickItem::windowChanged, this, &Renderer::handleWindowChanged);
-  m_timer.start();
+  m_fpsTimer.setInterval(1000);
+  m_fpsTimer.setSingleShot(false);
+  connect(&m_fpsTimer, &QTimer::timeout, [=]() {
+    emit fpsChanged();
+    m_fps = m_frameCount / 1000.0f;
+    m_frameCount = 0;
+  });
+  m_fpsTimer.setTimerType(Qt::PreciseTimer);
+  m_fpsTimer.start();
 }
 
 void Renderer::setViewportSize(const QSize & size) {
@@ -13,13 +21,13 @@ void Renderer::setViewportSize(const QSize & size) {
 
 void Renderer::handleWindowChanged(QQuickWindow *win) {
   if (win) {
-    connect(win, &QQuickWindow::beforeSynchronizing, this, &Renderer::sync, Qt::DirectConnection);
     win->setClearBeforeRendering(false);
+    connect(win, &QQuickWindow::beforeSynchronizing, this, &Renderer::sync, Qt::DirectConnection);
+    connect(win, &QQuickWindow::beforeRendering, this, &Renderer::paint2, Qt::DirectConnection);
   }
 }
 
 void Renderer::sync() {
-  connect(window(), &QQuickWindow::beforeRendering, this, &Renderer::paint, Qt::DirectConnection);
   auto windowSize = window()->size();
   setViewportSize(windowSize * window()->devicePixelRatio());
   qreal width = windowSize.width();
@@ -39,26 +47,11 @@ void Renderer::initializeMap() {
   m_worldMap.loadMap();
 }
 
-void Renderer::update() {
-  qlonglong elapsed = m_timer.elapsed();
+void Renderer::paint2() {
+  window()->resetOpenGLState();
+  m_frameCount++;
+  m_fps = m_frameCount;
 
-  if (elapsed > 0LL) {
-    double currentFPS = 1.0F / (double(elapsed) / 1000.0F);
-    m_fps += currentFPS / m_fpsUpdateCounter;
-
-    if (m_fpsUpdateCounter == 60) {
-      emit fpsChanged(m_fps);
-      m_fpsUpdateCounter = 1;
-      m_fps = currentFPS;
-    }
-
-    m_fpsUpdateCounter++;
-  }
-
-  m_timer.restart();
-}
-
-void Renderer::paint() {
   if (!m_isInitialized) {
     initializeGL();
     initializeMap();
@@ -72,7 +65,6 @@ void Renderer::paint() {
   m_worldMap.render(this, *camera);
 
   window()->resetOpenGLState();
-  update();
   window()->update();
 }
 
@@ -82,15 +74,6 @@ QOpenGLTexture* Renderer::createTexture(QImage* image) {
   texture->setMagnificationFilter(QOpenGLTexture::Linear);
   texture->setWrapMode(QOpenGLTexture::ClampToEdge);
   return texture;
-}
-
-int Renderer::fps() const {
-  return m_fps;
-}
-
-void Renderer::setFPS(int val) {
-  m_fps = val;
-  emit fpsChanged(m_fps);
 }
 
 void Renderer::onKeyPressed(Qt::Key key) {

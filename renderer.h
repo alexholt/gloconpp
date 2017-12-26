@@ -10,20 +10,19 @@
 #include <QOpenGLTexture>
 #include <QQuickItem>
 #include <QQuickWindow>
+#include <QTimer>
 
 #include "camera.h"
 #include "worldmap.h"
 
 class Renderer : public QQuickItem, public QOpenGLFunctions {
   Q_OBJECT
-  Q_PROPERTY(int fps READ fps WRITE setFPS NOTIFY fpsChanged)
+  Q_PROPERTY(int fps READ fps NOTIFY fpsChanged)
 
 public:
   Renderer();
   void setViewportSize(const QSize &);
   QOpenGLTexture* createTexture(QImage*);
-  void update();
-  void setFPS(int fps);
   int fps() const;
 
 private:
@@ -36,16 +35,17 @@ private:
   Camera m_camera;
   bool m_isInitialized = false;
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
-  QElapsedTimer m_timer;
+  QTimer m_fpsTimer;
   double m_fps = 60;
-  int m_fpsUpdateCounter = 1;
+  int m_frameCount = 0;
 
 signals:
-  void fpsChanged(int);
+  void fpsChanged();
 
 public slots:
+  double fps() { return m_fps; }
   void sync();
-  void paint();
+  void paint2();
   void onKeyPressed(Qt::Key);
   void onPanX(float);
   void onPanY(float);
