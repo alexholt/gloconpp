@@ -8,6 +8,10 @@ QMatrix4x4* Camera::matrix() {
   return &m_matrix;
 }
 
+QVector3D* Camera::position() {
+  return &m_position;
+}
+
 void Camera::setAspectRatio(qreal aspectRatio) {
   m_aspectRatio = aspectRatio;
   updateMatrix();

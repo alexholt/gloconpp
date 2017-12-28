@@ -8,9 +8,11 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
+#include <QPoint>
 #include <QQmlContext>
 #include <QQuickWindow>
 #include <QTimer>
+#include <QWheelEvent>
 
 #include "camera.h"
 #include "worldmap.h"
@@ -18,7 +20,7 @@
 class Renderer : public QObject, public QOpenGLFunctions {
   Q_OBJECT
   Q_PROPERTY(int fps READ fps NOTIFY fpsChanged)
-  Q_PROPERTY(QQuickWindow* window READ window WRITE setWindow NOTIFY windowChanged)
+  Q_PROPERTY(QQuickWindow* window READ window WRITE setWindow)
 
 public:
   Renderer();
@@ -26,6 +28,7 @@ public:
   QOpenGLTexture* createTexture(QImage*);
   QQuickWindow* window() const;
   void setWindow(QQuickWindow*);
+  double fps() const;
 
 private:
   void initializeGL();
@@ -41,19 +44,20 @@ private:
   double m_fps = 60;
   QQuickWindow* m_window;
   int m_frameCount = 0;
+  QPoint m_mousePoint;
+  QPoint m_lastMousePoint;
 
 signals:
   void fpsChanged();
   void windowChanged();
 
 public slots:
-  double fps() { return m_fps; }
   void sync();
-  void paint2();
+  void paint();
   void onKeyPressed(Qt::Key);
   void onPanX(float);
   void onPanY(float);
-  void zoom(float);
+  void zoom(QPoint);
 };
 
 #endif // VIEWPORT_H

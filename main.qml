@@ -8,7 +8,7 @@ Item {
 
   MouseArea {
     anchors.fill: parent
-    onWheel: renderer.zoom(wheel.delta)
+    onWheel: renderer.zoom(wheel.angleDelta)
 
     Flickable {
       focus: true
@@ -17,7 +17,6 @@ Item {
       contentWidth: 2000
       contentHeight: 500
       Keys.onPressed: renderer.onKeyPressed(event.key)
-
       onContentXChanged: renderer.onPanX(contentX)
       onContentYChanged: renderer.onPanY(contentY)
     }

@@ -26,6 +26,10 @@
 #include "glocon.h"
 #include "territory.h"
 
+#define HEIGHT 500.0f
+#define WIDTH 1000.0f
+#define Z -0.5f
+
 class WorldMap : public Model {
   Q_OBJECT
 
@@ -40,12 +44,12 @@ public:
   QImage* createTexture();
 
   GLfloat m_vertices[6 * 3] = {
-    -1.0f, 0.5f, -0.5f,
-    1.0f, 0.5f, -0.5f,
-    1.0f, -0.5f, -0.5f,
-    1.0f, -0.5f, -0.5f,
-    -1.0f, -0.5f, -0.5f,
-    -1.0f, 0.5f, -0.5f
+    -WIDTH,  HEIGHT, Z,
+     WIDTH,  HEIGHT, Z,
+     WIDTH, -HEIGHT, Z,
+     WIDTH, -HEIGHT, Z,
+    -WIDTH, -HEIGHT, Z,
+    -WIDTH,  HEIGHT, Z
   };
 
 

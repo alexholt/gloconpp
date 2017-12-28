@@ -15,11 +15,12 @@ public:
   QMatrix4x4* matrix();
   void setAspectRatio(qreal);
   void translate(float, float, float);
+  QVector3D* position();
 
 private:
   QMatrix4x4 m_matrix;
   qreal m_aspectRatio = 2.0f;
-  QVector3D m_position{0.25, 0, 0};
+  QVector3D m_position{0.25f, 0.0f, -500.0f};
   void updateMatrix();
 };
 
