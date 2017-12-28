@@ -8,22 +8,24 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-#include <QQuickItem>
+#include <QQmlContext>
 #include <QQuickWindow>
 #include <QTimer>
 
 #include "camera.h"
 #include "worldmap.h"
 
-class Renderer : public QQuickItem, public QOpenGLFunctions {
+class Renderer : public QObject, public QOpenGLFunctions {
   Q_OBJECT
   Q_PROPERTY(int fps READ fps NOTIFY fpsChanged)
+  Q_PROPERTY(QQuickWindow* window READ window WRITE setWindow NOTIFY windowChanged)
 
 public:
   Renderer();
   void setViewportSize(const QSize &);
   QOpenGLTexture* createTexture(QImage*);
-  int fps() const;
+  QQuickWindow* window() const;
+  void setWindow(QQuickWindow*);
 
 private:
   void initializeGL();
@@ -37,10 +39,12 @@ private:
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
   QTimer m_fpsTimer;
   double m_fps = 60;
+  QQuickWindow* m_window;
   int m_frameCount = 0;
 
 signals:
   void fpsChanged();
+  void windowChanged();
 
 public slots:
   double fps() { return m_fps; }
@@ -50,9 +54,6 @@ public slots:
   void onPanX(float);
   void onPanY(float);
   void zoom(float);
-
-private slots:
-  void handleWindowChanged(QQuickWindow *win);
 };
 
 #endif // VIEWPORT_H

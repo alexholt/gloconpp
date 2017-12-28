@@ -3,7 +3,7 @@
 const float MOUSE_SCALE = 10000.0f;
 
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
-  connect(this, &QQuickItem::windowChanged, this, &Renderer::handleWindowChanged);
+  //connect(this, &QQuickItem::windowChanged, this, &Renderer::handleWindowChanged);
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   connect(&m_fpsTimer, &QTimer::timeout, [=]() {
@@ -19,12 +19,15 @@ void Renderer::setViewportSize(const QSize & size) {
   m_viewportSize = size;
 }
 
-void Renderer::handleWindowChanged(QQuickWindow *win) {
-  if (win) {
-    win->setClearBeforeRendering(false);
-    connect(win, &QQuickWindow::beforeSynchronizing, this, &Renderer::sync, Qt::DirectConnection);
-    connect(win, &QQuickWindow::beforeRendering, this, &Renderer::paint2, Qt::DirectConnection);
-  }
+void Renderer::setWindow(QQuickWindow *win) {
+  m_window = win;
+  win->setClearBeforeRendering(false);
+  connect(win, &QQuickWindow::beforeSynchronizing, this, &Renderer::sync, Qt::DirectConnection);
+  connect(win, &QQuickWindow::beforeRendering, this, &Renderer::paint2, Qt::DirectConnection);
+}
+
+QQuickWindow* Renderer::window() const {
+  return m_window;
 }
 
 void Renderer::sync() {

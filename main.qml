@@ -8,7 +8,7 @@ Item {
 
   MouseArea {
     anchors.fill: parent
-    onWheel: viewport.zoom(wheel.delta)
+    onWheel: renderer.zoom(wheel.delta)
 
     Flickable {
       focus: true
@@ -16,15 +16,16 @@ Item {
       anchors.fill: parent
       contentWidth: 2000
       contentHeight: 500
-      Keys.onPressed: viewport.onKeyPressed(event.key)
+      Keys.onPressed: renderer.onKeyPressed(event.key)
 
-      onContentXChanged: viewport.onPanX(contentX)
-      onContentYChanged: viewport.onPanY(contentY)
+      onContentXChanged: renderer.onPanX(contentX)
+      onContentYChanged: renderer.onPanY(contentY)
     }
   }
 
-  Viewport {
-    id: viewport
+  Renderer {
+    id: renderer
+    window: applicationWindow // applicationWindow added to the global object in main.cpp
   }
 
   Rectangle {
@@ -74,7 +75,7 @@ Item {
 
     Text {
       color: "green"
-      text: viewport.fps
+      text: renderer.fps
       anchors.centerIn: parent
       font.family: "PT Mono"
       font.pixelSize: 32

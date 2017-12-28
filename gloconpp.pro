@@ -41,4 +41,4 @@ RESOURCES += \
 
 DESTDIR = build
 
-LFLAGS += -v
+QMAKE_LFLAGS += -v

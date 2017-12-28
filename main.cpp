@@ -28,9 +28,7 @@ int main(int argc, char **argv) {
   setupSigHandler();
   QGuiApplication app(argc, argv);
 
-  QQuickView view;
-
-  qmlRegisterType<Renderer>("GloconPP", 1, 0, "Viewport");
+  qmlRegisterType<Renderer>("GloconPP", 1, 0, "Renderer");
   qmlRegisterType<JSConsole>("GloconPP", 1, 0, "JSConsole");
   qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "GameState", gameStateProvider);
 
@@ -41,8 +39,9 @@ int main(int argc, char **argv) {
   format.setDepthBufferSize(24);
   format.setStencilBufferSize(8);
 
+  QQuickView view;
   view.setFormat(format);
-
+  view.rootContext()->setContextProperty("applicationWindow", &view);
   view.setTitle("Glocon");
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.setSource(QUrl("qrc:///main.qml"));
