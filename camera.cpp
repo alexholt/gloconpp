@@ -33,4 +33,5 @@ void Camera::moveTo(double x, double y, double z) {
     static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
   };
   updateMatrix();
+  qDebug() << (m_matrix.inverted() * QVector3D{0, 0, 0});
 }

@@ -83,7 +83,6 @@ void Renderer::paint() {
 
   m_camera.translate(0, 0, m_lastZoom);
   m_lastZoom = 0;
-  //float scale = -m_camera.position().z();
   m_camera.translate(m_mousePoint.x(), 0, 0);
   m_mousePoint.setX(0);
 

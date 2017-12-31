@@ -40,13 +40,10 @@ QString JSConsole::evaluate() {
   return result;
 }
 
-#define updateProp(prop) m_gloconObj.setProperty(#prop, prop);
-
 void JSConsole::updatePosition(double x, double y, double z) {
-  qDebug() << "updating" << x << y << z;
+  #define updateProp(prop) m_gloconObj.setProperty(#prop, prop);
   updateProp(x);
   updateProp(y);
   updateProp(z);
+  #undef update
 }
-
-#undef update

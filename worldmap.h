@@ -88,4 +88,7 @@ public slots:
   void teardownGL();
 };
 
+#undef HEIGHT
+#undef WIDTH
+#undef Z
 #endif // WORLDMAP_H

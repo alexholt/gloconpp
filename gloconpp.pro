@@ -34,7 +34,8 @@ DISTFILES += \
     worldmap.vert \
     worldmap.vert \
     assets/shaders/worldmap.frag \
-    assets/shaders/worldmap.vert
+    assets/shaders/worldmap.vert \
+    assets/icons/app.svg
 
 RESOURCES += \
     gloconpp.qrc

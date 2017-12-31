@@ -20,7 +20,7 @@ private:
   QVector2D m_lastPoint;
   QList<QVector2D> m_pointArray;
   PathState m_pathState;
-  qint32 m_currentVal = 0;
+  double m_currentVal = 0;
   QRect m_boundingBox;
   void processToken(QString);
   void stateChange(QString);

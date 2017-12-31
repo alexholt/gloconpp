@@ -42,6 +42,7 @@ QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 int main(int argc, char **argv) {
   setupSigHandler();
   QGuiApplication app(argc, argv);
+  app.setWindowIcon(QIcon(":/assets/icons/app.png"));
 
   qmlRegisterType<Renderer>("GloconPP", 1, 0, "Renderer");
   qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "gameState", gameStateProvider);

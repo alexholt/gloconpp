@@ -15,4 +15,4 @@ QString shell(const QString& cmd, const QStringList& args) {
   return result;
 }
 
-}
+} // End namespace glocon
