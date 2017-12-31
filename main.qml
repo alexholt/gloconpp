@@ -10,14 +10,16 @@ Item {
     onWheel: renderer.zoom(wheel.angleDelta)
 
     Flickable {
+      id: flickArea
       focus: true
       //boundsBehavior: Flickable.StopAtBounds
       anchors.fill: parent
-      contentWidth: 2000
-      contentHeight: 1000
+      contentX: 0
+      contentY: 0
       Keys.onPressed: renderer.onKeyPressed(event.key)
       onContentXChanged: {
         this.focus = true
+        console.log(contentX)
         renderer.onPanX(contentX)
       }
       onContentYChanged: {
@@ -30,6 +32,11 @@ Item {
   Renderer {
     id: renderer
     window: applicationWindow // applicationWindow added to the global object in main.cpp
+    onContentRectChanged: flickArea.resizeContent(this.contentRect.width(), this.contentRect.height(), flickArea.Center)
+    Component.onCompleted: {
+      JSConsole.onPositionChanged.connect(renderer.updatePosition);
+      JSConsole.updatePosition(renderer.x, renderer.y, renderer.z);
+    }
   }
 
   Rectangle {
@@ -41,30 +48,33 @@ Item {
     anchors.right: parent.right
   }
 
-  JSConsole {
-    id: jsConsole
-  }
-
   TextEdit {
     id: consoleInput
 
     color: "green"
     wrapMode: Text.WordWrap
-    text: jsConsole.text
+    text: JSConsole.text
     font.family: "PT Mono"
     anchors.right: parent.right
     anchors.left: parent.left
     anchors.top: consoleBackground.top
     anchors.margins: 10
-    onTextChanged: jsConsole.text = consoleInput.text
+    onTextChanged: JSConsole.text = consoleInput.text
 
     Keys.priority: Keys.BeforeItem
     Keys.onPressed: {
+      if (JSConsole.isDirty) {
+        JSConsole.isDirty = false;
+        consoleInput.text = '';
+      }
+
       if (
-          (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
-          (event.modifiers & Qt.ControlModifier)
-          ) {
-        consoleInput.text = jsConsole.evaluate();
+        (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
+        (event.modifiers & Qt.ControlModifier)
+      ) {
+        consoleInput.text = JSConsole.evaluate();
+        cursorPosition = consoleInput.text.length;
+        JSConsole.isDirty = true;
         return false;
       }
     }

@@ -7,6 +7,11 @@
 #include "jsconsole.h"
 #include "renderer.h"
 
+namespace {
+
+GameState* gameState = Q_NULLPTR;
+JSConsole* jsConsole = Q_NULLPTR;
+
 void handleSig(int signum) {
   Q_UNUSED(signum)
   throw std::runtime_error("We are crashing 😞");
@@ -16,21 +21,31 @@ void setupSigHandler() {
   signal(SIGSEGV, handleSig);
 }
 
-static QObject* gameStateProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+QObject* gameStateProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
   Q_UNUSED(engine)
   Q_UNUSED(scriptEngine)
 
-  GameState *gameState = new GameState();
+  gameState = new GameState();
   return gameState;
 }
+
+QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+  Q_UNUSED(engine)
+  Q_UNUSED(scriptEngine)
+
+  jsConsole = new JSConsole();
+  return jsConsole;
+}
+
+} // End anonymous namespace
 
 int main(int argc, char **argv) {
   setupSigHandler();
   QGuiApplication app(argc, argv);
 
   qmlRegisterType<Renderer>("GloconPP", 1, 0, "Renderer");
-  qmlRegisterType<JSConsole>("GloconPP", 1, 0, "JSConsole");
-  qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "GameState", gameStateProvider);
+  qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "gameState", gameStateProvider);
+  qmlRegisterSingletonType<JSConsole>("GloconPP", 1, 0, "JSConsole", consoleProvider);
 
   QSurfaceFormat format;
   format.setRenderableType(QSurfaceFormat::OpenGL);

@@ -12,10 +12,18 @@ Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
     m_frameCount = 0;
   });
   m_fpsTimer.start();
+  emit contentRectChanged();
+}
+
+Renderer::~Renderer() {
 }
 
 double Renderer::fps() const {
   return m_fps;
+}
+
+QRect* Renderer::contentRect() {
+  return &m_contentRect;
 }
 
 void Renderer::setViewportSize(const QSize & size) {
@@ -73,27 +81,20 @@ void Renderer::paint() {
     m_isInitialized = true;
   }
 
-  //if (m_lastZoom != m_camera.position()->z())
-  //m_camera.translate(0, 0, m_lastZoom);
-  QPoint delta = m_mousePoint - m_lastMousePoint;
-  m_camera.translate(delta.x(), delta.y(), 0);
+  m_camera.translate(0, 0, m_lastZoom);
+  m_lastZoom = 0;
+  //float scale = -m_camera.position().z();
+  m_camera.translate(m_mousePoint.x(), 0, 0);
+  m_mousePoint.setX(0);
 
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   QMatrix4x4* camera = m_camera.matrix();
   m_worldMap.render(this, *camera);
 
   window()->resetOpenGLState();
   window()->update();
-}
-
-QOpenGLTexture* Renderer::createTexture(QImage* image) {
-  QOpenGLTexture *texture = new QOpenGLTexture(image->mirrored());
-  texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
-  texture->setMagnificationFilter(QOpenGLTexture::Linear);
-  texture->setWrapMode(QOpenGLTexture::ClampToEdge);
-  return texture;
 }
 
 void Renderer::onKeyPressed(Qt::Key key) {
@@ -113,8 +114,8 @@ void Renderer::onKeyPressed(Qt::Key key) {
 }
 
 void Renderer::onPanX(float x) {
-  m_lastMousePoint.setX(m_mousePoint.x());
-  m_mousePoint.setX(x);
+  //m_lastMousePoint.setX(m_mousePoint.x());
+  m_mousePoint.setX(-x);
 }
 
 void Renderer::onPanY(float y) {
@@ -122,16 +123,23 @@ void Renderer::onPanY(float y) {
   m_mousePoint.setY(y);
 }
 
-void Renderer::zoom(QPoint point) {
-  qDebug() << point.y();
-  if (point.y() < 0)
-    m_camera.translate(0, 0, -10);
-  else
-    m_camera.translate(0, 0, 10);
-  //m_lastZoom = point.y();
+void Renderer::updatePosition(double x, double y, double z) {
+  m_camera.moveTo(x, y, z);
 }
 
 void Renderer::printGLInfo() {
   QString glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
   qDebug() << "OpenGL" << qPrintable(glVersion);
+}
+
+double Renderer::x() {
+  return m_camera.position().x();
+}
+
+double Renderer::y() {
+  return m_camera.position().y();
+}
+
+double Renderer::z() {
+  return m_camera.position().z();
 }

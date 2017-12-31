@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-*************Map created by Simplemaps.com********************		
+*************Map created by Simplemaps.com********************
 *************Attribution is highly appreciated!***************
 *************http://simplemaps.com****************************
 
@@ -35,7 +35,7 @@ THE SOFTWARE.
    version="1.1"
    viewBox="0 0 2000 1001"
    width="2000px">
-  <rect x="0" y="0" width="2000" height="1001" fill="aqua"/>
+  <rect x="0" y="0" width="2000" height="1001" stroke="none" fill="aqua"/>
   <path
      inkscape:connector-curvature="0"
      id="AF"
