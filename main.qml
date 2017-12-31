@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import GloconPP 1.0
+import Glocon 1.0
 
 Item {
   width: 700

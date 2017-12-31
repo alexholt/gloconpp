@@ -44,9 +44,9 @@ int main(int argc, char **argv) {
   QGuiApplication app(argc, argv);
   app.setWindowIcon(QIcon(":/assets/icons/app.png"));
 
-  qmlRegisterType<Renderer>("GloconPP", 1, 0, "Renderer");
-  qmlRegisterSingletonType<GameState>("GloconPP", 1, 0, "gameState", gameStateProvider);
-  qmlRegisterSingletonType<JSConsole>("GloconPP", 1, 0, "JSConsole", consoleProvider);
+  qmlRegisterType<Renderer>("Glocon", 1, 0, "Renderer");
+  qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "gameState", gameStateProvider);
+  qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
 
   QSurfaceFormat format;
   format.setRenderableType(QSurfaceFormat::OpenGL);
