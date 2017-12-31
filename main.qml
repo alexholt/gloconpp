@@ -2,7 +2,6 @@ import QtQuick 2.0
 import GloconPP 1.0
 
 Item {
-
   width: 700
   height: 800
 
@@ -15,10 +14,16 @@ Item {
       //boundsBehavior: Flickable.StopAtBounds
       anchors.fill: parent
       contentWidth: 2000
-      contentHeight: 500
+      contentHeight: 1000
       Keys.onPressed: renderer.onKeyPressed(event.key)
-      onContentXChanged: renderer.onPanX(contentX)
-      onContentYChanged: renderer.onPanY(contentY)
+      onContentXChanged: {
+        this.focus = true
+        renderer.onPanX(contentX)
+      }
+      onContentYChanged: {
+        this.focus = true
+        renderer.onPanY(contentY)
+      }
     }
   }
 

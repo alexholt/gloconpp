@@ -11,6 +11,7 @@
 #include <QPoint>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QThread>
 #include <QTimer>
 #include <QWheelEvent>
 
@@ -46,6 +47,7 @@ private:
   int m_frameCount = 0;
   QPoint m_mousePoint;
   QPoint m_lastMousePoint;
+  void printGLInfo();
 
 signals:
   void fpsChanged();
@@ -58,6 +60,7 @@ public slots:
   void onPanX(float);
   void onPanY(float);
   void zoom(QPoint);
+  void teardownGL();
 };
 
 #endif // VIEWPORT_H

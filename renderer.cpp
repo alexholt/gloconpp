@@ -43,10 +43,19 @@ void Renderer::sync() {
 
 void Renderer::initializeGL() {
   initializeOpenGLFunctions();
+  printGLInfo();
+
+  QOpenGLContext* context = window()->openglContext();
+  connect(context, SIGNAL(aboutToBeDestroyed()), this, SLOT(teardownGL()), Qt::DirectConnection);
+  connect(context, SIGNAL(aboutToBeDestroyed()), &m_worldMap, SLOT(teardownGL()), Qt::DirectConnection);
 
   glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Renderer::teardownGL() {
+  qDebug() << "Goodbye 👋";
 }
 
 void Renderer::initializeMap() {
@@ -66,8 +75,8 @@ void Renderer::paint() {
 
   //if (m_lastZoom != m_camera.position()->z())
   //m_camera.translate(0, 0, m_lastZoom);
-  //QPoint delta = m_mousePoint - m_lastMousePoint;
-  //m_camera.translate(delta.x(), delta.y(), 0);
+  QPoint delta = m_mousePoint - m_lastMousePoint;
+  m_camera.translate(delta.x(), delta.y(), 0);
 
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
@@ -88,12 +97,18 @@ QOpenGLTexture* Renderer::createTexture(QImage* image) {
 }
 
 void Renderer::onKeyPressed(Qt::Key key) {
-  qDebug() << "This key was pressed " << key;
-  if (key == Qt::Key_Tab) {
-    if (window()->windowState() == Qt::WindowFullScreen)
-      window()->showNormal();
-    else
-      window()->showFullScreen();
+  switch (key) {
+    case Qt::Key_Tab:
+      if (window()->windowState() == Qt::WindowFullScreen)
+        window()->showNormal();
+      else
+        window()->showFullScreen();
+      break;
+    case Qt::Key_Escape:
+      window()->close();
+      break;
+    default:
+      qDebug() << "This key was pressed " << key;
   }
 }
 
@@ -108,11 +123,15 @@ void Renderer::onPanY(float y) {
 }
 
 void Renderer::zoom(QPoint point) {
-  qDebug() << point;
   qDebug() << point.y();
   if (point.y() < 0)
     m_camera.translate(0, 0, -10);
   else
     m_camera.translate(0, 0, 10);
   //m_lastZoom = point.y();
+}
+
+void Renderer::printGLInfo() {
+  QString glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+  qDebug() << "OpenGL" << qPrintable(glVersion);
 }

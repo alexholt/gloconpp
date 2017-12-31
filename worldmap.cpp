@@ -1,7 +1,11 @@
 #include "worldmap.h"
 
-WorldMap::WorldMap(const QString& path) {
-  m_path = path;
+WorldMap::WorldMap(const QString& path) :
+  m_path(path),
+  m_vao(new QOpenGLVertexArrayObject),
+  m_vertexVbo(new QOpenGLBuffer),
+  m_textureVbo(new QOpenGLBuffer) {
+
 }
 
 WorldMap::~WorldMap() {
@@ -11,41 +15,47 @@ WorldMap::~WorldMap() {
     delete i.value();
     ++i;
   }
+}
 
+void WorldMap::teardownGL() {
   delete m_textureData;
+  m_program->release();
+  delete m_vao;
+  delete m_vertexVbo;
+  delete m_textureVbo;
 }
 
 void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
   if (!m_isInitialized) {
     renderer->glActiveTexture(GL_TEXTURE0);
     createTexture();
-    m_program = new QOpenGLShaderProgram();
+    m_program = new QOpenGLShaderProgram;
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/worldmap.vert");
     m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/worldmap.frag");
     m_program->link();
     m_program->bind();
 
-    m_vao.create();
-    m_vao.bind();
+    m_vao->create();
+    m_vao->bind();
 
-    m_vertexVbo.create();
-    m_vertexVbo.bind();
-    m_vertexVbo.allocate(m_vertices, sizeof(m_vertices[0]) * 18);
+    m_vertexVbo->create();
+    m_vertexVbo->bind();
+    m_vertexVbo->allocate(m_vertices, sizeof(m_vertices[0]) * 18);
     m_program->enableAttributeArray(0);
     m_program->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
 
-    m_textureVbo.create();
-    m_textureVbo.bind();
-    m_textureVbo.allocate(m_texcoords, sizeof(m_texcoords[0]) * 12);
+    m_textureVbo->create();
+    m_textureVbo->bind();
+    m_textureVbo->allocate(m_texcoords, sizeof(m_texcoords[0]) * 12);
 
     m_program->enableAttributeArray(1);
     m_program->setAttributeBuffer(1, GL_FLOAT, 0, 2, 0);
 
     m_program->setUniformValue("sampler", 0);
 
-    m_vao.release();
-    m_vertexVbo.release();
-    m_textureVbo.release();
+    m_vao->release();
+    m_vertexVbo->release();
+    m_textureVbo->release();
     m_program->release();
 
     m_isInitialized = true;
@@ -55,18 +65,15 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
 
   m_program->bind();
 
-  //m_texObject.bind();
-  m_vao.bind();
+  m_vao->bind();
   renderer->glActiveTexture(GL_TEXTURE0);
   m_texture->bind();
-  //glActiveTexture(GL_TEXTURE0);
 
   m_program->setUniformValue("u_camera", cameraMatrix);
   renderer->glDrawArrays(GL_TRIANGLES, 0, sizeof(m_vertices) / sizeof(m_vertices[0]));
 
-  m_vao.release();
+  m_vao->release();
   m_texture->release();
-  //m_texObject.release();
   m_program->release();
 }
 

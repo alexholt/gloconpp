@@ -26,8 +26,8 @@
 #include "glocon.h"
 #include "territory.h"
 
-#define HEIGHT 500.0f
-#define WIDTH 1000.0f
+#define HEIGHT 1000.0f
+#define WIDTH  2000.0f
 #define Z -0.5f
 
 class WorldMap : public Model {
@@ -67,10 +67,9 @@ private:
   GLuint m_positionAttributeLocation;
   GLuint m_texcoordAttributeLocation;
   QImage* m_textureData;
-  QOpenGLBuffer m_vertexVbo;
-  QOpenGLBuffer m_textureVbo;
-  QOpenGLVertexArrayObject m_vao;
-  QOpenGLVertexArrayObject m_texObject;
+  QOpenGLVertexArrayObject* m_vao;
+  QOpenGLBuffer* m_vertexVbo;
+  QOpenGLBuffer* m_textureVbo;
 
   GLfloat m_texcoords[12] = {
     0.0f, 1.0f,
@@ -84,6 +83,9 @@ private:
   bool m_isInitialized = false;
 
   QOpenGLTexture* m_texture;
+
+public slots:
+  void teardownGL();
 };
 
 #endif // WORLDMAP_H
