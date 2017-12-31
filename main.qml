@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Glocon 1.0
 
 Item {
-  width: 700
+  width: 800
   height: 800
 
   MouseArea {
