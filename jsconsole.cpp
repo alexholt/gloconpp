@@ -45,5 +45,5 @@ void JSConsole::updatePosition(double x, double y, double z) {
   updateProp(x);
   updateProp(y);
   updateProp(z);
-  #undef update
+  #undef updateProp
 }
