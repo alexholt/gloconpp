@@ -69,8 +69,8 @@ public slots:
   void sync();
   void paint();
   void onKeyPressed(Qt::Key);
-  void onPanX(float);
-  void onPanY(float);
+  double onPanX(float);
+  double onPanY(float);
   void updatePosition(double, double, double);
   void teardownGL();
 };

@@ -6,5 +6,6 @@
         <file>assets/shaders/worldmap.vert</file>
         <file>assets/icons/app.svg</file>
         <file>assets/icons/app.png</file>
+        <file>assets/scripts/glocon.js</file>
     </qresource>
 </RCC>

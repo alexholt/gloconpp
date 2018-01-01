@@ -33,5 +33,15 @@ void Camera::moveTo(double x, double y, double z) {
     static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
   };
   updateMatrix();
-  qDebug() << (m_matrix.inverted() * QVector3D{0, 0, 0});
+
+  QVector3D topLeft = m_matrix * QVector3D{-1000.0f, 500.0f, -0.5f};
+  topLeft.setX((topLeft.x() * 0.5 + 0.5) * 800);
+  topLeft.setY((topLeft.y() * 0.5 + 0.5) * 800);
+
+  QVector3D bottomRight = m_matrix * QVector3D{1000.0f, -500.0f, -0.5f};
+  bottomRight.setX((bottomRight.x() * 0.5 + 0.5) * 800);
+  bottomRight.setY((bottomRight.y() * 0.5 + 0.5) * 800);
+
+  qDebug() << "contentWidth" << bottomRight.x() - topLeft.x();
+  qDebug() << "contentHeight" << topLeft.y() - bottomRight.y();
 }

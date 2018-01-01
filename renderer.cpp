@@ -83,8 +83,8 @@ void Renderer::paint() {
 
   m_camera.translate(0, 0, m_lastZoom);
   m_lastZoom = 0;
-  m_camera.translate(m_mousePoint.x(), 0, 0);
-  m_mousePoint.setX(0);
+  auto deltaX = m_mousePoint.x() - m_lastMousePoint.x();
+  m_camera.translate(-deltaX, 0, 0);
 
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
@@ -112,14 +112,17 @@ void Renderer::onKeyPressed(Qt::Key key) {
   }
 }
 
-void Renderer::onPanX(float x) {
-  //m_lastMousePoint.setX(m_mousePoint.x());
-  m_mousePoint.setX(-x);
+double Renderer::onPanX(float x) {
+  m_lastMousePoint.setX(m_mousePoint.x());
+  m_mousePoint.setX(x);
+  auto deltaX = m_mousePoint.x() - m_lastMousePoint.x();
+  qDebug() << "Panning" << deltaX;
+  return 1367.0;
 }
 
-void Renderer::onPanY(float y) {
-  m_lastMousePoint.setY(m_mousePoint.y());
+double Renderer::onPanY(float y) {
   m_mousePoint.setY(y);
+  return 800.0;
 }
 
 void Renderer::updatePosition(double x, double y, double z) {

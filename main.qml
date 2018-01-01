@@ -12,19 +12,32 @@ Item {
     Flickable {
       id: flickArea
       focus: true
-      //boundsBehavior: Flickable.StopAtBounds
+      boundsBehavior: Flickable.StopAtBounds
       anchors.fill: parent
       contentX: 0
       contentY: 0
-      Keys.onPressed: renderer.onKeyPressed(event.key)
+      contentWidth: 2000
+      contentHeight: 1000
+      Keys.onPressed: {
+        if (event.key === Qt.Key_Escape) {
+          consoleInput.focus = true;
+          return false;
+        }
+
+        if (event.key === Qt.Key_F1) {
+          applicationWindow.close();
+          return false;
+        }
+
+        renderer.onKeyPressed(event.key);
+      }
       onContentXChanged: {
-        this.focus = true
-        console.log(contentX)
-        renderer.onPanX(contentX)
+        //flickArea.contentWidth =
+        renderer.onPanX(contentX);
       }
       onContentYChanged: {
-        this.focus = true
-        renderer.onPanY(contentY)
+        //flickArea.contentHeight =
+        renderer.onPanY(contentY);
       }
     }
   }
@@ -63,6 +76,11 @@ Item {
 
     Keys.priority: Keys.BeforeItem
     Keys.onPressed: {
+      if (event.key === Qt.Key_Escape) {
+        flickArea.focus = true;
+        return false;
+      }
+
       if (JSConsole.isDirty) {
         JSConsole.isDirty = false;
         consoleInput.text = '';
