@@ -43,7 +43,7 @@ public:
   int getVertexCount();
   QImage* createTexture();
 
-  GLfloat m_vertices[6 * 3] = {
+  float m_vertices[6 * 3] = {
     -WIDTH,  HEIGHT, Z,
      WIDTH,  HEIGHT, Z,
      WIDTH, -HEIGHT, Z,

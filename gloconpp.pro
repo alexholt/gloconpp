@@ -16,7 +16,8 @@ SOURCES += \
     territory.cpp \
     renderer.cpp \
     model.cpp \
-    gamestate.cpp
+    gamestate.cpp \
+    cube.cpp
 
 HEADERS += \
     jsconsole.h \
@@ -27,7 +28,8 @@ HEADERS += \
     pathstate.h \
     renderer.h \
     model.h \
-    gamestate.h
+    gamestate.h \
+    cube.h
 
 DISTFILES += \
     main.qml \
