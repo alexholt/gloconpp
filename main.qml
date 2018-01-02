@@ -1,49 +1,81 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import Glocon 1.0
 
 Item {
+  id: screen
   width: 800
   height: 800
 
+  // Zoom with up/down arrows
+  focus: true
+  Keys.onUpPressed: resizeMap(flickArea.contentX + screen.width * 0.5, flickArea.contentY + screen.height * 0.5, true)
+  Keys.onDownPressed: resizeMap(flickArea.contentX + screen.width * 0.5, flickArea.contentY + screen.height * 0.5, false)
+
+  function resizeMap(x, y, scaleUp) {
+    var mapWidth = renderer.mapWidth;
+    var mapHeight = renderer.mapHeight;
+    var currentScale = renderer.currentScale;
+    var maxZoomStep = renderer.maxZoomStep;
+    var zoomStep = renderer.zoomStep;
+
+    renderer.zoomStep = scaleUp ? Math.min(maxZoomStep, zoomStep + 1) :
+                         Math.max(0.0, zoomStep - 1);
+    flickArea.resizeContent(mapWidth * currentScale, mapHeight * currentScale, Qt.point(x, y));
+    flickArea.returnToBounds()
+    renderer.updatePosition(renderer.mapCenterX, renderer.mapCenterY, renderer.currentScale);
+  }
+
+
+  Flickable {
+    id: flickArea
+    focus: true
+    boundsBehavior: Flickable.DragAndOvershootBounds
+    anchors.fill: parent
+    interactive: true
+    contentWidth: 2000
+    contentHeight: 1000
+    Keys.onPressed: {
+      if (event.key === Qt.Key_Escape) {
+        consoleInput.focus = true;
+        return false;
+      }
+
+      if (event.key === Qt.Key_F1) {
+        applicationWindow.close();
+        return false;
+      }
+
+      renderer.onKeyPressed(event.key);
+    }
+    onContentXChanged: {
+      renderer.updatePosition(renderer.mapCenterX, renderer.mapCenterY, renderer.currentScale);
+    }
+    onContentYChanged: {
+      renderer.updatePosition(renderer.mapCenterX, renderer.mapCenterY, renderer.currentScale);
+    }
+  }
+
   MouseArea {
     anchors.fill: parent
-    onWheel: renderer.zoom(wheel.angleDelta)
-
-    Flickable {
-      id: flickArea
-      focus: true
-      boundsBehavior: Flickable.StopAtBounds
-      anchors.fill: parent
-      contentX: 0
-      contentY: 0
-      contentWidth: 2000
-      contentHeight: 1000
-      Keys.onPressed: {
-        if (event.key === Qt.Key_Escape) {
-          consoleInput.focus = true;
-          return false;
-        }
-
-        if (event.key === Qt.Key_F1) {
-          applicationWindow.close();
-          return false;
-        }
-
-        renderer.onKeyPressed(event.key);
-      }
-      onContentXChanged: {
-        //flickArea.contentWidth =
-        renderer.onPanX(contentX);
-      }
-      onContentYChanged: {
-        //flickArea.contentHeight =
-        renderer.onPanY(contentY);
-      }
+    onWheel: {
+      resizeMap(flickArea.contentX + wheel.x, flickArea.contentY + wheel.y, wheel.angleDelta.y > 0);
     }
+    onPressed: mouse.accepted = false
+    onReleased: mouse.accepted = false
   }
 
   Renderer {
     id: renderer
+    property real currentScale: 1 + Math.pow(zoomStep * 0.1, 2.0) + 0.01
+    property real mapCenterX: flickArea.contentX + screen.width * 0.5 - mapWidth * 0.5
+    property real mapCenterY: flickArea.contentY + screen.height * 0.5 - mapHeight * 0.5
+
+    property int zoomStep: 0
+    property int maxZoomStep: 50
+
+    property int mapWidth: 2000
+    property int mapHeight: 1000
+
     window: applicationWindow // applicationWindow added to the global object in main.cpp
     onContentRectChanged: flickArea.resizeContent(this.contentRect.width(), this.contentRect.height(), flickArea.Center)
     Component.onCompleted: {
@@ -59,6 +91,30 @@ Item {
     anchors.bottom: parent.bottom
     anchors.left: parent.left
     anchors.right: parent.right
+  }
+
+
+  Rectangle {
+    color: Qt.rgba(0, 0, 0, 0.8)
+    height: 55
+    width: 300
+    anchors.top: parent.top
+    anchors.left: parent.left
+  }
+
+  // Show the coords and scale
+  Column {
+    anchors.left: parent.left
+    anchors.top: parent.top
+    anchors.margins: 10
+
+    Text {
+      text: 'Center of map: (' + renderer.mapCenterX.toFixed(2) + ', ' +
+        renderer.mapCenterY.toFixed(2) + ')' + '\n' + 'Scale: ' + renderer.currentScale.toFixed(2)
+      font.family: "PT Mono"
+      font.pixelSize: 16
+      color: "green"
+    }
   }
 
   TextEdit {

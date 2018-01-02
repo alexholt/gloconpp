@@ -44,9 +44,9 @@ QQuickWindow* Renderer::window() const {
 void Renderer::sync() {
   auto windowSize = window()->size();
   setViewportSize(windowSize * window()->devicePixelRatio());
-  qreal width = windowSize.width();
-  qreal height = windowSize.height();
-  m_camera.setAspectRatio(width / height);
+  double width = static_cast<double>(windowSize.width());
+  double height = static_cast<double>(windowSize.height());
+  m_camera.setAspectRatio(width, height);
 }
 
 void Renderer::initializeGL() {
@@ -81,14 +81,15 @@ void Renderer::paint() {
     m_isInitialized = true;
   }
 
-  m_camera.translate(0, 0, m_lastZoom);
-  m_lastZoom = 0;
-  auto deltaX = m_mousePoint.x() - m_lastMousePoint.x();
-  m_camera.translate(-deltaX, 0, 0);
-
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+  //auto mapCenterX = property("mapCenterX").toDouble();
+  //auto mapCenterY = property("mapCenterY").toDouble();
+  //auto currentScale = property("currentScale").toDouble();
+  //m_camera.moveTo(mapCenterX, mapCenterY, -2000.0); //currentScale);
+
   QMatrix4x4* camera = m_camera.matrix();
   m_worldMap.render(this, *camera);
 
@@ -126,7 +127,8 @@ double Renderer::onPanY(float y) {
 }
 
 void Renderer::updatePosition(double x, double y, double z) {
-  m_camera.moveTo(x, y, z);
+  auto zoom = m_camera.scaleToZ(z);
+  m_camera.moveTo(-x, y, zoom);
 }
 
 void Renderer::printGLInfo() {

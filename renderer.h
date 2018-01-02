@@ -64,6 +64,7 @@ signals:
   void fpsChanged();
   void windowChanged();
   void contentRectChanged();
+  void positionChanged(double, double, double);
 
 public slots:
   void sync();

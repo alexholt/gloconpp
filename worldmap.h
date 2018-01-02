@@ -28,7 +28,7 @@
 
 #define HEIGHT 1000.0f
 #define WIDTH  2000.0f
-#define Z -0.5f
+#define Z 0.0f
 
 class WorldMap : public Model {
   Q_OBJECT
@@ -51,7 +51,6 @@ public:
     -WIDTH, -HEIGHT, Z,
     -WIDTH,  HEIGHT, Z
   };
-
 
 private:
   QVector3D m_position{-1, 0, 1};

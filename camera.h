@@ -13,15 +13,20 @@ class Camera : public QObject {
 public:
   Camera();
   QMatrix4x4* matrix();
-  void setAspectRatio(qreal);
+  void setAspectRatio(double, double);
   void translate(float, float, float);
   QVector3D& position();
   void moveTo(double, double, double);
+  double scaleToZ(double);
 
 private:
   QMatrix4x4 m_matrix;
-  qreal m_aspectRatio = 2.0f;
+  QMatrix4x4 m_perspective;
+  double m_aspectRatio = 2.0;
+  double m_width = 1.0;
+  double m_height = 1.0;
   QVector3D m_position{-500.0f, 100.0f, -1000.0f};
+  QVector3D m_screenVec{1, 1, 1};
   void updateMatrix();
 };
 

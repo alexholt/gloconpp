@@ -1,5 +1,9 @@
 #include "camera.h"
 
+#define FOV 60
+#define NEAR 0.1
+#define FAR 20000
+
 Camera::Camera() {
   updateMatrix();
 }
@@ -12,14 +16,20 @@ QVector3D& Camera::position() {
   return m_position;
 }
 
-void Camera::setAspectRatio(qreal aspectRatio) {
-  m_aspectRatio = aspectRatio;
+void Camera::setAspectRatio(double width, double height) {
+  m_width = width;
+  m_height = height;
+  m_aspectRatio = width / height;
   updateMatrix();
+  m_screenVec.setX(width);
+  m_screenVec.setY(height);
+  m_perspective.setToIdentity();
+  m_perspective.perspective(FOV, m_aspectRatio, NEAR, FAR);
 }
 
 void Camera::updateMatrix() {
   m_matrix.setToIdentity();
-  m_matrix.perspective(60, m_aspectRatio, 0.1, 20000);
+  m_matrix.perspective(FOV, m_aspectRatio, NEAR, FAR);
   m_matrix.translate(m_position);
 }
 
@@ -29,19 +39,35 @@ void Camera::translate(float x, float y, float z) {
 }
 
 void Camera::moveTo(double x, double y, double z) {
+  auto cameraDistance = -m_position.z();
+  QVector3D probe1{0, 0, -cameraDistance};
+  QVector3D probe2{1, 0, -cameraDistance};
+
+  auto mappedProbe1 = m_perspective * probe1;
+  auto mappedProbe2 = m_perspective * probe2;
+
+  auto screenSpaceProbe1 = (mappedProbe1 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
+  auto screenSpaceProbe2 = (mappedProbe2 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
+  auto screenSpaceDelta = screenSpaceProbe2.x() - screenSpaceProbe1.x();
+  auto ratio = 1 / screenSpaceDelta;
+
+  x *= ratio;
+  y *= ratio;
   m_position = QVector3D{
     static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
   };
   updateMatrix();
+}
 
-  QVector3D topLeft = m_matrix * QVector3D{-1000.0f, 500.0f, -0.5f};
-  topLeft.setX((topLeft.x() * 0.5 + 0.5) * 800);
-  topLeft.setY((topLeft.y() * 0.5 + 0.5) * 800);
-
-  QVector3D bottomRight = m_matrix * QVector3D{1000.0f, -500.0f, -0.5f};
-  bottomRight.setX((bottomRight.x() * 0.5 + 0.5) * 800);
-  bottomRight.setY((bottomRight.y() * 0.5 + 0.5) * 800);
-
-  qDebug() << "contentWidth" << bottomRight.x() - topLeft.x();
-  qDebug() << "contentHeight" << topLeft.y() - bottomRight.y();
+double Camera::scaleToZ(double scale) {
+  QMatrix4x4 testMatrix;
+  testMatrix.setToIdentity();
+  testMatrix.perspective(FOV, m_aspectRatio, NEAR, FAR);
+  testMatrix.translate(0, 0, -1000);
+  auto compare = (testMatrix * QVector3D{1, 0, 0}) - (testMatrix * QVector3D{0, 0, 0});
+  auto testA = compare.x();
+  testMatrix.translate(0, 0, -2000);
+  compare = (testMatrix * QVector3D{1, 0, 0}) - (testMatrix * QVector3D{0, 0, 0});
+  auto testB = compare.x();
+  return -500 * scale;
 }
