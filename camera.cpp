@@ -3,6 +3,7 @@
 #define FOV 60
 #define NEAR 0.1
 #define FAR 20000
+#define FULLSIZE 1500
 
 Camera::Camera() {
   updateMatrix();
@@ -39,20 +40,20 @@ void Camera::translate(float x, float y, float z) {
 }
 
 void Camera::moveTo(double x, double y, double z) {
-  auto cameraDistance = -m_position.z();
-  QVector3D probe1{0, 0, -cameraDistance};
-  QVector3D probe2{1, 0, -cameraDistance};
+  //auto cameraDistance = -m_position.z();
+  //QVector3D probe1{0, 0, -cameraDistance};
+  //QVector3D probe2{1, 0, -cameraDistance};
 
-  auto mappedProbe1 = m_perspective * probe1;
-  auto mappedProbe2 = m_perspective * probe2;
+  //auto mappedProbe1 = m_perspective * probe1;
+  //auto mappedProbe2 = m_perspective * probe2;
 
-  auto screenSpaceProbe1 = (mappedProbe1 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
-  auto screenSpaceProbe2 = (mappedProbe2 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
-  auto screenSpaceDelta = screenSpaceProbe2.x() - screenSpaceProbe1.x();
-  auto ratio = 1 / screenSpaceDelta;
+  //auto screenSpaceProbe1 = (mappedProbe1 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
+  //auto screenSpaceProbe2 = (mappedProbe2 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
+  //auto screenSpaceDelta = screenSpaceProbe2.x() - screenSpaceProbe1.x();
+  //auto ratio = 1 / screenSpaceDelta;
 
-  x *= ratio;
-  y *= ratio;
+  //x *= ratio;
+  //y *= ratio;
   m_position = QVector3D{
     static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
   };
@@ -60,14 +61,5 @@ void Camera::moveTo(double x, double y, double z) {
 }
 
 double Camera::scaleToZ(double scale) {
-  QMatrix4x4 testMatrix;
-  testMatrix.setToIdentity();
-  testMatrix.perspective(FOV, m_aspectRatio, NEAR, FAR);
-  testMatrix.translate(0, 0, -1000);
-  auto compare = (testMatrix * QVector3D{1, 0, 0}) - (testMatrix * QVector3D{0, 0, 0});
-  auto testA = compare.x();
-  testMatrix.translate(0, 0, -2000);
-  compare = (testMatrix * QVector3D{1, 0, 0}) - (testMatrix * QVector3D{0, 0, 0});
-  auto testB = compare.x();
-  return -500 * scale;
+  return -FULLSIZE * scale;
 }

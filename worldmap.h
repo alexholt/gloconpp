@@ -79,8 +79,6 @@ private:
     0.0f, 1.0f,
   };
 
-  bool m_isInitialized = false;
-
   QOpenGLTexture* m_texture;
 
 public slots:

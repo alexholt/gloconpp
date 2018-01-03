@@ -1,8 +1,7 @@
 #include "renderer.h"
 
-const float MOUSE_SCALE = 10000.0f;
-
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
+  m_cube2.translate(10, 0, 0);
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   m_fpsTimer.setTimerType(Qt::PreciseTimer);
@@ -60,6 +59,7 @@ void Renderer::initializeGL() {
   glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDepthFunc(GL_LESS);
 }
 
 void Renderer::teardownGL() {
@@ -85,13 +85,10 @@ void Renderer::paint() {
   glClearColor(0, 1, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-  //auto mapCenterX = property("mapCenterX").toDouble();
-  //auto mapCenterY = property("mapCenterY").toDouble();
-  //auto currentScale = property("currentScale").toDouble();
-  //m_camera.moveTo(mapCenterX, mapCenterY, -2000.0); //currentScale);
-
   QMatrix4x4* camera = m_camera.matrix();
   m_worldMap.render(this, *camera);
+  m_cube.render(this, *camera);
+  m_cube2.render(this, *camera);
 
   window()->resetOpenGLState();
   window()->update();

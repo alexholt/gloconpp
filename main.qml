@@ -66,7 +66,7 @@ Item {
 
   Renderer {
     id: renderer
-    property real currentScale: 1 + Math.pow(zoomStep * 0.1, 2.0) + 0.01
+    property real currentScale: Math.pow(zoomStep * 0.1, 2.0) + 0.01
     property real mapCenterX: flickArea.contentX + screen.width * 0.5 - mapWidth * 0.5
     property real mapCenterY: flickArea.contentY + screen.height * 0.5 - mapHeight * 0.5
 

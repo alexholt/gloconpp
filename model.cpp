@@ -1,13 +1,5 @@
 #include "model.h"
 
-int Model::getVertexCount() {
-  return 0;
-}
-
-QOpenGLTexture* Model::getTexture() {
-  return m_texture;
-}
-
 GLuint Model::createProgram(QOpenGLFunctions* renderer, QString& vert, QString& frag) {
   GLuint program = renderer->glCreateProgram();
   GLuint vertShader = createShader(renderer, GL_VERTEX_SHADER, vert);
@@ -65,4 +57,8 @@ GLuint Model::createShader(QOpenGLFunctions* renderer, GLenum type, QString& sou
   }
 
   return shader;
+}
+
+void Model::translate(float x, float y, float z) {
+  m_modelViewMatrix.translate(x, y, z);
 }

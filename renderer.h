@@ -17,6 +17,7 @@
 #include <QWheelEvent>
 
 #include "camera.h"
+#include "cube.h"
 #include "worldmap.h"
 
 class Renderer : public QObject, public QOpenGLFunctions {
@@ -47,6 +48,8 @@ private:
   QSize m_viewportSize;
   QOpenGLShaderProgram *m_program;
   WorldMap m_worldMap;
+  Cube m_cube;
+  Cube m_cube2;
   Camera m_camera;
   bool m_isInitialized = false;
   QMap<QString, QOpenGLShaderProgram*> m_shaders;

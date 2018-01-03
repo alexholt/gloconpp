@@ -7,5 +7,7 @@
         <file>assets/icons/app.svg</file>
         <file>assets/icons/app.png</file>
         <file>assets/scripts/glocon.js</file>
+        <file>assets/shaders/cube.frag</file>
+        <file>assets/shaders/cube.vert</file>
     </qresource>
 </RCC>

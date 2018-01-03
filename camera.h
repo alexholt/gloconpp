@@ -25,7 +25,7 @@ private:
   double m_aspectRatio = 2.0;
   double m_width = 1.0;
   double m_height = 1.0;
-  QVector3D m_position{-500.0f, 100.0f, -1000.0f};
+  QVector3D m_position{-500.0f, 100.0f, -1500.0f};
   QVector3D m_screenVec{1, 1, 1};
   void updateMatrix();
 };

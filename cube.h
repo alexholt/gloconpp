@@ -8,8 +8,11 @@ class Cube : public Model {
 
 public:
   Cube();
+  void render(QOpenGLFunctions*, const QMatrix4x4&);
+  void initialize();
 
-  float m_vertices[6 * 6 * 2] = {
+protected:
+  float m_vertices[12 * 6] = {
     // Front face
     -1.0, -1.0,  1.0,
     1.0, -1.0,  1.0,
@@ -47,7 +50,7 @@ public:
     -1.0, 1.0, -1.0,
   };
 
-  float m_indices[6 * 6] = {
+  ushort m_elements[6 * 6] = {
     0,  1,  2,   0,  2,  3,   // front
     4,  5,  6,   4,  6,  7,   // back
     8,  9,  10,  8,  10, 11,  // top
@@ -56,6 +59,10 @@ public:
     20, 21, 22,  20, 22, 23,  // left
   };
 
+  QOpenGLVertexArrayObject* m_vao;
+  QOpenGLBuffer* m_vertexVbo;
+  QOpenGLBuffer* m_elementVbo;
+  QOpenGLShaderProgram* m_program;
 };
 
 #endif // CUBE_H
