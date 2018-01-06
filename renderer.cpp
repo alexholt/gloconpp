@@ -59,12 +59,13 @@ void Renderer::initializeGL() {
 
   auto surface = window()->format();
   surface.setSamples(10);
+  surface.setSwapInterval(0);
+  surface.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
 
   glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_MULTISAMPLE);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glDepthFunc(GL_LEQUAL);
+  glDepthFunc(GL_GREATER);
 }
 
 void Renderer::teardownGL() {
@@ -74,9 +75,10 @@ void Renderer::teardownGL() {
 void Renderer::initializeMap() {
   m_worldMap.loadMap();
 
-  m_worldMap.forEach([this](QMap<QString, Territory*>::const_iterator it) {
+  float height = 5;
+  m_worldMap.forEach([this, &height](QMap<QString, Territory*>::const_iterator it) {
     auto cube = new Cube();
-    cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, 0);
+    cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, height++);
     cube->scale(10);
     m_cubeList << cube;
   });
@@ -99,13 +101,15 @@ void Renderer::paint() {
 
   QMatrix4x4* camera = m_camera.matrix();
   m_worldMap.render(this, *camera);
-  //m_cube.render(this, *camera);
-  //m_cube2.render(this, *camera);
 
-  for (int i = 0; i < m_cubeList.length(); i++)
-    m_cubeList[i]->render(this, *camera);
+  for (int i = 0; i < m_cubeList.length(); i++) {
+    if (i == 0)
+      m_cubeList[i]->render(this, *camera);
+    else
+      m_cubeList[i]->justUpdateUniforms(this, *camera, m_cubeList[0]->program());
+  }
 
-  window()->resetOpenGLState();
+  m_cubeList.first()->release();
   window()->update();
 }
 
@@ -139,6 +143,8 @@ double Renderer::onPanY(float y) {
 }
 
 void Renderer::updatePosition(double x, double y, double z) {
+  x = std::round(x);
+  y = std::round(y);
   auto zoom = m_camera.scaleToZ(z);
   m_camera.moveTo(-x, y, zoom);
 }

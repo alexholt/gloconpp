@@ -12,6 +12,9 @@ public:
   void render(QOpenGLFunctions*, const QMatrix4x4&);
   void initialize();
   void scale(float);
+  QOpenGLShaderProgram* program();
+  void justUpdateUniforms(QOpenGLFunctions*, const QMatrix4x4&, QOpenGLShaderProgram*);
+  void release();
 
 protected:
   float m_vertices[12 * 6] = {

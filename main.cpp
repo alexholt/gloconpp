@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   format.setRenderableType(QSurfaceFormat::OpenGL);
   format.setProfile(QSurfaceFormat::CoreProfile);
   format.setVersion(4, 1);
-  format.setDepthBufferSize(24);
+  format.setDepthBufferSize(32);
   format.setStencilBufferSize(8);
 
   QQuickView view;

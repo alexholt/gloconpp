@@ -54,11 +54,23 @@ void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
   renderer->glDrawElements(GL_TRIANGLES, sizeof(m_elements) / sizeof(m_elements[0]), GL_UNSIGNED_SHORT, 0);
+}
 
+void Cube::release() {
   m_vao->release();
   m_program->release();
 }
 
+void Cube::justUpdateUniforms(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, QOpenGLShaderProgram* program) {
+  program->setUniformValue("u_camera", cameraMatrix);
+  program->setUniformValue("u_modelView", m_modelViewMatrix);
+  renderer->glDrawElements(GL_TRIANGLES, sizeof(m_elements) / sizeof(m_elements[0]), GL_UNSIGNED_SHORT, 0);
+}
+
 void Cube::scale(float factor) {
   m_modelViewMatrix.scale(factor);
+}
+
+QOpenGLShaderProgram* Cube::program() {
+  return m_program;
 }
