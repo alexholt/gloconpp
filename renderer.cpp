@@ -1,7 +1,6 @@
 #include "renderer.h"
 
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
-  m_cube2.translate(10, 0, 0);
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   m_fpsTimer.setTimerType(Qt::PreciseTimer);
@@ -15,6 +14,8 @@ Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
 }
 
 Renderer::~Renderer() {
+  for (int i = 0; i < m_cubeList.length(); i++)
+    delete m_cubeList[i];
 }
 
 double Renderer::fps() const {
@@ -56,10 +57,14 @@ void Renderer::initializeGL() {
   connect(context, SIGNAL(aboutToBeDestroyed()), this, SLOT(teardownGL()), Qt::DirectConnection);
   connect(context, SIGNAL(aboutToBeDestroyed()), &m_worldMap, SLOT(teardownGL()), Qt::DirectConnection);
 
+  auto surface = window()->format();
+  surface.setSamples(10);
+
   glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_MULTISAMPLE);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glDepthFunc(GL_LESS);
+  glDepthFunc(GL_LEQUAL);
 }
 
 void Renderer::teardownGL() {
@@ -68,6 +73,13 @@ void Renderer::teardownGL() {
 
 void Renderer::initializeMap() {
   m_worldMap.loadMap();
+
+  m_worldMap.forEach([this](QMap<QString, Territory*>::const_iterator it) {
+    auto cube = new Cube();
+    cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, 0);
+    cube->scale(10);
+    m_cubeList << cube;
+  });
 }
 
 void Renderer::paint() {
@@ -87,8 +99,11 @@ void Renderer::paint() {
 
   QMatrix4x4* camera = m_camera.matrix();
   m_worldMap.render(this, *camera);
-  m_cube.render(this, *camera);
-  m_cube2.render(this, *camera);
+  //m_cube.render(this, *camera);
+  //m_cube2.render(this, *camera);
+
+  for (int i = 0; i < m_cubeList.length(); i++)
+    m_cubeList[i]->render(this, *camera);
 
   window()->resetOpenGLState();
   window()->update();

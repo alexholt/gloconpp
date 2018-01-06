@@ -2,6 +2,7 @@
 #define TERRITORY_H
 
 #include <cmath>
+#include <QDebug>
 #include <QList>
 #include <QObject>
 #include <QRect>
@@ -14,22 +15,21 @@ class Territory : public QObject {
 
 public:
   Territory(const QString);
+  ~Territory();
+  QRect getBoundingBox();
+  QVector2D* getCentroid();
 
 private:
   QString m_path;
-  QVector2D m_lastPoint;
-  QList<QVector2D> m_pointArray;
+  QVector2D* m_lastPoint = new QVector2D;
+  QList<QVector2D*> m_pointArray;
+  QVector2D* m_centroid = nullptr;
   PathState m_pathState;
-  double m_currentVal = 0;
+  float m_currentVal = 0;
   QRect m_boundingBox;
   void processToken(QString);
   void stateChange(QString);
-  QList<QVector2D> getPointArray();
-  QRect getBoundingBox();
-
-signals:
-
-public slots:
+  QList<QVector2D*>& getPointArray();
 };
 
 #endif // TERRITORY_H

@@ -8,8 +8,10 @@ class Cube : public Model {
 
 public:
   Cube();
+  Cube(float, float);
   void render(QOpenGLFunctions*, const QMatrix4x4&);
   void initialize();
+  void scale(float);
 
 protected:
   float m_vertices[12 * 6] = {

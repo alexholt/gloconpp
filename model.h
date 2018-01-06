@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <assimp/Importer.hpp>
 #include <exception>
 #include <QDebug>
 #include <QObject>

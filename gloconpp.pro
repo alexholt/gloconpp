@@ -49,3 +49,6 @@ RESOURCES += \
 DESTDIR = build
 
 QMAKE_LFLAGS += -v
+
+LIBS += -L/usr/local/lib/ -lassimp
+INCLUDEPATH += /usr/local/include

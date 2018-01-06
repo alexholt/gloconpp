@@ -70,7 +70,7 @@ Item {
     property real mapCenterX: flickArea.contentX + screen.width * 0.5 - mapWidth * 0.5
     property real mapCenterY: flickArea.contentY + screen.height * 0.5 - mapHeight * 0.5
 
-    property int zoomStep: 0
+    property int zoomStep: 10
     property int maxZoomStep: 50
 
     property int mapWidth: 2000
@@ -97,7 +97,7 @@ Item {
   Rectangle {
     color: Qt.rgba(0, 0, 0, 0.8)
     height: 55
-    width: 300
+    width: 400
     anchors.top: parent.top
     anchors.left: parent.left
   }

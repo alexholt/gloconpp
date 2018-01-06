@@ -4,6 +4,13 @@ Cube::Cube() :
   m_vao(new QOpenGLVertexArrayObject),
   m_vertexVbo(new QOpenGLBuffer),
   m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)) {
+}
+
+Cube::Cube(float x, float y) :
+  m_vao(new QOpenGLVertexArrayObject),
+  m_vertexVbo(new QOpenGLBuffer),
+  m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)) {
+  m_modelViewMatrix.translate(x, y);
   m_modelViewMatrix.scale(10);
 }
 
@@ -50,4 +57,8 @@ void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
 
   m_vao->release();
   m_program->release();
+}
+
+void Cube::scale(float factor) {
+  m_modelViewMatrix.scale(factor);
 }

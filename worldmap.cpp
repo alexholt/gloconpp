@@ -5,7 +5,14 @@ WorldMap::WorldMap(const QString& path) :
   m_vao(new QOpenGLVertexArrayObject),
   m_vertexVbo(new QOpenGLBuffer),
   m_textureVbo(new QOpenGLBuffer) {
+}
 
+void WorldMap::forEach(std::function<void(QMap<QString, Territory*>::const_iterator)> func) {
+  QMap<QString, Territory*>::const_iterator i = m_territories.constBegin();
+
+  while (i != m_territories.constEnd()) {
+    func(i++);
+  }
 }
 
 WorldMap::~WorldMap() {

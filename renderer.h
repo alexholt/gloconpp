@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QDomDocument>
 #include <QElapsedTimer>
+#include <QList>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
@@ -62,6 +63,7 @@ private:
   QPoint m_lastMousePoint;
   void printGLInfo();
   double m_lastZoom = 0;
+  QList<Cube*> m_cubeList;
 
 signals:
   void fpsChanged();

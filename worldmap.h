@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <exception>
+#include <functional>
 #include <iomanip>
 #include <sstream>
 
@@ -26,8 +27,8 @@
 #include "glocon.h"
 #include "territory.h"
 
-#define HEIGHT 1000.0f
-#define WIDTH  2000.0f
+#define HALF_HEIGHT 500.0f
+#define HALF_WIDTH  1000.0f
 #define Z 0.0f
 
 class WorldMap : public Model {
@@ -44,13 +45,15 @@ public:
   QImage* createTexture();
 
   float m_vertices[6 * 3] = {
-    -WIDTH,  HEIGHT, Z,
-     WIDTH,  HEIGHT, Z,
-     WIDTH, -HEIGHT, Z,
-     WIDTH, -HEIGHT, Z,
-    -WIDTH, -HEIGHT, Z,
-    -WIDTH,  HEIGHT, Z
+    -HALF_WIDTH,  HALF_HEIGHT, Z,
+     HALF_WIDTH,  HALF_HEIGHT, Z,
+     HALF_WIDTH, -HALF_HEIGHT, Z,
+     HALF_WIDTH, -HALF_HEIGHT, Z,
+    -HALF_WIDTH, -HALF_HEIGHT, Z,
+    -HALF_WIDTH,  HALF_HEIGHT, Z
   };
+
+  void forEach(std::function<void(QMap<QString, Territory*>::const_iterator)>);
 
 private:
   QVector3D m_position{-1, 0, 1};
