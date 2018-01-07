@@ -1,12 +1,18 @@
 #include "camera.h"
 
 #define FOV 60
-#define NEAR 0.1
+#define NEAR 0.01
 #define FAR 20000
-#define FULLSIZE 1500
+#define FULLSIZE 2500
 
 Camera::Camera() {
   updateMatrix();
+}
+
+Camera::Camera(Camera& other) {
+  QVector3D vec = other.position();
+  m_position = vec;
+  setAspectRatio(other.m_width, other.m_height);
 }
 
 QMatrix4x4* Camera::matrix() {
@@ -21,7 +27,6 @@ void Camera::setAspectRatio(double width, double height) {
   m_width = width;
   m_height = height;
   m_aspectRatio = width / height;
-  updateMatrix();
   m_screenVec.setX(width);
   m_screenVec.setY(height);
   m_perspective.setToIdentity();

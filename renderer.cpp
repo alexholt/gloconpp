@@ -47,6 +47,10 @@ void Renderer::sync() {
   double width = static_cast<double>(windowSize.width());
   double height = static_cast<double>(windowSize.height());
   m_camera.setAspectRatio(width, height);
+
+  // A different thread will run paint() so we need to copy everything over that will be used there
+  delete m_renderCameraMatrix;
+  m_renderCameraMatrix = new QMatrix4x4(*m_camera.matrix());
 }
 
 void Renderer::initializeGL() {
@@ -58,9 +62,7 @@ void Renderer::initializeGL() {
   connect(context, SIGNAL(aboutToBeDestroyed()), &m_worldMap, SLOT(teardownGL()), Qt::DirectConnection);
 
   auto surface = window()->format();
-  surface.setSamples(10);
   surface.setSwapInterval(0);
-  surface.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
 
   glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
@@ -97,20 +99,16 @@ void Renderer::paint() {
 
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  QMatrix4x4* camera = m_camera.matrix();
-  m_worldMap.render(this, *camera);
+  m_worldMap.render(this, *m_renderCameraMatrix);
 
   for (int i = 0; i < m_cubeList.length(); i++) {
-    if (i == 0)
-      m_cubeList[i]->render(this, *camera);
-    else
-      m_cubeList[i]->justUpdateUniforms(this, *camera, m_cubeList[0]->program());
+    m_cubeList[i]->render(this, *m_renderCameraMatrix);
   }
 
-  m_cubeList.first()->release();
   window()->update();
+  window()->resetOpenGLState();
 }
 
 void Renderer::onKeyPressed(Qt::Key key) {

@@ -33,9 +33,9 @@ THE SOFTWARE.
    height="1000px"
    style="stroke-linejoin: round; stroke:#000; fill: none;"
    version="1.1"
-   viewBox="0 0 2000 1001"
+   viewBox="0 0 2000 1000"
    width="2000px">
-  <rect x="0" y="0" width="2000" height="1001" stroke="none" fill="aqua"/>
+  <rect x="0" y="0" width="2000" height="1000" stroke="none" fill="aqua"/>
   <path
      inkscape:connector-curvature="0"
      id="AF"
@@ -1519,4 +1519,8 @@ THE SOFTWARE.
      data-id="SI"
      d="m 200,500 100,0 100,100 -100,0 z"
      style="fill-rule:evenodd" />
+  <path class="ignore" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
+  <path class="ignore" transform="translate(2000, 0) rotate(90)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
+  <path class="ignore" transform="translate(2000, 1000) rotate(180)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
+  <path class="ignore" transform="translate(0, 1000) rotate(270)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
 </svg>

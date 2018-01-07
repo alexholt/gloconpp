@@ -10,6 +10,7 @@ Item {
   focus: true
   Keys.onUpPressed: resizeMap(flickArea.contentX + screen.width * 0.5, flickArea.contentY + screen.height * 0.5, true)
   Keys.onDownPressed: resizeMap(flickArea.contentX + screen.width * 0.5, flickArea.contentY + screen.height * 0.5, false)
+  Component.onCompleted: resizeMap(flickArea.contentX + screen.width * 0.5, flickArea.contentY + screen.height * 0.5, false)
 
   function resizeMap(x, y, scaleUp) {
     var mapWidth = renderer.mapWidth;
@@ -19,12 +20,11 @@ Item {
     var zoomStep = renderer.zoomStep;
 
     renderer.zoomStep = scaleUp ? Math.min(maxZoomStep, zoomStep + 1) :
-                         Math.max(0.0, zoomStep - 1);
-    flickArea.resizeContent(mapWidth * currentScale, mapHeight * currentScale, Qt.point(x, y));
-    flickArea.returnToBounds()
+                        Math.max(0.0, zoomStep - 1);
+    flickArea.resizeContent(mapWidth / currentScale, mapHeight / currentScale, Qt.point(x, y));
+    flickArea.returnToBounds();
     renderer.updatePosition(renderer.mapCenterX, renderer.mapCenterY, renderer.currentScale);
   }
-
 
   Flickable {
     id: flickArea
@@ -34,6 +34,8 @@ Item {
     interactive: true
     contentWidth: 2000
     contentHeight: 1000
+    contentX: 1000
+    contentY: 500
     Keys.onPressed: {
       if (event.key === Qt.Key_Escape) {
         consoleInput.focus = true;
@@ -58,7 +60,7 @@ Item {
   MouseArea {
     anchors.fill: parent
     onWheel: {
-      resizeMap(flickArea.contentX + wheel.x, flickArea.contentY + wheel.y, wheel.angleDelta.y > 0);
+      resizeMap(flickArea.contentX - wheel.x, flickArea.contentY - wheel.y, wheel.angleDelta.y > 0);
     }
     onPressed: mouse.accepted = false
     onReleased: mouse.accepted = false
@@ -66,12 +68,12 @@ Item {
 
   Renderer {
     id: renderer
-    property real currentScale: Math.pow(zoomStep * 0.1, 2.0) + 0.01
+    property real currentScale: Math.pow(zoomStep * 0.01, 2.0) + 0.01
     property real mapCenterX: flickArea.contentX + screen.width * 0.5 - mapWidth * 0.5
     property real mapCenterY: flickArea.contentY + screen.height * 0.5 - mapHeight * 0.5
 
-    property int zoomStep: 10
-    property int maxZoomStep: 50
+    property int zoomStep: 100
+    property int maxZoomStep: 100
 
     property int mapWidth: 2000
     property int mapHeight: 1000

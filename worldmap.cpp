@@ -129,6 +129,9 @@ QImage* WorldMap::createTexture() {
     !territory.isNull();
     territory = territory.nextSiblingElement("path")
   ) {
+    if (territory.hasAttribute("class") && territory.attribute("class").split("/\\s/").contains("ignore"))
+      continue;
+
     std::stringstream encodedColor;
     encodedColor << "#" << std::setfill('0') << std::setw(6) << std::hex << i;
     territory.setAttribute("fill", encodedColor.str().c_str());
@@ -141,12 +144,12 @@ QImage* WorldMap::createTexture() {
 
   QDomElement svg = docElem.firstChildElement("svg");
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  svg.setAttribute("width", "8000");
-  svg.setAttribute("height", "4000");
+  svg.setAttribute("width", "4000");
+  svg.setAttribute("height", "2000");
 
   QSvgRenderer renderer;
   renderer.load(m_doc.toByteArray());
-  QImage* tex = new QImage(2000, 1000, QImage::Format_ARGB32);
+  QImage* tex = new QImage(8000, 4000, QImage::Format_ARGB32);
   QPainter painter(tex);
   renderer.render(&painter);
 

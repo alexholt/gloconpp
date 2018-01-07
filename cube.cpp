@@ -48,12 +48,14 @@ void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
   }
 
   m_program->bind();
-
   m_vao->bind();
 
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
   renderer->glDrawElements(GL_TRIANGLES, sizeof(m_elements) / sizeof(m_elements[0]), GL_UNSIGNED_SHORT, 0);
+
+  m_vao->release();
+  m_program->release();
 }
 
 void Cube::release() {

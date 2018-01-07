@@ -52,6 +52,7 @@ private:
   Cube m_cube;
   Cube m_cube2;
   Camera m_camera;
+  QMatrix4x4* m_renderCameraMatrix = new QMatrix4x4;
   bool m_isInitialized = false;
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
   QTimer m_fpsTimer;
