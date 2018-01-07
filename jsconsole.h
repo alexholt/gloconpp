@@ -5,6 +5,7 @@
 #include <QJSEngine>
 #include <QKeyEvent>
 #include <QObject>
+#include <QQmlEngine>
 
 class JSConsole : public QObject {
   Q_OBJECT
@@ -12,8 +13,9 @@ class JSConsole : public QObject {
   Q_PROPERTY(bool isDirty READ isDirty WRITE setDirty)
 
 public:
-  explicit JSConsole(QObject *parent = nullptr);
+  JSConsole(QJSEngine*);
   ~JSConsole();
+  operator QString() const;
   QString text();
   bool isDirty();
   void setText(const QString&);
@@ -23,7 +25,7 @@ public:
 private:
   QString m_text{"Enter text"};
   QString m_lastText;
-  QJSEngine m_engine;
+  QJSEngine* m_engine;
   QJSValue m_gloconObj;
   bool m_isDirty = true;
   bool m_hasJustEvaled = false;

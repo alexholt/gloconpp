@@ -1,9 +1,12 @@
 #include "camera.h"
 
 #define FOV 60
+#define FOV_RAD FOV * 2.0 * M_PI / 360.0
 #define NEAR 0.01
 #define FAR 20000
 #define FULLSIZE 2500
+
+using namespace  std;
 
 Camera::Camera() {
   updateMatrix();
@@ -65,6 +68,16 @@ void Camera::moveTo(double x, double y, double z) {
   updateMatrix();
 }
 
+// Fullsize here refers to the z value for the camera that gives a 1 to 1 correspondence
+// with the world space coords, i.e., the width of the map == the width of the screen
+// The formula for determining the fullsize is derived from the perspective matrix multiplied by the
+// vector { width, 0, z, 1 } and solving for z
+// -z * aspect * tan(fov/2) == 1
+// z = 1 / (aspect * tan(fov/2))
+double Camera::fullsize() {
+  return -m_width / (m_aspectRatio * tan(FOV_RAD / 2));
+}
+
 double Camera::scaleToZ(double scale) {
-  return -FULLSIZE * scale;
+  return fullsize() * scale * 0.5;
 }

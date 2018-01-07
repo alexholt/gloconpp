@@ -1,9 +1,10 @@
 #include "jsconsole.h"
 
-JSConsole::JSConsole(QObject* parent) : QObject(parent) {
-  m_engine.installExtensions(QJSEngine::AllExtensions);
-  QJSValue global = m_engine.globalObject();
-  m_gloconObj = m_engine.newObject();
+JSConsole::JSConsole(QJSEngine* engine) {
+  m_engine = engine;
+  m_engine->installExtensions(QJSEngine::AllExtensions);
+  QJSValue global = m_engine->globalObject();
+  m_gloconObj = m_engine->newObject();
   global.setProperty("glocon", m_gloconObj);
 
   QFile script(":/assets/scripts/glocon.js");
@@ -11,10 +12,15 @@ JSConsole::JSConsole(QObject* parent) : QObject(parent) {
     throw std::invalid_argument("Unable to find glocon.js");
   }
 
-  m_engine.evaluate(script.readAll());
+  m_engine->evaluate(script.readAll());
 }
 
 JSConsole::~JSConsole() {
+  delete m_engine;
+}
+
+JSConsole::operator QString() const {
+  return m_text;
 }
 
 QString JSConsole::text() {
@@ -34,7 +40,7 @@ bool JSConsole::isDirty() {
 }
 
 QString JSConsole::evaluate() {
-  QString result = m_engine.evaluate(m_text).toString();
+  QString result = m_engine->evaluate(m_text).toString();
   emit positionChanged(
     m_gloconObj.property("x").toNumber(),
     m_gloconObj.property("y").toNumber(),
@@ -50,3 +56,5 @@ void JSConsole::updatePosition(double x, double y, double z) {
   updateProp(z);
   #undef updateProp
 }
+
+

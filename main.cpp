@@ -9,6 +9,7 @@
 
 namespace {
 
+QQuickView* view = Q_NULLPTR;
 GameState* gameState = Q_NULLPTR;
 JSConsole* jsConsole = Q_NULLPTR;
 
@@ -30,10 +31,7 @@ QObject* gameStateProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 }
 
 QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
-  Q_UNUSED(engine)
-  Q_UNUSED(scriptEngine)
-
-  jsConsole = new JSConsole();
+  jsConsole = new JSConsole(scriptEngine);
   return jsConsole;
 }
 
@@ -42,10 +40,13 @@ QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 int main(int argc, char **argv) {
   setupSigHandler();
   QGuiApplication app(argc, argv);
+
+  view = new QQuickView;
   app.setWindowIcon(QIcon(":/assets/icons/app.svg"));
 
   qmlRegisterType<Renderer>("Glocon", 1, 0, "Renderer");
   qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "gameState", gameStateProvider);
+
   qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
 
   QSurfaceFormat format;
@@ -55,13 +56,12 @@ int main(int argc, char **argv) {
   format.setDepthBufferSize(24);
   format.setStencilBufferSize(8);
 
-  QQuickView view;
-  view.setFormat(format);
-  view.rootContext()->setContextProperty("applicationWindow", &view);
-  view.setTitle("Glocon");
-  view.setResizeMode(QQuickView::SizeRootObjectToView);
-  view.setSource(QUrl("qrc:///main.qml"));
-  view.show();
+  view->setFormat(format);
+  view->rootContext()->setContextProperty("applicationWindow", view);
+  view->setTitle("Glocon");
+  view->setResizeMode(QQuickView::SizeRootObjectToView);
+  view->setSource(QUrl("qrc:///main.qml"));
+  view->show();
 
   return app.exec();
 }

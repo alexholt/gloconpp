@@ -13,6 +13,7 @@ class Camera : public QObject {
 public:
   Camera();
   Camera(Camera&);
+  double fullsize();
   QMatrix4x4* matrix();
   void setAspectRatio(double, double);
   void translate(float, float, float);
