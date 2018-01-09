@@ -62,8 +62,12 @@ void Camera::moveTo(double x, double y, double z) {
 
   //x *= ratio;
   //y *= ratio;
+
+  x -= 1000;
+  y -= 500;
+
   m_position = QVector3D{
-    static_cast<float>(x), static_cast<float>(y), static_cast<float>(z)
+    static_cast<float>(-x), static_cast<float>(y), static_cast<float>(z)
   };
   updateMatrix();
 }

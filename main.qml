@@ -8,12 +8,12 @@ Item {
 
   // Hook up currentScale, mapCenterX and mapCenterY to the map renderer
   // Assuming that (0, 0) is the center of the content
-  property real currentScale: 1 + Math.pow(zoomStep * 0.1, 2.0) + 0.01   // 0.01 is a workaround for unwanted Flickable behavior
+  property real currentScale: 1 + Math.pow(zoomStep * 0.01, 2.0) + 0.01   // 0.01 is a workaround for unwanted Flickable behavior
   property real mapCenterX: flickArea.contentX + screen.width * 0.5 - mapWidth * 0.5
   property real mapCenterY: flickArea.contentY + screen.height * 0.5 - mapHeight * 0.5
 
   property int zoomStep: 0
-  property int maxZoomStep: 50
+  property int maxZoomStep: 500
 
   // These are the width and height of the pan-zoomed content at scale 1.0 (which is also the minimum)
   // You should set these yourself. I'm taking them from the dummy image here.
@@ -29,10 +29,14 @@ Item {
 
   // ContentX and contentY are the top left corner
   function contentToCenterWorld(x, y) {
-      var width = screen.width;
-      var height = screen.height;
-      var scale = currentScale;
-      return Qt.point(x + scale * width / 2, y + scale * height / 2);
+    var width = screen.width;
+    var height = screen.height;
+    var scale = currentScale;
+    x += width / 2;
+    y += height / 2;
+    x /= scale;
+    y /= scale;
+    return Qt.point(x, y);
   }
 
   function scaleToWorldDistance() {
@@ -82,6 +86,7 @@ Item {
 
     Image {
       id: mapImage
+      visible: false
       source: 'qrc:/assets/maps/world.svg'
       width: flickArea.contentWidth
       height: flickArea.contentHeight
@@ -99,6 +104,7 @@ Item {
 
   Rectangle {
     id: consoleBackground
+    visible: false
     color: Qt.rgba(0, 0, 0, 0.8)
     height: parent.height / 5
     anchors.bottom: parent.bottom
@@ -133,7 +139,7 @@ Item {
 
   TextEdit {
     id: consoleInput
-
+    visible: false
     color: "green"
     wrapMode: Text.WordWrap
     text: JSConsole.text

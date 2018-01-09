@@ -142,7 +142,7 @@ double Renderer::onPanY(float y) {
 
 void Renderer::updatePosition(double x, double y, double z) {
   auto zoom = m_camera.scaleToZ(z);
-  m_camera.moveTo(-x, y, zoom);
+  m_camera.moveTo(x, y, zoom);
 }
 
 void Renderer::printGLInfo() {
