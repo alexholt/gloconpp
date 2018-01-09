@@ -1,5 +1,5 @@
 #include <exception>
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQuickView>
 #include <signal.h>
 
@@ -31,6 +31,8 @@ QObject* gameStateProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 }
 
 QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+  Q_UNUSED(engine)
+
   jsConsole = new JSConsole(scriptEngine);
   return jsConsole;
 }
@@ -39,7 +41,8 @@ QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 
 int main(int argc, char **argv) {
   setupSigHandler();
-  QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
+  app.setStartDragDistance(0);
 
   view = new QQuickView;
   app.setWindowIcon(QIcon(":/assets/icons/app.svg"));
