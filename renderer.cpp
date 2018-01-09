@@ -141,8 +141,6 @@ double Renderer::onPanY(float y) {
 }
 
 void Renderer::updatePosition(double x, double y, double z) {
-  x = std::round(x);
-  y = std::round(y);
   auto zoom = m_camera.scaleToZ(z);
   m_camera.moveTo(-x, y, zoom);
 }

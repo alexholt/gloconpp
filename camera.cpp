@@ -79,5 +79,5 @@ double Camera::fullsize() {
 }
 
 double Camera::scaleToZ(double scale) {
-  return fullsize() * scale * 0.5;
+  return fullsize() / scale * 0.5;
 }
