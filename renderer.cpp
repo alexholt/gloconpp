@@ -16,7 +16,10 @@ Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   emit contentRectChanged();
 
   m_tank.loadFile(":/assets/models/tank.obj");
-  m_tank.scale(10.0f);
+  m_tank.translate(10.0f, 0.0f, 0.0f);
+
+  m_mars.loadFile(":/assets/models/mars.obj");
+  m_mars.scale(10.0f);
 }
 
 Renderer::~Renderer() {
@@ -124,6 +127,7 @@ void Renderer::paint() {
   }
 
   m_tank.render(this, *m_renderCameraMatrix, elapsed);
+  m_mars.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();

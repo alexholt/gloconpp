@@ -42,8 +42,8 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
 
 void Model::initialize() {
   m_program = new QOpenGLShaderProgram;
-  m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/cube.vert");
-  m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/cube.frag");
+  m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/" + m_shaderName + ".vert");
+  m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/" + m_shaderName + ".frag");
   m_program->link();
   m_program->bind();
 
@@ -131,18 +131,28 @@ void Model::translate(float x, float y, float z) {
   m_modelViewMatrix.translate(x, y, z);
 }
 
-void Model::loadFile(const QString& modelFilePath) {
+void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
+  m_shaderName = shaderName;
+
   Assimp::Importer importer;
 
   QFile modelFile(modelFilePath);
   modelFile.open(QIODevice::ReadOnly);
+
+  QString ext(modelFilePath.split('.')[1]);
+
+  if (!importer.IsExtensionSupported(ext.toUtf8())) {
+    QString msg("Extension is not supported ");
+    msg += ext.toUtf8();
+    throw std::runtime_error(msg.toStdString());
+  }
 
   auto bytes = modelFile.readAll();
   const aiScene* scene = importer.ReadFileFromMemory(
     bytes.data_ptr(),
     bytes.length(),
     aiProcess_Triangulate | aiProcess_JoinIdenticalVertices,
-    "obj"
+    modelFilePath.split('.')[1].toUtf8()
   );
 
   if (!scene) {
@@ -160,13 +170,6 @@ void Model::loadFile(const QString& modelFilePath) {
   aiMesh* mesh = scene->mMeshes[0];
   m_meshData.elementCount = mesh->mNumFaces * 3;
 
-  qDebug() << "mesh name" << mesh->mName.C_Str();
-  qDebug() << "face count" << mesh->mNumFaces;
-  qDebug() << "vertex count" << mesh->mNumVertices;
-  qDebug() << "Has vertex normals" << mesh->HasNormals();
-  qDebug() << "Has texture" << mesh->HasTextureCoords(0);
-
-  qDebug() << "Vertices";
   m_numVertices = mesh->mNumVertices * 8;
   m_vertices = new float[m_numVertices];
   for (uint i = 0; i < mesh->mNumVertices; i++) {

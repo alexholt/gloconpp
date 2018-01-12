@@ -12,5 +12,10 @@
         <file>assets/models/tank.obj</file>
         <file>assets/shaders/basic.frag</file>
         <file>assets/shaders/basic.vert</file>
+        <file>assets/models/mars.blend</file>
+        <file>assets/models/mars.fbx</file>
+        <file>assets/models/mars.mtl</file>
+        <file>assets/models/mars.obj</file>
+        <file>assets/textures/mars.jpg</file>
     </qresource>
 </RCC>

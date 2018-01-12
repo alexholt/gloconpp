@@ -42,7 +42,12 @@ DISTFILES += \
     assets/shaders/cube.vert \
     assets/shaders/cube.frag \
     assets/shaders/cube.vert \
-    assets/models/tank.obj
+    assets/models/tank.obj \
+    README.md \
+    assets/textures/marsmap1k.jpg \
+    assets/models/mars.fbx \
+    assets/models/mars.fbx \
+    assets/models/mars.fbx
 
 RESOURCES += \
     gloconpp.qrc

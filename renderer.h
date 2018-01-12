@@ -67,6 +67,7 @@ private:
   double m_lastZoom = 0;
   QList<Cube*> m_cubeList;
   Model m_tank;
+  Model m_mars;
 
 signals:
   void fpsChanged();

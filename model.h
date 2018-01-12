@@ -12,6 +12,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
+#include <QString>
 
 struct Mesh {
   QOpenGLVertexArrayObject* vao;
@@ -28,7 +29,7 @@ public:
   GLuint createProgram(QOpenGLFunctions* renderer, QString& vert, QString& frag);
   GLuint createShader(QOpenGLFunctions* renderer, GLenum type, QString& source);
   void translate(float, float, float);
-  void loadFile(const QString&);
+  void loadFile(const QString&, const QString& = "basic");
   void scale(float);
 
 protected:
@@ -45,6 +46,7 @@ protected:
   uint m_numElements = 0;
   uint m_numVertices = 0;
   float m_rotationSpeed = 90.0f / 1000.0f; // 1/4 rotation per second
+  QString m_shaderName = "cube";
 
 private:
   void initialize();
