@@ -29,7 +29,7 @@
 
 #define HALF_HEIGHT 500.0f
 #define HALF_WIDTH  1000.0f
-#define Z 0.0f
+#define Z 1.0f
 
 class WorldMap : public Model {
   Q_OBJECT
@@ -46,11 +46,11 @@ public:
 
   float m_vertices[6 * 3] = {
     -HALF_WIDTH,  HALF_HEIGHT, Z,
+     HALF_WIDTH, -HALF_HEIGHT, Z,
      HALF_WIDTH,  HALF_HEIGHT, Z,
      HALF_WIDTH, -HALF_HEIGHT, Z,
-     HALF_WIDTH, -HALF_HEIGHT, Z,
+    -HALF_WIDTH,  HALF_HEIGHT, Z,
     -HALF_WIDTH, -HALF_HEIGHT, Z,
-    -HALF_WIDTH,  HALF_HEIGHT, Z
   };
 
   void forEach(std::function<void(QMap<QString, Territory*>::const_iterator)>);
@@ -75,11 +75,11 @@ private:
 
   GLfloat m_texcoords[12] = {
     0.0f, 1.0f,
+    1.0f, 0.0f,
     1.0f, 1.0f,
     1.0f, 0.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f,
     0.0f, 1.0f,
+    0.0f, 0.0f,
   };
 
   QOpenGLTexture* m_texture;

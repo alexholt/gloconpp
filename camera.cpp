@@ -1,10 +1,10 @@
 #include "camera.h"
 
-#define FOV 60
+#define FOV 60.0
 #define FOV_RAD FOV * 2.0 * M_PI / 360.0
-#define NEAR 0.01
-#define FAR 20000
-#define FULLSIZE 2500
+#define NEAR 0.1
+#define FAR 20000.0
+#define FULLSIZE 2500.0
 
 using namespace  std;
 

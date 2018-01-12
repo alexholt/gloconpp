@@ -70,12 +70,6 @@ void Renderer::initializeGL() {
   auto surface = window()->format();
   surface.setSwapInterval(0);
 
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_GREATER);
-  glEnable(GL_MULTISAMPLE);
-
   m_paintTimer.start();
 }
 
@@ -97,6 +91,7 @@ void Renderer::initializeMap() {
 
 void Renderer::paint() {
   window()->resetOpenGLState();
+
   m_frameCount++;
   m_fps = m_frameCount;
 
@@ -106,6 +101,16 @@ void Renderer::paint() {
     m_isInitialized = true;
   }
 
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+  glDepthMask(GL_TRUE);
+
+  glEnable(GL_CULL_FACE);
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_MULTISAMPLE);
+
   long long elapsed = m_paintTimer.restart();
 
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
@@ -114,9 +119,9 @@ void Renderer::paint() {
 
   m_worldMap.render(this, *m_renderCameraMatrix, elapsed);
 
-  //for (int i = 0; i < m_cubeList.length(); i++) {
-  //  m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
-  //}
+  for (int i = 0; i < m_cubeList.length(); i++) {
+    m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
+  }
 
   m_tank.render(this, *m_renderCameraMatrix, elapsed);
 

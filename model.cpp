@@ -42,8 +42,8 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
 
 void Model::initialize() {
   m_program = new QOpenGLShaderProgram;
-  m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/basic.vert");
-  m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/basic.frag");
+  m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/cube.vert");
+  m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/cube.frag");
   m_program->link();
   m_program->bind();
 
