@@ -9,5 +9,8 @@
         <file>assets/scripts/glocon.js</file>
         <file>assets/shaders/cube.frag</file>
         <file>assets/shaders/cube.vert</file>
+        <file>assets/models/tank.obj</file>
+        <file>assets/shaders/basic.frag</file>
+        <file>assets/shaders/basic.vert</file>
     </qresource>
 </RCC>

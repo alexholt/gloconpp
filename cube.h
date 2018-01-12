@@ -9,9 +9,8 @@ class Cube : public Model {
 public:
   Cube();
   Cube(float, float);
-  void render(QOpenGLFunctions*, const QMatrix4x4&);
+  void render(QOpenGLFunctions*, const QMatrix4x4&, long long);
   void initialize();
-  void scale(float);
   QOpenGLShaderProgram* program();
   void justUpdateUniforms(QOpenGLFunctions*, const QMatrix4x4&, QOpenGLShaderProgram*);
   void release();
@@ -64,10 +63,6 @@ protected:
     20, 21, 22,  20, 22, 23,  // left
   };
 
-  QOpenGLVertexArrayObject* m_vao;
-  QOpenGLBuffer* m_vertexVbo;
-  QOpenGLBuffer* m_elementVbo;
-  QOpenGLShaderProgram* m_program;
 };
 
 #endif // CUBE_H

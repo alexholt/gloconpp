@@ -41,7 +41,8 @@ DISTFILES += \
     assets/shaders/cube.frag \
     assets/shaders/cube.vert \
     assets/shaders/cube.frag \
-    assets/shaders/cube.vert
+    assets/shaders/cube.vert \
+    assets/models/tank.obj
 
 RESOURCES += \
     gloconpp.qrc

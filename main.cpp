@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
   format.setVersion(4, 1);
   format.setDepthBufferSize(24);
   format.setStencilBufferSize(8);
+  format.setSamples(4);
 
   view->setFormat(format);
   view->rootContext()->setContextProperty("applicationWindow", view);

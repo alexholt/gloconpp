@@ -37,7 +37,7 @@ class WorldMap : public Model {
 public:
   WorldMap(const QString&);
   ~WorldMap();
-  void render(QOpenGLFunctions*, const QMatrix4x4&);
+  void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadMap();
   QString getShaderName();
   QString getName();

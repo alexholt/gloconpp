@@ -1,15 +1,9 @@
 #include "cube.h"
 
-Cube::Cube() :
-  m_vao(new QOpenGLVertexArrayObject),
-  m_vertexVbo(new QOpenGLBuffer),
-  m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)) {
+Cube::Cube() : Model() {
 }
 
-Cube::Cube(float x, float y) :
-  m_vao(new QOpenGLVertexArrayObject),
-  m_vertexVbo(new QOpenGLBuffer),
-  m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)) {
+Cube::Cube(float x, float y) : Model() {
   m_modelViewMatrix.translate(x, y);
   m_modelViewMatrix.scale(10);
 }
@@ -32,7 +26,7 @@ void Cube::initialize() {
 
   m_elementVbo->create();
   m_elementVbo->bind();
-  m_elementVbo->allocate(m_elements, sizeof(m_elements[0]) * 36);
+  m_elementVbo->allocate(m_elements, sizeof(m_elements) / sizeof(m_elements[0]) * sizeof(m_elements[0]));
 
   m_vao->release();
   m_vertexVbo->release();
@@ -42,10 +36,14 @@ void Cube::initialize() {
   m_isInitialized = true;
 }
 
-void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix) {
+void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
   if (!m_isInitialized) {
     initialize();
   }
+
+  float angle = m_rotationSpeed * static_cast<float>(elapsed);
+
+  m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
 
   m_program->bind();
   m_vao->bind();
@@ -67,10 +65,6 @@ void Cube::justUpdateUniforms(QOpenGLFunctions* renderer, const QMatrix4x4& came
   program->setUniformValue("u_camera", cameraMatrix);
   program->setUniformValue("u_modelView", m_modelViewMatrix);
   renderer->glDrawElements(GL_TRIANGLES, sizeof(m_elements) / sizeof(m_elements[0]), GL_UNSIGNED_SHORT, 0);
-}
-
-void Cube::scale(float factor) {
-  m_modelViewMatrix.scale(factor);
 }
 
 QOpenGLShaderProgram* Cube::program() {

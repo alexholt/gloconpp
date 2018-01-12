@@ -56,6 +56,7 @@ private:
   bool m_isInitialized = false;
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
   QTimer m_fpsTimer;
+  QElapsedTimer m_paintTimer;
   double m_fps = 60;
   QRect m_contentRect{0, 0, 2000, 1000};
   QQuickWindow* m_window;
@@ -65,6 +66,7 @@ private:
   void printGLInfo();
   double m_lastZoom = 0;
   QList<Cube*> m_cubeList;
+  Model m_tank;
 
 signals:
   void fpsChanged();

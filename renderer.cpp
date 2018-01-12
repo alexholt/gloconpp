@@ -1,16 +1,22 @@
 #include "renderer.h"
+#include "glocon.h"
 
 Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   m_fpsTimer.setTimerType(Qt::PreciseTimer);
+
   connect(&m_fpsTimer, &QTimer::timeout, [=]() {
     emit fpsChanged();
     m_fps = m_frameCount / 1000.0f;
     m_frameCount = 0;
   });
+
   m_fpsTimer.start();
   emit contentRectChanged();
+
+  m_tank.loadFile(":/assets/models/tank.obj");
+  m_tank.scale(10.0f);
 }
 
 Renderer::~Renderer() {
@@ -65,9 +71,12 @@ void Renderer::initializeGL() {
   surface.setSwapInterval(0);
 
   glEnable(GL_BLEND);
-  glEnable(GL_DEPTH_TEST);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_GREATER);
+  glEnable(GL_MULTISAMPLE);
+
+  m_paintTimer.start();
 }
 
 void Renderer::teardownGL() {
@@ -97,15 +106,19 @@ void Renderer::paint() {
     m_isInitialized = true;
   }
 
+  long long elapsed = m_paintTimer.restart();
+
   glViewport(0, 0, m_viewportSize.width(), m_viewportSize.height());
   glClearColor(0, 1, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  m_worldMap.render(this, *m_renderCameraMatrix);
+  m_worldMap.render(this, *m_renderCameraMatrix, elapsed);
 
-  for (int i = 0; i < m_cubeList.length(); i++) {
-    m_cubeList[i]->render(this, *m_renderCameraMatrix);
-  }
+  //for (int i = 0; i < m_cubeList.length(); i++) {
+  //  m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
+  //}
+
+  m_tank.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();
