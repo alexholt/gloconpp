@@ -39,7 +39,6 @@ public:
   ~WorldMap();
   void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadMap();
-  QString getShaderName();
   QString getName();
   int getVertexCount();
   QImage* createTexture();
@@ -69,9 +68,6 @@ private:
   GLuint m_positionAttributeLocation;
   GLuint m_texcoordAttributeLocation;
   QImage* m_textureData;
-  QOpenGLVertexArrayObject* m_vao;
-  QOpenGLBuffer* m_vertexVbo;
-  QOpenGLBuffer* m_textureVbo;
 
   GLfloat m_texcoords[12] = {
     0.0f, 1.0f,
@@ -81,8 +77,6 @@ private:
     0.0f, 1.0f,
     0.0f, 0.0f,
   };
-
-  QOpenGLTexture* m_texture;
 
 public slots:
   void teardownGL();

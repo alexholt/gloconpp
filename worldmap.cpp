@@ -1,10 +1,6 @@
 #include "worldmap.h"
 
-WorldMap::WorldMap(const QString& path) :
-  m_path(path),
-  m_vao(new QOpenGLVertexArrayObject),
-  m_vertexVbo(new QOpenGLBuffer),
-  m_textureVbo(new QOpenGLBuffer) {
+WorldMap::WorldMap(const QString& path) : m_path(path) {
 }
 
 void WorldMap::forEach(std::function<void(QMap<QString, Territory*>::const_iterator)> func) {
@@ -36,7 +32,6 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
   Q_UNUSED(elapsed)
 
   if (!m_isInitialized) {
-    renderer->glActiveTexture(GL_TEXTURE0);
     createTexture();
     m_program = new QOpenGLShaderProgram;
     m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/worldmap.vert");
@@ -56,11 +51,8 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
     m_textureVbo->create();
     m_textureVbo->bind();
     m_textureVbo->allocate(m_texcoords, sizeof(m_texcoords[0]) * 12);
-
     m_program->enableAttributeArray(1);
     m_program->setAttributeBuffer(1, GL_FLOAT, 0, 2, 0);
-
-    m_program->setUniformValue("sampler", 0);
 
     m_vao->release();
     m_vertexVbo->release();
@@ -70,24 +62,17 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
     m_isInitialized = true;
   }
 
-  renderer->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   m_program->bind();
-
   m_vao->bind();
-  renderer->glActiveTexture(GL_TEXTURE0);
   m_texture->bind();
 
   m_program->setUniformValue("u_camera", cameraMatrix);
+
   renderer->glDrawArrays(GL_TRIANGLES, 0, sizeof(m_vertices) / sizeof(m_vertices[0]));
 
   m_vao->release();
   m_texture->release();
   m_program->release();
-}
-
-QString WorldMap::getShaderName() {
-  return "worldmap";
 }
 
 void WorldMap::loadMap() {
