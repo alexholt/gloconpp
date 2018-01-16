@@ -1,4 +1,5 @@
 build
+test
 Makefile
 gloconpp.pro.user
 .qmake.stash
