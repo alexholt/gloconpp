@@ -7,3 +7,5 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  tst_triangletest.cpp
+
+DESTDIR += build
