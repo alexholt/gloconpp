@@ -146,11 +146,3 @@ QImage* WorldMap::createTexture() {
   m_texture->bind();
   return tex;
 }
-
-QString WorldMap::getName() {
-  return "worldmap";
-}
-
-int WorldMap::getVertexCount() {
-  return 6;
-}

@@ -26,9 +26,10 @@ public:
   Model();
   ~Model();
   virtual void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
-  void translate(float, float, float);
   void loadFile(const QString&, const QString& = "basic");
   void scale(float);
+  void translate(float, float, float);
+  void rotate(float, float, float, float);
 
 protected:
   QOpenGLShaderProgram* m_program;

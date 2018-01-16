@@ -81,10 +81,6 @@ void Model::initialize(QOpenGLFunctions* gl) {
   m_isInitialized = true;
 }
 
-void Model::translate(float x, float y, float z) {
-  m_modelViewMatrix.translate(x, y, z);
-}
-
 void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
   m_shaderName = shaderName;
 
@@ -166,4 +162,12 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
 
 void Model::scale(float factor) {
   m_modelViewMatrix.scale(factor);
+}
+
+void Model::translate(float x, float y, float z) {
+  m_modelViewMatrix.translate(x, y, z);
+}
+
+void Model::rotate(float degree, float x, float y, float z) {
+  m_modelViewMatrix.rotate(degree, x, y, z);
 }

@@ -39,8 +39,6 @@ public:
   ~WorldMap();
   void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadMap();
-  QString getName();
-  int getVertexCount();
   QImage* createTexture();
 
   float m_vertices[6 * 3] = {

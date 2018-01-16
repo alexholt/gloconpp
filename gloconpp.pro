@@ -17,7 +17,10 @@ SOURCES += \
     renderer.cpp \
     model.cpp \
     gamestate.cpp \
-    cube.cpp
+    cube.cpp \
+    circle.cpp \
+    triangle.cpp \
+    test/triangletest.cpp
 
 HEADERS += \
     jsconsole.h \
@@ -29,7 +32,10 @@ HEADERS += \
     renderer.h \
     model.h \
     gamestate.h \
-    cube.h
+    cube.h \
+    circle.h \
+    triangle.h \
+    test/triangletest.h
 
 DISTFILES += \
     main.qml \
@@ -58,3 +64,5 @@ QMAKE_LFLAGS += -v
 
 LIBS += -L/usr/local/lib/ -lassimp
 INCLUDEPATH += /usr/local/include
+
+CONFIG += testcase

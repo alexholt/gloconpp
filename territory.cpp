@@ -1,5 +1,7 @@
 #include "territory.h"
 
+#include <QVector3D>
+
 Territory::Territory(QString path) {
   m_path = path;
 }
@@ -7,6 +9,9 @@ Territory::Territory(QString path) {
 Territory::~Territory() {
   if (m_centroid != nullptr)
     delete m_centroid;
+
+  for (int i = 0; i < m_mesh.length(); i++)
+    delete m_mesh[i];
 }
 
 void Territory::processToken(QString token) {
@@ -187,4 +192,107 @@ QVector2D* Territory::getCentroid() {
 
   m_centroid = new QVector2D{cx, cy};
   return m_centroid;
+}
+
+QList<QVector3D*>& Territory::getMesh() {
+  auto vertices = getPointArray();
+  if (m_mesh.length() > 0)
+    return m_mesh;
+
+  // Add super triangle to mesh
+  auto box = getBoundingBox();
+  QList<QVector3D> superTriangle;
+
+  // Top
+  superTriangle.append(
+    QVector3D{
+      static_cast<float>(box.bottomLeft().x()),
+      static_cast<float>(box.topLeft().y() + box.height()),
+      0.0f
+    }
+  );
+
+  // Bottom Left
+  superTriangle.append(
+    QVector3D{
+      static_cast<float>(box.bottomLeft().x()),
+      static_cast<float>(box.bottomLeft().y()),
+      0.0f
+    }
+  );
+
+  // Bottom Right
+  superTriangle.append(
+    QVector3D{
+      static_cast<float>(box.bottomRight().x() + box.width()),
+      static_cast<float>(box.bottomLeft().y()),
+      0.0f
+    }
+  );
+
+  QList<QList<QVector3D>> triangles;
+  triangles.append(superTriangle);
+
+  for (int i = 0; i < vertices.length(); i++) {
+    QVector3D point{vertices[i]->x(), vertices[i]->y(), 0.0f};
+    QList<QList<QVector3D>> badTriangles;
+
+    //for (auto triangle : triangles) {
+    //  if (circumCircle(triangle).contains(point))
+    //    badTriangles.append(triangle);
+    //}
+
+    //QList<QList<QVector3D>> mesh;
+    //for (auto triangle : badTriangles) {
+    //  for (auto edge : triangle) {
+    //    if (!badTriangles.contains(edge)) {
+    //      mesh.append(edge);
+    //    }
+    //  }
+    //}
+
+    //for (auto triangle : badTriangles) {
+    //  triangles.remove(triangle);
+    //}
+
+    //for (auto edge : mesh) {
+    //  QList<QVector3D> edgeToPoint{
+    //    QVector3D{edge[0].x(), edge[0].y(), 0.0f},
+    //    QVector3D{edge[0].x2(), edge[0].y2(), 0.0f},
+    //    QVector3D{point.x(), point().y(), 0.0f},
+    //  };
+
+    //  triangles.append(edgeToPoint);
+    //}
+
+  }
+
+  //for (auto triangle : triangles) {
+  //   if (superTriangle.contains(triangle))
+  //      triangles.remove(triangle)
+  //}
+
+
+  return m_mesh;
+  /*
+  for each point in pointList do // add all the points one at a time to the triangulation
+    badTriangles := empty set
+    for each triangle in triangulation do // first find all the triangles that are no longer valid due to the insertion
+       if point is inside circumcircle of triangle
+          add triangle to badTriangles
+    polygon := empty set
+    for each triangle in badTriangles do // find the boundary of the polygonal hole
+       for each edge in triangle do
+          if edge is not shared by any other triangles in badTriangles
+             add edge to polygon
+    for each triangle in badTriangles do // remove them from the data structure
+       remove triangle from triangulation
+    for each edge in polygon do // re-triangulate the polygonal hole
+       newTri := form a triangle from edge to point
+       add newTri to triangulation
+  for each triangle in triangulation // done inserting points, now clean up
+     if triangle contains a vertex from original super-triangle
+        remove triangle from triangulation
+  return triangulation
+  */
 }
