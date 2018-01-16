@@ -20,7 +20,6 @@ SOURCES += \
     cube.cpp \
     circle.cpp \
     triangle.cpp \
-    test/triangletest.cpp
 
 HEADERS += \
     jsconsole.h \
@@ -35,7 +34,6 @@ HEADERS += \
     cube.h \
     circle.h \
     triangle.h \
-    test/triangletest.h
 
 DISTFILES += \
     main.qml \
@@ -64,5 +62,3 @@ QMAKE_LFLAGS += -v
 
 LIBS += -L/usr/local/lib/ -lassimp
 INCLUDEPATH += /usr/local/include
-
-CONFIG += testcase
