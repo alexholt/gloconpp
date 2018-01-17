@@ -7,33 +7,8 @@ TEMPLATE = app
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    main.cpp \
-    jsconsole.cpp \
-    worldmap.cpp \
-    camera.cpp \
-    glocon.cpp \
-    territory.cpp \
-    renderer.cpp \
-    model.cpp \
-    gamestate.cpp \
-    cube.cpp \
-    circle.cpp \
-    triangle.cpp \
-
-HEADERS += \
-    jsconsole.h \
-    worldmap.h \
-    camera.h \
-    glocon.h \
-    territory.h \
-    pathstate.h \
-    renderer.h \
-    model.h \
-    gamestate.h \
-    cube.h \
-    circle.h \
-    triangle.h \
+SOURCES += $$PWD/main.cpp
+include(../src.pri)
 
 DISTFILES += \
     main.qml \
@@ -47,7 +22,6 @@ DISTFILES += \
     assets/shaders/cube.frag \
     assets/shaders/cube.vert \
     assets/models/tank.obj \
-    README.md \
     assets/textures/marsmap1k.jpg \
     assets/models/mars.fbx \
     assets/models/mars.fbx \
@@ -55,10 +29,3 @@ DISTFILES += \
 
 RESOURCES += \
     gloconpp.qrc
-
-DESTDIR = build
-
-QMAKE_LFLAGS += -v
-
-LIBS += -L/usr/local/lib/ -lassimp
-INCLUDEPATH += /usr/local/include

@@ -1,48 +1,48 @@
 #include <QtTest>
 
-// add necessary includes here
+#include "triangle.h"
 
-class triangletest : public QObject
-{
+class TriangleTest : public QObject {
   Q_OBJECT
 
 public:
-  triangletest();
-  ~triangletest();
+  TriangleTest();
+  ~TriangleTest();
+
+private:
+  Triangle* m_subject;
 
 private slots:
   void initTestCase();
   void cleanupTestCase();
-  void test_case1();
+  void test_case_copy_constructor();
 
 };
 
-triangletest::triangletest()
-{
+TriangleTest::TriangleTest() {
 
 }
 
-triangletest::~triangletest()
-{
+TriangleTest::~TriangleTest() {
 
 }
 
-void triangletest::initTestCase()
-{
-
+void TriangleTest::initTestCase() {
+  qDebug() << "Creating a triangle";
+  m_subject = new Triangle;
 }
 
-void triangletest::cleanupTestCase()
-{
-
+void TriangleTest::cleanupTestCase() {
+  delete m_subject;
 }
 
-void triangletest::test_case1()
-{
-  qDebug() << "HELLO";
-  QVERIFY(1 == 1);
+Triangle duplicate(Triangle tri) {
+  return tri;
 }
 
-QTEST_APPLESS_MAIN(triangletest)
+void TriangleTest::test_case_copy_constructor() {
+  Triangle copy = *m_subject;
+  QVERIFY2(*m_subject == copy, "The copy constructor works");
+}
 
 #include "tst_triangletest.moc"

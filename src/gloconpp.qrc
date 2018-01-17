@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>../assets/maps/world.svg</file>
+        <file>../assets/shaders/worldmap.frag</file>
+        <file>../assets/shaders/worldmap.vert</file>
+        <file>../assets/icons/app.svg</file>
+        <file>../assets/icons/app.png</file>
+        <file>../assets/scripts/glocon.js</file>
+        <file>../assets/shaders/cube.frag</file>
+        <file>../assets/shaders/cube.vert</file>
+        <file>../assets/models/tank.obj</file>
+        <file>../assets/shaders/basic.frag</file>
+        <file>../assets/shaders/basic.vert</file>
+        <file>../assets/models/mars.blend</file>
+        <file>../assets/models/mars.fbx</file>
+        <file>../assets/models/mars.mtl</file>
+        <file>../assets/models/mars.obj</file>
+        <file>../assets/textures/mars.jpg</file>
+    </qresource>
+</RCC>
