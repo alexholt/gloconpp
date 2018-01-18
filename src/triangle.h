@@ -3,6 +3,8 @@
 
 #include <QVector3D>
 
+#include "edge.h"
+
 class Circle;
 
 class Triangle {
@@ -10,14 +12,22 @@ class Triangle {
 public:
   Triangle();
   Triangle(const QVector3D&, const QVector3D&, const QVector3D&);
-  Triangle(Triangle&);
+  Triangle(const Triangle&);
   Circle circumCircle();
 
-  QVector3D& top();
-  QVector3D& bottom();
-  QVector3D& left();
+  const QVector3D& top() const;
+  const QVector3D& bottom() const;
+  const QVector3D& left() const;
 
-  bool operator ==(Triangle &other);
+  Edge topEdge() const;
+  Edge leftEdge() const;
+  Edge bottomEdge() const;
+
+  bool operator ==(const Triangle &other) const;
+  bool operator !=(const Triangle &other) const;
+
+  bool sharesEdge(const Edge&) const;
+  bool sharesVertex(const Triangle&) const;
 
 private:
   QVector3D m_top;

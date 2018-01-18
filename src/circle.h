@@ -10,6 +10,9 @@ class Circle {
 public:
   Circle(const QVector3D&, float);
   Circle(const Triangle&);
+  float radius();
+  QVector3D& center();
+  bool contains(const QVector3D&);
 
 private:
   float m_radius;

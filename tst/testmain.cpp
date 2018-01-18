@@ -1,15 +1,22 @@
 #include <QtTest/QtTest>
 
-#include "tst_territorytest.cpp"
-#include "tst_triangletest.cpp"
+#include "tst_circletest.h"
+#include "tst_territorytest.h"
+#include "tst_triangletest.h"
 
 int main(int argc, char** argv) {
   QApplication app(argc, argv);
-  qDebug() << "Launching tests";
 
-  TriangleTest testSuite1;
-  TerritoryTest testSuite2;
+  QList<QObject*> tests;
+  tests << new CircleTest;
+  tests << new TriangleTest;
+  tests << new TerritoryTest;
 
-  return QTest::qExec(&testSuite1, argc, argv) |
-          QTest::qExec(&testSuite2, argc, argv);
+  int result = 0;
+
+  std::for_each(tests.begin(), tests.end(), [&result, &argc, &argv] (QObject* test) {
+    result |= QTest::qExec(test, argc, argv);
+  });
+
+  return result;
 }

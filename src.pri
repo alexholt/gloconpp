@@ -10,7 +10,9 @@ SOURCES += \
     $$PWD/src/cube.cpp \
     $$PWD/src/circle.cpp \
     $$PWD/src/triangle.cpp \
-    $$PWD/src/scene.cpp
+    $$PWD/src/scene.cpp \
+    $$PWD/src/edge.cpp \
+    $$PWD/src/rect.cpp
 
 HEADERS += \
     $$PWD/src/jsconsole.h \
@@ -25,7 +27,9 @@ HEADERS += \
     $$PWD/src/cube.h \
     $$PWD/src/circle.h \
     $$PWD/src/triangle.h \
-    $$PWD/src/scene.h
+    $$PWD/src/scene.h \
+    $$PWD/src/edge.h \
+    $$PWD/src/rect.h
 
 DESTDIR = ../build
 

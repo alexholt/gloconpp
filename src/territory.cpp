@@ -1,6 +1,10 @@
-#include "territory.h"
-
+#include <limits>
 #include <QVector3D>
+
+#include "circle.h"
+#include "edge.h"
+#include "territory.h"
+#include "triangle.h"
 
 Territory::Territory(QString path) {
   m_path = path;
@@ -9,9 +13,6 @@ Territory::Territory(QString path) {
 Territory::~Territory() {
   if (m_centroid != nullptr)
     delete m_centroid;
-
-  for (int i = 0; i < m_mesh.length(); i++)
-    delete m_mesh[i];
 }
 
 void Territory::processToken(QString token) {
@@ -96,6 +97,10 @@ void Territory::stateChange(QString token) {
 QList<QVector2D*>& Territory::getPointArray() {
   if (m_pointArray.length() > 0) return m_pointArray;
 
+  m_lastPoint->setX(0);
+  m_lastPoint->setY(0);
+  m_pathState = BEGIN;
+  m_currentVal = NAN;
   QString token;
 
   for (int i = 0; i < m_path.length(); i++) {
@@ -111,26 +116,14 @@ QList<QVector2D*>& Territory::getPointArray() {
   return m_pointArray;
 }
 
-QRect Territory::getBoundingBox() {
+Rect Territory::getBoundingBox() {
   if (m_boundingBox.width() > 0) {
     return m_boundingBox;
   }
 
-  qint32 max = quint32(0 - 1);
-  qint32 min = 0;
-
-  m_boundingBox.setCoords(max, max, min, min);
-  m_lastPoint->setX(0);
-  m_lastPoint->setY(0);
-  m_pathState = BEGIN;
-  m_currentVal = NAN;
   getPointArray();
 
-  QList<QVector2D*>::const_iterator i = m_pointArray.constBegin();
-
-  while (i != m_pointArray.constEnd()) {
-    QVector2D* cur = *i;
-
+  for (QVector2D* cur : m_pointArray) {
     if (m_boundingBox.x() > cur->x()) {
       m_boundingBox.setX(cur->x());
     }
@@ -139,20 +132,42 @@ QRect Territory::getBoundingBox() {
       m_boundingBox.setY(cur->y());
     }
 
-    if (m_boundingBox.right() < cur->x()) {
-      m_boundingBox.setWidth(cur->x() - m_boundingBox.x());
+    if (m_boundingBox.x2() < cur->x()) {
+      m_boundingBox.setX2(cur->x());
     }
 
-    if (m_boundingBox.bottom() < cur->y()) {
-      m_boundingBox.setHeight(cur->y() - m_boundingBox.y());
+    if (m_boundingBox.y2() < cur->y()) {
+      m_boundingBox.setY2(cur->y());
     }
   }
 
   return m_boundingBox;
 }
 
+Triangle Territory::getSuperTriangle() {
+  auto box = getBoundingBox();
+  Triangle superTriangle{
+    QVector3D{
+      box.x() - 1.0f,
+      box.y() - 1.0f,
+      0.0f
+    },
+    QVector3D{
+      box.x() - 1.0f,
+      box.y2() + box.height() + 1.0f,
+      0.0f
+    },
+    QVector3D{
+      box.x2() + box.width() + 1.0f,
+      box.y2() + box.height() + 1.0f,
+      0.0f
+    }
+  };
+
+  return superTriangle;
+}
+
 // Formula is from https://en.wikipedia.org/wiki/Centroid, duh
-// @return {Point}
 QVector2D* Territory::getCentroid() {
   if (m_centroid != nullptr) return m_centroid;
 
@@ -194,84 +209,73 @@ QVector2D* Territory::getCentroid() {
   return m_centroid;
 }
 
-QList<QVector3D*>& Territory::getMesh() {
+QList<QVector3D>& Territory::getMesh() {
   auto vertices = getPointArray();
+
   if (m_mesh.length() > 0)
     return m_mesh;
 
-  // Add super triangle to mesh
-  auto box = getBoundingBox();
-  QList<QVector3D> superTriangle;
+  QList<Triangle> triangulation;
 
-  // Top
-  superTriangle.append(
-    QVector3D{
-      static_cast<float>(box.bottomLeft().x()),
-      static_cast<float>(box.topLeft().y() + box.height()),
-      0.0f
-    }
-  );
-
-  // Bottom Left
-  superTriangle.append(
-    QVector3D{
-      static_cast<float>(box.bottomLeft().x()),
-      static_cast<float>(box.bottomLeft().y()),
-      0.0f
-    }
-  );
-
-  // Bottom Right
-  superTriangle.append(
-    QVector3D{
-      static_cast<float>(box.bottomRight().x() + box.width()),
-      static_cast<float>(box.bottomLeft().y()),
-      0.0f
-    }
-  );
-
-  QList<QList<QVector3D>> triangles;
-  triangles.append(superTriangle);
+  Triangle superTriangle = getSuperTriangle();
+  triangulation.append(superTriangle);
 
   for (int i = 0; i < vertices.length(); i++) {
     QVector3D point{vertices[i]->x(), vertices[i]->y(), 0.0f};
-    QList<QList<QVector3D>> badTriangles;
+    QList<Triangle> badTriangles;
 
-    //for (auto triangle : triangles) {
-    //  if (circumCircle(triangle).contains(point))
-    //    badTriangles.append(triangle);
-    //}
+    for (auto triangle : triangulation) {
+      if (Circle(triangle).contains(point))
+        badTriangles.append(triangle);
+    }
 
-    //QList<QList<QVector3D>> mesh;
-    //for (auto triangle : badTriangles) {
-    //  for (auto edge : triangle) {
-    //    if (!badTriangles.contains(edge)) {
-    //      mesh.append(edge);
-    //    }
-    //  }
-    //}
+    QList<QVector3D> polygon;
 
-    //for (auto triangle : badTriangles) {
-    //  triangles.remove(triangle);
-    //}
+    for (auto triangle : badTriangles) {
+      QList<Edge> edges;
+      edges << triangle.topEdge();
+      edges << triangle.bottomEdge();
+      edges << triangle.leftEdge();
 
-    //for (auto edge : mesh) {
-    //  QList<QVector3D> edgeToPoint{
-    //    QVector3D{edge[0].x(), edge[0].y(), 0.0f},
-    //    QVector3D{edge[0].x2(), edge[0].y2(), 0.0f},
-    //    QVector3D{point.x(), point().y(), 0.0f},
-    //  };
+      for (auto edge : edges) {
+        bool shouldAdd = false;
 
-    //  triangles.append(edgeToPoint);
-    //}
+        for (auto otherTri : badTriangles) {
+          if (triangle == otherTri)
+            shouldAdd = shouldAdd || true;
+          else
+            shouldAdd = shouldAdd || !otherTri.sharesEdge(edge);
+        }
+
+        if (shouldAdd)
+          polygon << edge.firstPoint() << edge.secondPoint();
+      }
+    }
+
+    for (auto triangle : badTriangles) {
+      qDebug() << "removing" << triangle.bottom() << triangle.top() << triangle.left();
+      triangulation.removeAll(triangle);
+    }
+
+    for (int i = 0; i < polygon.length(); i += 2) {
+      auto firstPoint = polygon[i];
+      auto secondPoint = polygon[i + 1];
+
+      Triangle edgeToPoint{
+        QVector3D{firstPoint.x(), firstPoint.y(), 0.0f},
+        QVector3D{secondPoint.x(), secondPoint.y(), 0.0f},
+        QVector3D{point.x(), point.y(), 0.0f}
+      };
+
+      triangulation.append(edgeToPoint);
+    }
 
   }
 
-  //for (auto triangle : triangles) {
-  //   if (superTriangle.contains(triangle))
-  //      triangles.remove(triangle)
-  //}
-
+  for (auto triangle : triangulation) {
+    if (!superTriangle.sharesVertex(triangle))
+      m_mesh << QVector3D(triangle.bottom()) << QVector3D(triangle.top()) << QVector3D(triangle.left());
+  }
 
   return m_mesh;
   /*
