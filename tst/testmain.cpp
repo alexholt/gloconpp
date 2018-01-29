@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 
   int result = 0;
 
-  std::for_each(tests.begin(), tests.end(), [&result, &argc, &argv] (QObject* test) {
+  std::for_each(tests.begin(), tests.end(), [&] (QObject* test) {
     result |= QTest::qExec(test, argc, argv);
   });
 

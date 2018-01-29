@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "glocon.h"
 
-Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
+Renderer::Renderer() : m_worldMap(":assets/maps/world.svg"), m_tank(false) {
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   m_fpsTimer.setTimerType(Qt::PreciseTimer);
@@ -15,8 +15,9 @@ Renderer::Renderer() : m_worldMap(":assets/maps/world.svg") {
   m_fpsTimer.start();
   emit contentRectChanged();
 
-  m_tank.loadFile(":/assets/models/tank.obj");
+  m_tank.loadFile(":/assets/models/tank.obj", "cube");
   m_tank.translate(10.0f, 0.0f, 0.0f);
+  m_tank.rotate(90.0f, 1.0f, 0.0f, 0.0f);
 
   m_mars.loadFile(":/assets/models/mars.obj");
   m_mars.scale(10.0f);

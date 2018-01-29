@@ -12,6 +12,7 @@ class Triangle {
 public:
   Triangle();
   Triangle(const QVector3D&, const QVector3D&, const QVector3D&);
+  Triangle(const QVector2D&, const QVector2D&, const QVector2D&);
   Triangle(const Triangle&);
   Circle circumCircle();
 
@@ -28,11 +29,16 @@ public:
 
   bool sharesEdge(const Edge&) const;
   bool sharesVertex(const Triangle&) const;
+  bool contains(const QVector3D&) const;
+
+  bool isValid();
 
 private:
   QVector3D m_top;
   QVector3D m_left;
   QVector3D m_bottom;
 };
+
+QDebug operator<<(QDebug, const Triangle&);
 
 #endif // TRIANGLE_H

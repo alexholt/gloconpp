@@ -1523,4 +1523,6 @@ THE SOFTWARE.
   <path class="ignore" transform="translate(2000, 0) rotate(90)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
   <path class="ignore" transform="translate(2000, 1000) rotate(180)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
   <path class="ignore" transform="translate(0, 1000) rotate(270)" stroke="red" stroke-width="40" d="m 0,20 100,0 m -80,-20 0,100 "/>
+   
+  <path class="ignore" stroke="red" stroke-width="40" d="m 0,0 10,0 0,10 -5,5 -5,-5 z"/>
 </svg>

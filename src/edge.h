@@ -15,6 +15,7 @@ public:
   const QVector3D& firstPoint() const;
   bool operator ==(const Edge&) const;
   Edge operator =(const Edge&) const;
+  QVector3D midpoint() const;
 
 private:
   QVector3D m_firstPoint;
@@ -24,5 +25,7 @@ signals:
 
 public slots:
 };
+
+QDebug operator<<(QDebug, const Edge&);
 
 #endif // EDGE_H

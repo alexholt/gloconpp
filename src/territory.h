@@ -20,13 +20,13 @@ public:
   Rect getBoundingBox();
   Triangle getSuperTriangle();
   QVector2D* getCentroid();
-  QList<QVector3D>& getMesh();
+  QList<Triangle> getMesh();
 
 private:
   QString m_path;
   QVector2D* m_lastPoint = new QVector2D;
   QList<QVector2D*> m_pointArray;
-  QList<QVector3D> m_mesh;
+  QList<Triangle> m_mesh;
   QVector2D* m_centroid = nullptr;
   PathState m_pathState;
   float m_currentVal = 0;

@@ -8,7 +8,7 @@
 #include "tst_territorytest.h"
 
 void TerritoryTest::initTestCase() {
-  m_subject = new Territory("m 0,0 10,0 0,10 z");
+  m_subject = new Territory("m 0,0 10,0 0,10 -10,0 z");
 }
 
 void TerritoryTest::cleanupTestCase() {
@@ -16,10 +16,17 @@ void TerritoryTest::cleanupTestCase() {
 }
 
 void TerritoryTest::meshBuildingTestCase() {
-  QVERIFY(m_subject->getMesh().length() > 0);
-  for (auto point : m_subject->getMesh()) {
-    qDebug() << point;
+  for (auto tri : m_subject->getMesh()) {
+    qDebug() << tri;
   }
+  QVERIFY(m_subject->getMesh().length() == 2);
+
+  delete m_subject;
+  m_subject = new Territory("m 0,0 10,0 0,10 -5,5 -5,-5 z");
+  for (auto tri : m_subject->getMesh()) {
+    qDebug() << tri;
+  }
+  QVERIFY(m_subject->getMesh().length() == 3);
 }
 
 void TerritoryTest::boundingBoxTestCase() {
@@ -37,5 +44,5 @@ void TerritoryTest::getSuperTriangleTestCase() {
   QList<QVector3D> triPoints;
   triPoints << superTriangle.bottom() << superTriangle.top() << superTriangle.left();
 
-  QVERIFY(superTriangle.bottom().x() > box.x());
+  QVERIFY(superTriangle.bottom().x() <= box.x2());
 }

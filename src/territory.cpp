@@ -1,4 +1,5 @@
 #include <limits>
+#include <numeric>
 #include <QVector3D>
 
 #include "circle.h"
@@ -149,17 +150,17 @@ Triangle Territory::getSuperTriangle() {
   Triangle superTriangle{
     QVector3D{
       box.x() - 1.0f,
-      box.y() - 1.0f,
+      box.y2() - 1.0f,
       0.0f
     },
     QVector3D{
       box.x() - 1.0f,
-      box.y2() + box.height() + 1.0f,
+      box.y() + box.height() + 2.0f,
       0.0f
     },
     QVector3D{
-      box.x2() + box.width() + 1.0f,
-      box.y2() + box.height() + 1.0f,
+      box.x2() + box.width() + 2.0f,
+      box.y2() - 1.0f,
       0.0f
     }
   };
@@ -209,94 +210,45 @@ QVector2D* Territory::getCentroid() {
   return m_centroid;
 }
 
-QList<QVector3D>& Territory::getMesh() {
+QList<Triangle> Territory::getMesh() {
   auto vertices = getPointArray();
 
-  if (m_mesh.length() > 0)
+  if (m_mesh.length() > 0) {
     return m_mesh;
-
-  QList<Triangle> triangulation;
-
-  Triangle superTriangle = getSuperTriangle();
-  triangulation.append(superTriangle);
-
-  for (int i = 0; i < vertices.length(); i++) {
-    QVector3D point{vertices[i]->x(), vertices[i]->y(), 0.0f};
-    QList<Triangle> badTriangles;
-
-    for (auto triangle : triangulation) {
-      if (Circle(triangle).contains(point))
-        badTriangles.append(triangle);
-    }
-
-    QList<QVector3D> polygon;
-
-    for (auto triangle : badTriangles) {
-      QList<Edge> edges;
-      edges << triangle.topEdge();
-      edges << triangle.bottomEdge();
-      edges << triangle.leftEdge();
-
-      for (auto edge : edges) {
-        bool shouldAdd = false;
-
-        for (auto otherTri : badTriangles) {
-          if (triangle == otherTri)
-            shouldAdd = shouldAdd || true;
-          else
-            shouldAdd = shouldAdd || !otherTri.sharesEdge(edge);
-        }
-
-        if (shouldAdd)
-          polygon << edge.firstPoint() << edge.secondPoint();
-      }
-    }
-
-    for (auto triangle : badTriangles) {
-      qDebug() << "removing" << triangle.bottom() << triangle.top() << triangle.left();
-      triangulation.removeAll(triangle);
-    }
-
-    for (int i = 0; i < polygon.length(); i += 2) {
-      auto firstPoint = polygon[i];
-      auto secondPoint = polygon[i + 1];
-
-      Triangle edgeToPoint{
-        QVector3D{firstPoint.x(), firstPoint.y(), 0.0f},
-        QVector3D{secondPoint.x(), secondPoint.y(), 0.0f},
-        QVector3D{point.x(), point.y(), 0.0f}
-      };
-
-      triangulation.append(edgeToPoint);
-    }
-
   }
 
-  for (auto triangle : triangulation) {
-    if (!superTriangle.sharesVertex(triangle))
-      m_mesh << QVector3D(triangle.bottom()) << QVector3D(triangle.top()) << QVector3D(triangle.left());
+  auto isConvex = [](QVector3D& left, QVector3D& center, QVector3D& right) -> bool {
+    // Using CCW order the point is convex iff the det is 0
+    return (left.x() - right.x()) * (center.y() - left.y()) - (center.x() - left.x()) * (left.y() - right.y()) > 0;
+  };
+
+  while (vertices.length() > 2) {
+    auto center = vertices.takeFirst();
+    auto prev = vertices[vertices.length() - 1];
+    auto next = vertices[0];
+
+    QVector3D center3D{center->x(), center->y(), 0.0f};
+    QVector3D prev3D{prev->x(), prev->y(), 0.0f};
+    QVector3D next3D{next->x(), next->y(), 0.0f};
+
+    Triangle triangle{prev3D, center3D, next3D};
+
+    if (isConvex(prev3D, center3D, next3D)) {
+      auto allVertices = getPointArray();
+
+      bool isEar = std::accumulate(allVertices.begin(), allVertices.end(), true, [&](bool acc, const QVector2D* point) {
+        auto point3D = QVector3D{point->x(), point->y(), 0.0f};
+        return acc && !triangle.contains(point3D);
+      });
+
+      if (isEar) {
+        // Clip it
+        m_mesh << triangle;
+      } else {
+        vertices << center;
+      }
+    }
   }
 
   return m_mesh;
-  /*
-  for each point in pointList do // add all the points one at a time to the triangulation
-    badTriangles := empty set
-    for each triangle in triangulation do // first find all the triangles that are no longer valid due to the insertion
-       if point is inside circumcircle of triangle
-          add triangle to badTriangles
-    polygon := empty set
-    for each triangle in badTriangles do // find the boundary of the polygonal hole
-       for each edge in triangle do
-          if edge is not shared by any other triangles in badTriangles
-             add edge to polygon
-    for each triangle in badTriangles do // remove them from the data structure
-       remove triangle from triangulation
-    for each edge in polygon do // re-triangulate the polygonal hole
-       newTri := form a triangle from edge to point
-       add newTri to triangulation
-  for each triangle in triangulation // done inserting points, now clean up
-     if triangle contains a vertex from original super-triangle
-        remove triangle from triangulation
-  return triangulation
-  */
 }

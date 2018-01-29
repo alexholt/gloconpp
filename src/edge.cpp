@@ -1,5 +1,7 @@
 #include "edge.h"
 
+#include <QDebug>
+
 Edge::Edge() {
 }
 
@@ -31,4 +33,14 @@ bool Edge::operator ==(const Edge& other) const {
 
 Edge Edge::operator =(const Edge& other) const {
   return Edge(other);
+}
+
+QVector3D Edge::midpoint() const {
+  return (m_firstPoint - m_secondPoint) / 2.0f + m_firstPoint;
+}
+
+QDebug operator<<(QDebug debug, const Edge& edge) {
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "Edge: (" << edge.firstPoint() << ", " << edge.secondPoint() << ')';
+    return debug;
 }

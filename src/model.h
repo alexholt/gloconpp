@@ -24,6 +24,7 @@ struct Mesh {
 class Model : public QObject {
 public:
   Model();
+  Model(bool);
   ~Model();
   virtual void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadFile(const QString&, const QString& = "basic");
@@ -48,7 +49,8 @@ protected:
   uint m_numTexels = 0;
   uint m_numVertices = 0;
   float m_rotationSpeed = 90.0f / 1000.0f; // 1/4 rotation per second
-  QString m_shaderName = "cube";
+  QString m_shaderName = "basic";
+  bool m_hasTexture = true;
 
 private:
   void initialize(QOpenGLFunctions* gl);

@@ -9,6 +9,14 @@ Model::Model() :
   m_textureVbo(new QOpenGLBuffer()) {
 }
 
+Model::Model(bool hasTexture) :
+  m_vao(new QOpenGLVertexArrayObject),
+  m_vertexVbo(new QOpenGLBuffer),
+  m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)),
+  m_textureVbo(new QOpenGLBuffer()) {
+  m_hasTexture = hasTexture;
+}
+
 Model::~Model() {
   if (m_vertices != nullptr)
     delete[] m_vertices;
@@ -24,11 +32,13 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
 
   float angle = m_rotationSpeed * static_cast<float>(elapsed);
 
-  m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
+  //m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
 
   m_program->bind();
   m_vao->bind();
-  m_texture->bind();
+
+  if (m_hasTexture)
+    m_texture->bind();
 
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
@@ -37,7 +47,10 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
 
   m_vao->release();
   m_program->release();
-  m_texture->release();
+
+
+  if (m_hasTexture)
+    m_texture->release();
 }
 
 #define BUFFER_OFFSET(o) ((const void*) (o))
@@ -46,6 +59,7 @@ void Model::initialize(QOpenGLFunctions* gl) {
   m_program = new QOpenGLShaderProgram;
   m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/" + m_shaderName + ".vert");
   m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/" + m_shaderName + ".frag");
+
   m_program->link();
   m_program->bind();
 
@@ -73,10 +87,12 @@ void Model::initialize(QOpenGLFunctions* gl) {
   m_elementVbo->release();
   m_program->release();
 
-  m_texture = new QOpenGLTexture(QImage(QString(":/assets/textures/mars.jpg")));
-  m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
-  m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
-  m_texture->bind();
+  if (m_hasTexture) {
+    m_texture = new QOpenGLTexture(QImage(QString(":/assets/textures/mars.jpg")));
+    m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+    m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
+    m_texture->bind();
+  }
 
   m_isInitialized = true;
 }

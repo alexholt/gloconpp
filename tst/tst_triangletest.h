@@ -19,6 +19,8 @@ private slots:
   void initTestCase();
   void cleanupTestCase();
   void test_case_copy_constructor();
+  void testCaseisValid();
+  void testCaseContains();
 };
 
 #endif // TST_TRIANGLETEST_H
