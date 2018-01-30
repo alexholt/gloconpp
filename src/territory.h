@@ -7,20 +7,23 @@
 #include <QObject>
 #include <QVector2D>
 
+#include "model.h"
 #include "pathstate.h"
 #include "rect.h"
 #include "triangle.h"
 
-class Territory : public QObject {
-  Q_OBJECT
+class Territory : public Model {
 
 public:
-  Territory(const QString);
+  Territory(const QString&);
+  Territory(const QString&, const QString&);
   ~Territory();
   Rect getBoundingBox();
   Triangle getSuperTriangle();
   QVector2D* getCentroid();
   QList<Triangle> getMesh();
+  bool fuzzyVertexCompare(const QVector3D&, const QVector3D&) const;
+  bool isClockwise();
 
 private:
   QString m_path;
@@ -34,6 +37,7 @@ private:
   void processToken(QString);
   void stateChange(QString);
   QList<QVector2D*>& getPointArray();
+  QString m_name = "?";
 };
 
 #endif // TERRITORY_H

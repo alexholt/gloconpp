@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "glocon.h"
 
-Renderer::Renderer() : m_worldMap(":assets/maps/world.svg"), m_tank(false) {
+Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_fpsTimer.setInterval(1000);
   m_fpsTimer.setSingleShot(false);
   m_fpsTimer.setTimerType(Qt::PreciseTimer);
@@ -20,6 +20,7 @@ Renderer::Renderer() : m_worldMap(":assets/maps/world.svg"), m_tank(false) {
   m_tank.rotate(90.0f, 1.0f, 0.0f, 0.0f);
 
   m_mars.loadFile(":/assets/models/mars.obj");
+  m_mars.translate(-20.0f, 0.0f, 30.0f);
   m_mars.scale(10.0f);
 }
 
@@ -84,13 +85,13 @@ void Renderer::teardownGL() {
 void Renderer::initializeMap() {
   m_worldMap.loadMap();
 
-  float height = 5;
-  m_worldMap.forEach([this, &height](QMap<QString, Territory*>::const_iterator it) {
-    auto cube = new Cube();
-    cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, height++);
-    cube->scale(10);
-    m_cubeList << cube;
-  });
+  //float height = 5;
+  //m_worldMap.forEach([this, &height](QMap<QString, Territory*>::const_iterator it) {
+  //  auto cube = new Cube();
+  //  cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, height++);
+  //  cube->scale(10);
+  //  m_cubeList << cube;
+  //});
 }
 
 void Renderer::paint() {
@@ -109,7 +110,7 @@ void Renderer::paint() {
   glDepthFunc(GL_LESS);
   glDepthMask(GL_TRUE);
 
-  glEnable(GL_CULL_FACE);
+  //glEnable(GL_CULL_FACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -127,8 +128,8 @@ void Renderer::paint() {
     m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
   }
 
-  m_tank.render(this, *m_renderCameraMatrix, elapsed);
-  m_mars.render(this, *m_renderCameraMatrix, elapsed);
+  //m_tank.render(this, *m_renderCameraMatrix, elapsed);
+  //m_mars.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();

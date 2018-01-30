@@ -98,6 +98,7 @@ void Model::initialize(QOpenGLFunctions* gl) {
 }
 
 void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
+  m_hasTexture = true;
   m_shaderName = shaderName;
 
   Assimp::Importer importer;

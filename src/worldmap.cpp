@@ -73,6 +73,12 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
   m_vao->release();
   m_texture->release();
   m_program->release();
+
+  auto territories = m_territories.values();
+  for (int i = 0; i < territories.length(); i++) {
+    territories[i]->getMesh();
+    territories[i]->render(renderer, cameraMatrix, elapsed);
+  }
 }
 
 void WorldMap::loadMap() {
@@ -102,7 +108,10 @@ void WorldMap::loadMap() {
     !territory.isNull();
     territory = territory.nextSiblingElement("path")
   ) {
-    m_territories[territory.attribute("data-name")] = new Territory(territory.attribute("d"));
+    if (!territory.attribute("class").split("/\\s/").contains("ignore")) {
+      auto name = territory.attribute("data-name");
+      m_territories[name] = new Territory(name, territory.attribute("d"));
+    }
   }
 
 }

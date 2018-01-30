@@ -49,8 +49,8 @@ protected:
   uint m_numTexels = 0;
   uint m_numVertices = 0;
   float m_rotationSpeed = 90.0f / 1000.0f; // 1/4 rotation per second
-  QString m_shaderName = "basic";
-  bool m_hasTexture = true;
+  QString m_shaderName = "cube";
+  bool m_hasTexture = false;
 
 private:
   void initialize(QOpenGLFunctions* gl);

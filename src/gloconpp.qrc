@@ -17,5 +17,6 @@
         <file>../assets/models/mars.mtl</file>
         <file>../assets/models/mars.obj</file>
         <file>../assets/textures/mars.jpg</file>
+        <file>../assets/maps/just-us.svg</file>
     </qresource>
 </RCC>

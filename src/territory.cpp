@@ -7,7 +7,12 @@
 #include "territory.h"
 #include "triangle.h"
 
-Territory::Territory(QString path) {
+Territory::Territory(const QString& path) {
+  m_path = path;
+}
+
+Territory::Territory(const QString& name, const QString& path) {
+  m_name = name;
   m_path = path;
 }
 
@@ -114,7 +119,31 @@ QList<QVector2D*>& Territory::getPointArray() {
     }
   }
 
+  if (isClockwise()) {
+    QList<QVector2D*> reversed;
+    for (auto it = --m_pointArray.end(); it >= m_pointArray.begin(); it--) {
+      reversed << *it;
+    }
+    m_pointArray = reversed;
+  }
+
   return m_pointArray;
+}
+
+// http://mathworld.wolfram.com/PolygonArea.html
+// Compute the signed area
+bool Territory::isClockwise() {
+  auto vertices = getPointArray();
+  float area = 0.0f;
+  for (int i = 0; i < vertices.length(); i++) {
+    auto first = vertices[i];
+    auto second = vertices[(i + 1) % vertices.length()];
+    area += first->x() * second->y() - second->x() * first->y();
+  }
+
+  // This is intended for mapspace which has a flipped y-axis
+  // so it's negative if it is clockwise
+  return (area / 2) < 0;
 }
 
 Rect Territory::getBoundingBox() {
@@ -210,6 +239,10 @@ QVector2D* Territory::getCentroid() {
   return m_centroid;
 }
 
+bool Territory::fuzzyVertexCompare(const QVector3D& first, const QVector3D& second) const {
+  return qFuzzyCompare(first.x(), second.x()) && qFuzzyCompare(first.y(), second.y()) && qFuzzyCompare(first.z(), second.z());
+}
+
 QList<Triangle> Territory::getMesh() {
   auto vertices = getPointArray();
 
@@ -222,33 +255,84 @@ QList<Triangle> Territory::getMesh() {
     return (left.x() - right.x()) * (center.y() - left.y()) - (center.x() - left.x()) * (left.y() - right.y()) > 0;
   };
 
-  while (vertices.length() > 2) {
+  while (vertices.length() >= 3) {
+    auto prev = vertices.takeFirst();
     auto center = vertices.takeFirst();
-    auto prev = vertices[vertices.length() - 1];
     auto next = vertices[0];
 
     QVector3D center3D{center->x(), center->y(), 0.0f};
     QVector3D prev3D{prev->x(), prev->y(), 0.0f};
     QVector3D next3D{next->x(), next->y(), 0.0f};
 
+    if (fuzzyVertexCompare(center3D, prev3D) || fuzzyVertexCompare(center3D, next3D)) {
+      // If a vertex is too similar to one of its neighbors our isConvex and isEar math
+      // will fail so let's nudge the center point slightly off to where it was
+      center3D.setX(center3D.x() + 0.001);
+      center3D.setY(center3D.y() + 0.001);
+    }
+
     Triangle triangle{prev3D, center3D, next3D};
 
-    if (isConvex(prev3D, center3D, next3D)) {
-      auto allVertices = getPointArray();
-
-      bool isEar = std::accumulate(allVertices.begin(), allVertices.end(), true, [&](bool acc, const QVector2D* point) {
-        auto point3D = QVector3D{point->x(), point->y(), 0.0f};
-        return acc && !triangle.contains(point3D);
-      });
-
-      if (isEar) {
-        // Clip it
-        m_mesh << triangle;
-      } else {
-        vertices << center;
-      }
+    if (vertices.length() == 1) {
+      // We removed the first two so if we started this iteration with 3 we are at 1
+      // now
+      m_mesh << triangle;
+      break;
     }
+
+    bool isEar = std::accumulate(vertices.begin(), vertices.end(), true, [&](bool acc, const QVector2D* point) {
+      auto point3D = QVector3D{point->x(), point->y(), 0.0f};
+      auto isEar = acc && ((point == prev || point == next) || !triangle.contains(point3D));
+      return isEar;
+    });
+
+    if (isConvex(prev3D, center3D, next3D) && isEar) {
+      // Clip it
+      m_mesh << triangle;
+      vertices.prepend(prev);
+    } else {
+      vertices << prev;
+      vertices.prepend(center);
+    }
+
+    //if (vertices.length() == 20) {
+    //  qDebug() << "We are stuck at 20";
+    //  break;
+    //}
+
   }
 
+  QList<QVector3D> triangluated;
+  for (auto triangle : m_mesh) {
+    triangluated << triangle.top() << triangle.left() << triangle.bottom();
+  }
+
+  m_numVertices = triangluated.length();
+  m_vertices = new float[m_numVertices * 8];
+
+
+  for (int i = 0; i < triangluated.length(); i++) {
+    int p = i * 8;
+    m_vertices[p + 0] = triangluated[i].x() - 1000.0f;
+    m_vertices[p + 1] = -triangluated[i].y() + 500.0f;
+    m_vertices[p + 2] = 10.0f;
+
+    m_vertices[p + 3] = 0.0f;
+    m_vertices[p + 4] = 0.0f;
+    m_vertices[p + 5] = 0.0f;
+    m_vertices[p + 6] = 0.0f;
+    m_vertices[p + 7] = 0.0f;
+  }
+
+  m_numElements = m_mesh.length() * 3;
+  m_elements = new ushort[m_numElements];
+
+  for (uint i = 0; i < m_numElements; i++) {
+    m_elements[i] = i;
+  }
+
+  ///translate(0.0f, 0.0f, 10.0f);
+  //translate(-1000.0f, 500.0f, 10.0f);
+  //scale(0.5f);
   return m_mesh;
 }
