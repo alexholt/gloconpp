@@ -169,7 +169,7 @@ Item {
         consoleInput.text = eval(consoleInput.text)
         //consoleInput.text = JSConsole.evaluate();
         cursorPosition = consoleInput.text.length;
-        //JSConsole.isDirty = true;
+        JSConsole.isDirty = true;
         return false;
       }
     }

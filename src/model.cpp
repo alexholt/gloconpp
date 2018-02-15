@@ -2,18 +2,14 @@
 
 #include <QFile>
 
-Model::Model() :
-  m_vao(new QOpenGLVertexArrayObject),
-  m_vertexVbo(new QOpenGLBuffer),
-  m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)),
-  m_textureVbo(new QOpenGLBuffer()) {
-}
+Model::Model() : Model(false) {}
 
 Model::Model(bool hasTexture) :
   m_vao(new QOpenGLVertexArrayObject),
   m_vertexVbo(new QOpenGLBuffer),
   m_elementVbo(new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)),
   m_textureVbo(new QOpenGLBuffer()) {
+
   m_hasTexture = hasTexture;
 }
 
@@ -187,4 +183,8 @@ void Model::translate(float x, float y, float z) {
 
 void Model::rotate(float degree, float x, float y, float z) {
   m_modelViewMatrix.rotate(degree, x, y, z);
+}
+
+void Model::setShader(QString shaderName) {
+   m_activeShader = shaderName;
 }

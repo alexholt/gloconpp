@@ -294,12 +294,6 @@ QList<Triangle> Territory::getMesh() {
       vertices << prev;
       vertices.prepend(center);
     }
-
-    //if (vertices.length() == 20) {
-    //  qDebug() << "We are stuck at 20";
-    //  break;
-    //}
-
   }
 
   QList<QVector3D> triangluated;
@@ -315,7 +309,7 @@ QList<Triangle> Territory::getMesh() {
     int p = i * 8;
     m_vertices[p + 0] = triangluated[i].x() - 1000.0f;
     m_vertices[p + 1] = -triangluated[i].y() + 500.0f;
-    m_vertices[p + 2] = 10.0f;
+    m_vertices[p + 2] = 10.0f + 10.0f * 0.001;
 
     m_vertices[p + 3] = 0.0f;
     m_vertices[p + 4] = 0.0f;
@@ -325,14 +319,12 @@ QList<Triangle> Territory::getMesh() {
   }
 
   m_numElements = m_mesh.length() * 3;
+  //m_numElements = m_mesh.length() * 3 + m_mesh.length() * 2;
   m_elements = new ushort[m_numElements];
 
   for (uint i = 0; i < m_numElements; i++) {
     m_elements[i] = i;
   }
 
-  ///translate(0.0f, 0.0f, 10.0f);
-  //translate(-1000.0f, 500.0f, 10.0f);
-  //scale(0.5f);
   return m_mesh;
 }

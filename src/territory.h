@@ -24,6 +24,7 @@ public:
   QList<Triangle> getMesh();
   bool fuzzyVertexCompare(const QVector3D&, const QVector3D&) const;
   bool isClockwise();
+  QString getName();
 
 private:
   QString m_path;

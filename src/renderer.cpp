@@ -110,7 +110,8 @@ void Renderer::paint() {
   glDepthFunc(GL_LESS);
   glDepthMask(GL_TRUE);
 
-  //glEnable(GL_CULL_FACE);
+  // TODO: Need to ensure generated triangles have the right winding before turning this back on
+  glEnable(GL_CULL_FACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -128,8 +129,8 @@ void Renderer::paint() {
     m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
   }
 
-  //m_tank.render(this, *m_renderCameraMatrix, elapsed);
-  //m_mars.render(this, *m_renderCameraMatrix, elapsed);
+  m_tank.render(this, *m_renderCameraMatrix, elapsed);
+  m_mars.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();

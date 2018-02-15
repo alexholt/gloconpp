@@ -6,6 +6,7 @@
 #include <assimp/scene.h>
 #include <exception>
 #include <QDebug>
+#include <QMap>
 #include <QObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
@@ -21,6 +22,10 @@ struct Mesh {
   int elementCount;
 };
 
+struct ShaderMode {
+
+};
+
 class Model : public QObject {
 public:
   Model();
@@ -31,6 +36,7 @@ public:
   void scale(float);
   void translate(float, float, float);
   void rotate(float, float, float, float);
+  void setShader(QString);
 
 protected:
   QOpenGLShaderProgram* m_program;
@@ -54,6 +60,10 @@ protected:
 
 private:
   void initialize(QOpenGLFunctions* gl);
+
+  QList<QString> m_shaderNames = {"basic"};
+  QMap<QString, QOpenGLShaderProgram*> m_shaders;
+  QString m_activeShader;
 };
 
 #endif // MODEL_H

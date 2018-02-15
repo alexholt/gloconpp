@@ -77,6 +77,7 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
   auto territories = m_territories.values();
   for (int i = 0; i < territories.length(); i++) {
     territories[i]->getMesh();
+    territories[i]->setShader("cube");
     territories[i]->render(renderer, cameraMatrix, elapsed);
   }
 }

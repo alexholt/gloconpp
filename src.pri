@@ -41,3 +41,7 @@ INCLUDEPATH += /usr/local/include
 OBJECTS_DIR = ../build/obj
 MOC_DIR = ../build/moc
 RCC_DIR = ../build/rcc
+
+DISTFILES += \
+    $$PWD/assets/shaders/diffuse.frag \
+    $$PWD/assets/shaders/diffuse.vert

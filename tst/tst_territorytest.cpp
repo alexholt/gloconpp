@@ -51,5 +51,5 @@ void TerritoryTest::isClockWiseTestCase() {
   QVERIFY(!m_subject->isClockwise());
   delete m_subject;
   m_subject = new Territory("m 0,0 -10,0 0,10 10,0 z");
-  QVERIFY(m_subject->isClockwise());
+  QVERIFY(!m_subject->isClockwise());
 }

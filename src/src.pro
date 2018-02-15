@@ -26,7 +26,9 @@ DISTFILES += \
     assets/textures/marsmap1k.jpg \
     assets/models/mars.fbx \
     assets/models/mars.fbx \
-    assets/models/mars.fbx
+    assets/models/mars.fbx \
+    ../assets/shaders/diffuse.frag \
+    ../assets/shaders/diffuse.vert
 
 RESOURCES += \
     gloconpp.qrc

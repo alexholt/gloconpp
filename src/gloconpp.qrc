@@ -18,5 +18,7 @@
         <file>../assets/models/mars.obj</file>
         <file>../assets/textures/mars.jpg</file>
         <file>../assets/maps/just-us.svg</file>
+        <file>../assets/shaders/diffuse.frag</file>
+        <file>../assets/shaders/diffuse.vert</file>
     </qresource>
 </RCC>
