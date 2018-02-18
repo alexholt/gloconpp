@@ -3,7 +3,7 @@
 Rect::Rect() {
 }
 
-Rect::Rect(const Rect& other) {
+Rect::Rect(const Rect& other) : QObject() {
   m_x = other.x();
   m_x2 = other.x2();
   m_y = other.y();

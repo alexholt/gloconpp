@@ -12,7 +12,7 @@ Camera::Camera() {
   updateMatrix();
 }
 
-Camera::Camera(Camera& other) {
+Camera::Camera(Camera& other) : QObject() {
   QVector3D vec = other.position();
   m_position = vec;
   setAspectRatio(other.m_width, other.m_height);

@@ -13,22 +13,12 @@ include(../src.pri)
 
 DISTFILES += \
     main.qml \
-    worldmap.vert \
-    worldmap.vert \
-    assets/shaders/worldmap.frag \
-    assets/shaders/worldmap.vert \
     assets/icons/app.svg \
-    assets/shaders/cube.frag \
-    assets/shaders/cube.vert \
-    assets/shaders/cube.frag \
-    assets/shaders/cube.vert \
     assets/models/tank.obj \
     assets/textures/marsmap1k.jpg \
     assets/models/mars.fbx \
     assets/models/mars.fbx \
-    assets/models/mars.fbx \
-    ../assets/shaders/diffuse.frag \
-    ../assets/shaders/diffuse.vert
+    assets/models/mars.fbx
 
 RESOURCES += \
     gloconpp.qrc

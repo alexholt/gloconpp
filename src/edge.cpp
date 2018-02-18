@@ -5,7 +5,7 @@
 Edge::Edge() {
 }
 
-Edge::Edge(const Edge& other) {
+Edge::Edge(const Edge& other) : QObject() {
   m_firstPoint = other.firstPoint();
   m_secondPoint = other.secondPoint();
 }
