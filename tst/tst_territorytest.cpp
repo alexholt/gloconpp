@@ -16,16 +16,10 @@ void TerritoryTest::cleanupTestCase() {
 }
 
 void TerritoryTest::meshBuildingTestCase() {
-  for (auto tri : m_subject->getMesh()) {
-    qDebug() << tri;
-  }
   QVERIFY(m_subject->getMesh().length() == 2);
 
   delete m_subject;
   m_subject = new Territory("m 0,0 10,0 0,10 -5,5 -5,-5 z");
-  for (auto tri : m_subject->getMesh()) {
-    qDebug() << tri;
-  }
   QVERIFY(m_subject->getMesh().length() == 3);
 }
 

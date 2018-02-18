@@ -22,11 +22,13 @@ Model::~Model() {
 }
 
 void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
+  Q_UNUSED(elapsed)
+
   if (!m_isInitialized) {
     initialize(renderer);
   }
 
-  float angle = m_rotationSpeed * static_cast<float>(elapsed);
+  //float angle = m_rotationSpeed * static_cast<float>(elapsed);
 
   //m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
 

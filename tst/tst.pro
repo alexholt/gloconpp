@@ -10,7 +10,8 @@ TEMPLATE = app
 SOURCES +=  tst_triangletest.cpp \
     tst_territorytest.cpp \
     testmain.cpp \
-    tst_circletest.cpp
+    tst_circletest.cpp \
+    testxmlhandler.cpp
 
 DESTDIR = ../build
 OBJECTS_DIR = ../build/obj
@@ -23,4 +24,7 @@ include(../src.pri)
 HEADERS += \
     tst_circletest.h \
     tst_territorytest.h \
-    tst_triangletest.h
+    tst_triangletest.h \
+    testxmlhandler.h
+
+CONFIG += c++1z

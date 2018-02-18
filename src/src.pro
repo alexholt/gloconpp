@@ -32,3 +32,5 @@ DISTFILES += \
 
 RESOURCES += \
     gloconpp.qrc
+
+CONFIG += c++1z
