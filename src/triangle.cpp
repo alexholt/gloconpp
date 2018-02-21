@@ -15,6 +15,9 @@ Triangle::Triangle() {
 Triangle::Triangle(const QVector3D& top, const QVector3D& left, const QVector3D& bottom) {
   QList<QVector3D> points;
   points << top << left << bottom;
+  m_top = top;
+  m_left = left;
+  m_bottom = bottom;
 
   // Make sure the points are actually in order or the isValid algorithm won't work right
   std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
@@ -128,9 +131,13 @@ bool Triangle::contains(const QVector3D& v) const {
   return doesContain;
 }
 
-QDebug operator<<(QDebug debug, const Triangle& tri) {
-    QDebugStateSaver saver(debug);
-    debug.nospace() << '(' << tri.top() << ", " << tri.left() << tri.bottom() << ')';
+bool Triangle::isClockwise() {
+  return QVector3D::crossProduct(m_top, m_bottom).z() >= 0;
+}
 
-    return debug;
+QDebug operator<<(QDebug debug, const Triangle& tri) {
+  QDebugStateSaver saver(debug);
+  debug.nospace() << '(' << tri.top() << ", " << tri.left() << tri.bottom() << ')';
+
+  return debug;
 }

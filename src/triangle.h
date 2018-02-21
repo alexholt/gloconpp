@@ -32,6 +32,7 @@ public:
   bool contains(const QVector3D&) const;
 
   bool isValid();
+  bool isClockwise();
 
 private:
   QVector3D m_top;

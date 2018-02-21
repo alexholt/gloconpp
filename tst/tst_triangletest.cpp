@@ -20,7 +20,7 @@ void TriangleTest::cleanupTestCase() {
   delete m_subject;
 }
 
-void TriangleTest::test_case_copy_constructor() {
+void TriangleTest::copyConstructorTestCase() {
   Triangle copy = *m_subject;
   QVERIFY2(*m_subject == copy, "The copy constructor works");
   QList<Triangle> triangles;
@@ -32,8 +32,8 @@ void TriangleTest::testCaseisValid() {
   QVERIFY2(
         !Triangle(
           QVector3D{0.0f, 0.0f, 0.0f},
-          QVector3D{0.0f, 10.0f, 0.0f},
-          QVector3D{0.0f, -10.0f, 0.0f}
+          QVector3D{-10.0f, 0.0f, 0.0f},
+          QVector3D{10.0f, 0.0f, 0.0f}
         ).isValid(),
     "The validation check will fail if the three points are colinear"
   );
@@ -48,4 +48,16 @@ void TriangleTest::testCaseContains() {
   );
   QVERIFY(m_subject->contains(QVector3D{0.5f, 0.1f, 0.0f}));
   QVERIFY(!m_subject->contains(QVector3D{-0.5f, 0.5f, 0.0f}));
+}
+
+void TriangleTest::windingTestCase() {
+  QVERIFY(m_subject->isClockwise());
+
+  Triangle other(
+    QVector3D{0.0f, 1.0f, 0.0f},
+    QVector3D{-1.0f, 0.0f, 0.0f},
+    QVector3D{1.0f, 0.0f, 0.0f}
+  );
+
+  QVERIFY(m_subject->isClockwise());
 }
