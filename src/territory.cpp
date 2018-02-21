@@ -11,9 +11,22 @@ Territory::Territory(const QString& path) {
   m_path = path;
 }
 
-Territory::Territory(const QString& name, const QString& path) {
+Territory::Territory(const QString& path, const QString& name) {
   m_name = name;
   m_path = path;
+}
+
+Territory::Territory(const QString& path, const QString& name, bool ensureCCW) {
+  m_name = name;
+  m_path = path;
+  getPointArray();
+  if (ensureCCW && isClockwise()) {
+    QList<QVector2D*> reversed;
+    for (auto it = --m_pointArray.end(); it > m_pointArray.begin(); it--) {
+      reversed << *it;
+    }
+    m_pointArray = reversed;
+  }
 }
 
 Territory::~Territory() {
@@ -119,14 +132,6 @@ QList<QVector2D*>& Territory::getPointArray() {
     }
   }
 
-  if (isClockwise()) {
-    QList<QVector2D*> reversed;
-    for (auto it = --m_pointArray.end(); it >= m_pointArray.begin(); it--) {
-      reversed << *it;
-    }
-    m_pointArray = reversed;
-  }
-
   return m_pointArray;
 }
 
@@ -143,6 +148,7 @@ bool Territory::isClockwise() {
 
   // This is intended for mapspace which has a flipped y-axis
   // so it's negative if it is clockwise
+
   return (area / 2) < 0;
 }
 

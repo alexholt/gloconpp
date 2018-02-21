@@ -17,7 +17,8 @@ private slots:
   void boundingBoxTestCase();
   void meshBuildingTestCase();
   void getSuperTriangleTestCase();
-  void isClockWiseTestCase();
+  void isClockwiseTestCase();
+  void canBeFlippedTestCase();
 };
 
 #endif // TST_TERRITORYTEST_H

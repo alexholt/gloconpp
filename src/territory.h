@@ -17,6 +17,7 @@ class Territory : public Model {
 public:
   Territory(const QString&);
   Territory(const QString&, const QString&);
+  Territory(const QString&, const QString&, bool);
   ~Territory();
   Rect getBoundingBox();
   Triangle getSuperTriangle();

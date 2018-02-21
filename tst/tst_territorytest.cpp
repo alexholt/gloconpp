@@ -41,9 +41,16 @@ void TerritoryTest::getSuperTriangleTestCase() {
   QVERIFY(superTriangle.bottom().x() <= box.x2());
 }
 
-void TerritoryTest::isClockWiseTestCase() {
+void TerritoryTest::isClockwiseTestCase() {
   QVERIFY(!m_subject->isClockwise());
+
   delete m_subject;
   m_subject = new Territory("m 0,0 -10,0 0,10 10,0 z");
+  QVERIFY(m_subject->isClockwise());
+}
+
+void TerritoryTest::canBeFlippedTestCase() {
+  delete m_subject;
+  m_subject = new Territory("m 0,0 -10,0 0,10 10,0 z", "Test Territory", true);
   QVERIFY(!m_subject->isClockwise());
 }
