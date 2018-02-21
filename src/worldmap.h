@@ -39,7 +39,7 @@ public:
   ~WorldMap();
   void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadMap();
-  QImage* createTexture();
+  void createTexture();
 
   float m_vertices[6 * 3] = {
     -HALF_WIDTH,  HALF_HEIGHT, Z,
@@ -66,6 +66,7 @@ private:
   GLuint m_positionAttributeLocation;
   GLuint m_texcoordAttributeLocation;
   QImage* m_textureData;
+  QImage* m_tex;
 
   GLfloat m_texcoords[12] = {
     0.0f, 1.0f,

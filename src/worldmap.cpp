@@ -22,6 +22,7 @@ WorldMap::~WorldMap() {
 
 void WorldMap::teardownGL() {
   delete m_textureData;
+  delete m_tex;
   m_program->release();
   delete m_vao;
   delete m_vertexVbo;
@@ -76,7 +77,6 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
 
   auto territories = m_territories.values();
   for (int i = 0; i < territories.length(); i++) {
-    territories[i]->getMesh();
     territories[i]->setShader("cube");
     territories[i]->render(renderer, cameraMatrix, elapsed);
   }
@@ -111,13 +111,14 @@ void WorldMap::loadMap() {
   ) {
     if (!territory.attribute("class").split("/\\s/").contains("ignore")) {
       auto name = territory.attribute("data-name");
-      m_territories[name] = new Territory(name, territory.attribute("d"));
+      m_territories[name] = new Territory(territory.attribute("d"), name, true);
+      m_territories[name]->getMesh();
     }
   }
 
 }
 
-QImage* WorldMap::createTexture() {
+void WorldMap::createTexture() {
   QDomElement docElem = m_doc.documentElement();
 
   uint i = 0;
@@ -146,13 +147,12 @@ QImage* WorldMap::createTexture() {
 
   QSvgRenderer renderer;
   renderer.load(m_doc.toByteArray());
-  QImage* tex = new QImage(8000, 4000, QImage::Format_ARGB32);
-  QPainter painter(tex);
+  m_tex = new QImage(8000, 4000, QImage::Format_ARGB32);
+  QPainter painter(m_tex);
   renderer.render(&painter);
 
-  m_texture = new QOpenGLTexture(tex->mirrored());
+  m_texture = new QOpenGLTexture(m_tex->mirrored());
   m_texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
   m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
   m_texture->bind();
-  return tex;
 }
