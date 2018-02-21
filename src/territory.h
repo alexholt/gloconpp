@@ -22,6 +22,7 @@ public:
   Rect getBoundingBox();
   Triangle getSuperTriangle();
   QVector2D* getCentroid();
+  void buildMesh();
   QList<Triangle> getMesh();
   bool fuzzyVertexCompare(const QVector3D&, const QVector3D&) const;
   bool isClockwise();

@@ -250,11 +250,14 @@ bool Territory::fuzzyVertexCompare(const QVector3D& first, const QVector3D& seco
 }
 
 QList<Triangle> Territory::getMesh() {
-  auto vertices = getPointArray();
-
-  if (m_mesh.length() > 0) {
+  if (m_mesh.length() > 0)
     return m_mesh;
-  }
+  buildMesh();
+  return m_mesh;
+}
+
+void Territory::buildMesh() {
+  auto vertices = getPointArray();
 
   auto isConvex = [](QVector3D& left, QVector3D& center, QVector3D& right) -> bool {
     // Using CCW order the point is convex iff the det is 0
@@ -331,6 +334,4 @@ QList<Triangle> Territory::getMesh() {
   for (uint i = 0; i < m_numElements; i++) {
     m_elements[i] = i;
   }
-
-  return m_mesh;
 }
