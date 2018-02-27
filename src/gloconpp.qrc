@@ -20,5 +20,8 @@
         <file>../assets/maps/just-us.svg</file>
         <file>../assets/shaders/diffuse.frag</file>
         <file>../assets/shaders/diffuse.vert</file>
+        <file>../assets/shaders/fuzzycircle.frag</file>
+        <file>../assets/shaders/fuzzycircle.vert</file>
+        <file>../assets/models/plane.obj</file>
     </qresource>
 </RCC>

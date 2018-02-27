@@ -2,6 +2,9 @@
 
 #include <QFile>
 
+#include "glocon.h"
+#include "triangle.h"
+
 Model::Model() : Model(false) {}
 
 Model::Model(bool hasTexture) :
@@ -22,15 +25,14 @@ Model::~Model() {
 }
 
 void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
-  Q_UNUSED(elapsed)
-
   if (!m_isInitialized) {
     initialize(renderer);
   }
 
-  //float angle = m_rotationSpeed * static_cast<float>(elapsed);
-
-  //m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
+  if (m_shouldRotate) {
+    float angle = m_rotationSpeed * static_cast<float>(elapsed);
+    m_modelViewMatrix.rotate(angle, 1.0, 1.0, 1.0);
+  }
 
   m_program->bind();
   m_vao->bind();
@@ -38,9 +40,7 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
   if (m_hasTexture)
     m_texture->bind();
 
-  m_program->setUniformValue("u_camera", cameraMatrix);
-  m_program->setUniformValue("u_modelView", m_modelViewMatrix);
-
+  setUniforms(cameraMatrix);
   renderer->glDrawElements(GL_TRIANGLES, m_numElements, GL_UNSIGNED_SHORT, 0);
 
   m_vao->release();
@@ -49,6 +49,28 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
 
   if (m_hasTexture)
     m_texture->release();
+}
+
+void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
+  m_program->setUniformValue("u_camera", cameraMatrix);
+  m_program->setUniformValue("u_modelView", m_modelViewMatrix);
+
+  SWITCH (m_shaderName.toLatin1()) {
+    CASE ("fuzzycircle"):
+      m_program->setUniformValue("u_innerColor", QVector4D{0.0, 0.0, 0.0, 0.3});
+      m_program->setUniformValue("u_outerColor", QVector4D{1.0, 1.0, 1.0, 1.0});
+      m_program->setUniformValue("u_radiusInner", 0.25f);
+      m_program->setUniformValue("u_radiusOuter", 0.45f);
+      break;
+  }
+}
+
+bool Model::shouldRotate() const {
+  return m_shouldRotate;
+}
+
+void Model::setShouldRotate(bool shouldRotate) {
+  m_shouldRotate = shouldRotate;
 }
 
 #define BUFFER_OFFSET(o) ((const void*) (o))
@@ -114,7 +136,7 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
 
   auto bytes = modelFile.readAll();
   const aiScene* scene = importer.ReadFileFromMemory(
-    bytes.data_ptr(),
+    bytes.data(),
     bytes.length(),
     aiProcess_Triangulate | aiProcess_JoinIdenticalVertices,
     modelFilePath.split('.')[1].toUtf8()
@@ -129,8 +151,9 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
   if (scene->mNumMeshes > 1)
     qDebug() << "Warning: the obj file contains more than one mesh. Reading only the first one";
 
-  if (scene->mNumMeshes == 0)
+  if (scene->mNumMeshes == 0) {
     throw std::runtime_error((QString("File contains no meshes: ") + modelFilePath).toStdString());
+  }
 
   aiMesh* mesh = scene->mMeshes[0];
   m_meshData.elementCount = mesh->mNumFaces * 3;
@@ -139,6 +162,7 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
   m_vertices = new float[m_numVertices * 8];
   for (uint i = 0; i < mesh->mNumVertices; i++) {
     uint p = i * 8;
+
     m_vertices[p] = mesh->mVertices[i][0];
     m_vertices[p + 1] = mesh->mVertices[i][1];
     m_vertices[p + 2] = mesh->mVertices[i][2];
@@ -161,7 +185,6 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
       m_vertices[p + 7] = 0.0f;
     }
   }
-
 
   m_numElements = mesh->mNumFaces * 3;
   m_elements = new ushort[m_numElements];

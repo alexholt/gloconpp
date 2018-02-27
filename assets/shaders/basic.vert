@@ -8,7 +8,8 @@ uniform mat4 u_modelView;
 
 out vec2 UV;
 
-void main() {
+void main()
+{
   gl_Position = u_camera * u_modelView * vec4(a_position, 1.0);
   UV = a_texcoord;
 }

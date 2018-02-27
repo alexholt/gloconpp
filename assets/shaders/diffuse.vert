@@ -9,7 +9,7 @@ uniform vec4 LightPosition;
 uniform vec3 Kd;
 uniform vec3 Ld;
 
-uniform mat4 ModelViewMatrix;
+uniform mat4 u_modelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 ProjectionMatrix;
 uniform mat4 MVP;

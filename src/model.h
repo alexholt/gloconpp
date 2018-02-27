@@ -38,7 +38,12 @@ public:
   void rotate(float, float, float, float);
   void setShader(QString);
 
+  bool shouldRotate() const;
+  void setShouldRotate(bool shouldRotate);
+
 protected:
+  void setUniforms(const QMatrix4x4&);
+
   QOpenGLShaderProgram* m_program;
   bool m_isInitialized = false;
   QMatrix4x4 m_modelViewMatrix;
@@ -57,6 +62,7 @@ protected:
   float m_rotationSpeed = 90.0f / 1000.0f; // 1/4 rotation per second
   QString m_shaderName = "cube";
   bool m_hasTexture = false;
+  bool m_shouldRotate = false;
 
 private:
   void initialize(QOpenGLFunctions* gl);

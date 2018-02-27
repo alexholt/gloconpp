@@ -68,6 +68,7 @@ private:
   QList<Cube*> m_cubeList;
   Model m_tank;
   Model m_mars;
+  Model m_plane{true};
 
 signals:
   void fpsChanged();
