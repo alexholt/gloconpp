@@ -20,24 +20,24 @@ Triangle::Triangle(const QVector3D& top, const QVector3D& left, const QVector3D&
   m_bottom = bottom;
 
   // Make sure the points are actually in order or the isValid algorithm won't work right
-  std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
-    if (qFuzzyCompare(second.y(), first.y()))
-      return first.x() > second.x();
-    return first.y() > second.y();
-  });
+  //std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
+  //  if (qFuzzyCompare(second.y(), first.y()))
+  //    return first.x() > second.x();
+  //  return first.y() > second.y();
+  //});
 
-  m_top = points[0];
+  //m_top = points[0];
 
-  points.removeAll(points[0]);
+  //points.removeAll(points[0]);
 
-  std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
-    if (qFuzzyCompare(second.x(), first.x()))
-      return first.y() > second.y();
-    return first.x() > second.x();
-  });
+  //std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
+  //  if (qFuzzyCompare(second.x(), first.x()))
+  //    return first.y() > second.y();
+  //  return first.x() > second.x();
+  //});
 
-  m_left = points[0];
-  m_bottom = points[1];
+  //m_left = points[0];
+  //m_bottom = points[1];
 }
 
 Triangle::Triangle(const QVector2D& top, const QVector2D& left, const QVector2D& bottom) :
@@ -131,8 +131,19 @@ bool Triangle::contains(const QVector3D& v) const {
   return doesContain;
 }
 
+// See the method in Territory also
 bool Triangle::isClockwise() {
-  return QVector3D::crossProduct(m_top, m_bottom).z() >= 0;
+  QList<QVector3D> vertices;
+  vertices << m_top << m_bottom << m_left;
+
+  float area = 0.0f;
+  for (int i = 0; i < vertices.length(); i++) {
+    auto first = vertices[i];
+    auto second = vertices[(i + 1) % vertices.length()];
+    area += first.x() * second.y() - second.x() * first.y();
+  }
+
+  return (area / 2) < 0;
 }
 
 QDebug operator<<(QDebug debug, const Triangle& tri) {

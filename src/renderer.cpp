@@ -114,8 +114,7 @@ void Renderer::paint() {
   glDepthFunc(GL_LESS);
   glDepthMask(GL_TRUE);
 
-  // TODO: Need to ensure generated triangles have the right winding before turning this back on
-  //glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -282,6 +282,9 @@ void Territory::buildMesh() {
 
     Triangle triangle{prev3D, center3D, next3D};
 
+    if (triangle.isClockwise())
+      triangle = Triangle{prev3D, next3D, center3D};
+
     if (vertices.length() == 1) {
       // We removed the first two so if we started this iteration with 3 we are at 1
       // now
