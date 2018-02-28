@@ -40,10 +40,18 @@ Item {
   }
 
   function scaleToWorldDistance() {
-      var aspect = screen.width / screen.height;
-      var fov = 2 * Math.PI * 60 / 360;
-      var fullSize = -screen.width / (aspect * Math.tan(fov / 2));
-      return fullSize / currentScale * 0.5;
+    var aspect = screen.width / screen.height;
+    var fov = 2 * Math.PI * 60 / 360;
+    var fullSize = -screen.width / (aspect * Math.tan(fov / 2));
+    return fullSize / currentScale * 0.5;
+  }
+
+  function toggleConsole() {
+    consoleInput.visible = !consoleInput.visible;
+    consoleBackground.visible = !consoleBackground.visible;
+    flickArea.focus = !consoleInput.visible;
+    consoleInput.focus = consoleInput.visible;
+    return true;
   }
 
   Flickable {
@@ -73,6 +81,10 @@ Item {
         return false;
       }
 
+      if (event.key === Qt.Key_QuoteLeft) {
+        return toggleConsole();
+      }
+
       renderer.onKeyPressed(event.key);
     }
     onContentXChanged: {
@@ -82,14 +94,6 @@ Item {
     onContentYChanged: {
       var point = contentToCenterWorld(contentX, contentY) ;
       renderer.updatePosition(point.x, point.y, currentScale);
-    }
-
-    Image {
-      id: mapImage
-      visible: false
-      source: 'qrc:/assets/maps/world.svg'
-      width: flickArea.contentWidth
-      height: flickArea.contentHeight
     }
   }
 
@@ -157,6 +161,10 @@ Item {
         return false;
       }
 
+      if (event.key === Qt.Key_QuoteLeft) {
+        return toggleConsole();
+      }
+
       if (JSConsole.isDirty) {
         JSConsole.isDirty = false;
         consoleInput.text = '';
@@ -167,7 +175,6 @@ Item {
         (event.modifiers & Qt.ControlModifier)
       ) {
         consoleInput.text = eval(consoleInput.text)
-        //consoleInput.text = JSConsole.evaluate();
         cursorPosition = consoleInput.text.length;
         JSConsole.isDirty = true;
         return false;
