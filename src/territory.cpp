@@ -328,7 +328,6 @@ void Territory::buildMesh() {
   }
 
   m_numElements = m_mesh.length() * 3;
-  //m_numElements = m_mesh.length() * 3 + m_mesh.length() * 2;
   m_elements = new ushort[m_numElements];
 
   for (uint i = 0; i < m_numElements; i++) {

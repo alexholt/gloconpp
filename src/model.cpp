@@ -211,5 +211,5 @@ void Model::rotate(float degree, float x, float y, float z) {
 }
 
 void Model::setShader(QString shaderName) {
-   m_activeShader = shaderName;
+   m_shaderName = shaderName;
 }

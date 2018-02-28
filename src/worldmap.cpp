@@ -77,7 +77,6 @@ void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix
 
   auto territories = m_territories.values();
   for (int i = 0; i < territories.length(); i++) {
-    territories[i]->setShader("cube");
     territories[i]->render(renderer, cameraMatrix, elapsed);
   }
 }
@@ -112,10 +111,10 @@ void WorldMap::loadMap() {
     if (!territory.attribute("class").split("/\\s/").contains("ignore")) {
       auto name = territory.attribute("data-name");
       m_territories[name] = new Territory(territory.attribute("d"), name, true);
+      m_territories[name]->setShader("solid");
       m_territories[name]->buildMesh();
     }
   }
-
 }
 
 void WorldMap::createTexture() {

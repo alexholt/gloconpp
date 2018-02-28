@@ -23,5 +23,7 @@
         <file>../assets/shaders/fuzzycircle.frag</file>
         <file>../assets/shaders/fuzzycircle.vert</file>
         <file>../assets/models/plane.obj</file>
+        <file>../assets/shaders/solid.frag</file>
+        <file>../assets/shaders/solid.vert</file>
     </qresource>
 </RCC>

@@ -69,7 +69,6 @@ private:
 
   QList<QString> m_shaderNames = {"basic"};
   QMap<QString, QOpenGLShaderProgram*> m_shaders;
-  QString m_activeShader;
 };
 
 #endif // MODEL_H
