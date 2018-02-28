@@ -1,0 +1,11 @@
+--style=java
+--lineend=linux
+--indent=spaces=2
+--indent-switches
+--indent-col1-comments
+--pad-oper
+--pad-header
+--unpad-paren
+--align-pointer=type
+--min-conditional-indent=0
+--convert-tabs
