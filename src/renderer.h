@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_H
-#define VIEWPORT_H
+#ifndef RENDERER_H
+#define RENDERER_H
 
 #include <QDateTime>
 #include <QDomDocument>
@@ -68,7 +68,11 @@ private:
   QList<Cube*> m_cubeList;
   Model m_tank;
   Model m_mars;
-  Model m_plane{true};
+
+  Model m_planes[2] = {
+    Model{true},
+    Model{true}
+  };
 
 signals:
   void fpsChanged();
@@ -86,4 +90,4 @@ public slots:
   void teardownGL();
 };
 
-#endif // VIEWPORT_H
+#endif // RENDERER_H

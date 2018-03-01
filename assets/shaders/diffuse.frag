@@ -1,10 +1,9 @@
 #version 400
 
-in vec3 LightIntensity;
+in vec3 lightIntensity;
 
-layout (location = 0) out vec4 FragColor;
+out vec4 color;
 
-void main(void)
-{
-    FragColor = vec4(LightIntensity, 1.0);
+void main(void) {
+  color = vec4(lightIntensity, 1.0);
 }

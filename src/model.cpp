@@ -24,6 +24,10 @@ Model::~Model() {
     delete[] m_elements;
 }
 
+Model::Model(const Model& other) : Model(other.m_hasTexture) {
+  m_shaderName = other.m_shaderName;
+}
+
 void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
   if (!m_isInitialized) {
     initialize(renderer);
@@ -55,12 +59,25 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
 
-  SWITCH (m_shaderName.toLatin1()) {
+  const char* shaderName = m_shaderName.toLatin1();
+  SWITCH (shaderName) {
     CASE ("fuzzycircle"):
       m_program->setUniformValue("u_innerColor", QVector4D{0.0, 0.0, 0.0, 0.3});
       m_program->setUniformValue("u_outerColor", QVector4D{1.0, 1.0, 1.0, 1.0});
       m_program->setUniformValue("u_radiusInner", 0.25f);
       m_program->setUniformValue("u_radiusOuter", 0.45f);
+      break;
+
+    CASE ("diffuse"):
+      static auto height = 0.0f;
+      m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, height++, 1.0});
+      m_program->setUniformValue("u_kd", QVector3D{1.0, 1.0, 1.0});
+      m_program->setUniformValue("u_ld", QVector3D{1.0, 1.0, 1.0});
+
+      QMatrix3x3 normalMatrix;
+      normalMatrix.setToIdentity();
+
+      m_program->setUniformValue("u_normalMatrix", normalMatrix);
       break;
   }
 }

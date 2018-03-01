@@ -48,7 +48,7 @@ Triangle::Triangle(const QVector2D& top, const QVector2D& left, const QVector2D&
   } {
 }
 
-Triangle::Triangle(const Triangle &other) {
+Triangle::Triangle(const Triangle& other) {
   m_top = other.top();
   m_left = other.left();
   m_bottom = other.bottom();

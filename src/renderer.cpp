@@ -23,9 +23,13 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_mars.translate(-20.0f, 0.0f, 30.0f);
   m_mars.scale(10.0f);
 
-  m_plane.loadFile(":/assets/models/plane.obj", "fuzzycircle");
-  m_plane.translate(10.0f, 0.0f, 20.0f);
-  m_plane.scale(10.0f);
+  m_planes[0].loadFile(":/assets/models/plane.obj", "fuzzycircle");
+  m_planes[0].translate(10.0f, 0.0f, 20.0f);
+  m_planes[0].scale(10.0f);
+
+  m_planes[1].loadFile(":/assets/models/plane.obj", "diffuse");
+  m_planes[1].translate(50.0f, 0.0f, 20.0f);
+  m_planes[1].scale(10.0f);
 }
 
 Renderer::~Renderer() {
@@ -134,7 +138,8 @@ void Renderer::paint() {
 
   m_tank.render(this, *m_renderCameraMatrix, elapsed);
   m_mars.render(this, *m_renderCameraMatrix, elapsed);
-  m_plane.render(this, *m_renderCameraMatrix, elapsed);
+  m_planes[0].render(this, *m_renderCameraMatrix, elapsed);
+  m_planes[1].render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();

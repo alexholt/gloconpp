@@ -30,6 +30,7 @@ class Model : public QObject {
 public:
   Model();
   Model(bool);
+  Model(const Model&);
   ~Model();
   virtual void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
   void loadFile(const QString&, const QString& = "basic");
