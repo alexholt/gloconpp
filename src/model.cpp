@@ -70,7 +70,8 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
 
     CASE ("diffuse"):
       static auto height = 0.0f;
-      m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, height++, 1.0});
+      height += 1.4f;
+      m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, height, 1.0});
       m_program->setUniformValue("u_kd", QVector3D{1.0, 1.0, 1.0});
       m_program->setUniformValue("u_ld", QVector3D{1.0, 1.0, 1.0});
 

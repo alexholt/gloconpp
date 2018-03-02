@@ -25,5 +25,6 @@
         <file>../assets/models/plane.obj</file>
         <file>../assets/shaders/solid.frag</file>
         <file>../assets/shaders/solid.vert</file>
+        <file>../assets/models/monkey.obj</file>
     </qresource>
 </RCC>

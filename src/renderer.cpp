@@ -30,6 +30,11 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_planes[1].loadFile(":/assets/models/plane.obj", "diffuse");
   m_planes[1].translate(50.0f, 0.0f, 20.0f);
   m_planes[1].scale(10.0f);
+
+  m_monkey.loadFile(":/assets/models/monkey.obj", "diffuse");
+  m_monkey.translate(-50.0f, 0.0f, 20.0f);
+  m_monkey.scale(10.0f);
+  m_monkey.setShouldRotate(true);
 }
 
 Renderer::~Renderer() {
@@ -140,6 +145,7 @@ void Renderer::paint() {
   m_mars.render(this, *m_renderCameraMatrix, elapsed);
   m_planes[0].render(this, *m_renderCameraMatrix, elapsed);
   m_planes[1].render(this, *m_renderCameraMatrix, elapsed);
+  m_monkey.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
   window()->resetOpenGLState();

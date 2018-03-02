@@ -49,8 +49,6 @@ private:
   QSize m_viewportSize;
   QOpenGLShaderProgram *m_program;
   WorldMap m_worldMap;
-  Cube m_cube;
-  Cube m_cube2;
   Camera m_camera;
   QMatrix4x4* m_renderCameraMatrix = new QMatrix4x4;
   bool m_isInitialized = false;
@@ -65,6 +63,8 @@ private:
   QPoint m_lastMousePoint;
   void printGLInfo();
   double m_lastZoom = 0;
+
+  // Models
   QList<Cube*> m_cubeList;
   Model m_tank;
   Model m_mars;
@@ -73,6 +73,8 @@ private:
     Model{true},
     Model{true}
   };
+
+  Model m_monkey;
 
 signals:
   void fpsChanged();
