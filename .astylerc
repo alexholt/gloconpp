@@ -3,9 +3,11 @@
 --indent=spaces=2
 --indent-switches
 --indent-col1-comments
+--indent-continuation=spaces=2
+--indent-after-parens
 --pad-oper
 --pad-header
 --unpad-paren
 --align-pointer=type
---min-conditional-indent=0
+--min-conditional-indent=2
 --convert-tabs
