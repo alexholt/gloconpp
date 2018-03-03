@@ -60,26 +60,26 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
 
   const char* shaderName = m_shaderName.toLatin1();
-  SWITCH (shaderName) {
-    CASE ("fuzzycircle"):
+  SWITCH(shaderName) {
+    CASE("fuzzycircle"): {
       m_program->setUniformValue("u_innerColor", QVector4D{0.0, 0.0, 0.0, 0.3});
       m_program->setUniformValue("u_outerColor", QVector4D{1.0, 1.0, 1.0, 1.0});
       m_program->setUniformValue("u_radiusInner", 0.25f);
       m_program->setUniformValue("u_radiusOuter", 0.45f);
       break;
+    }
 
-    CASE ("diffuse"):
-      static auto height = 0.0f;
-      height += 1.4f;
-      m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, height, 1.0});
+    CASE("diffuse"): {
+      m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, 1000.0, 1.0});
       m_program->setUniformValue("u_kd", QVector3D{1.0, 1.0, 1.0});
-      m_program->setUniformValue("u_ld", QVector3D{1.0, 1.0, 1.0});
+      m_program->setUniformValue("u_ld", QVector3D{0.5, 0.5, 1.0});
 
       QMatrix3x3 normalMatrix;
       normalMatrix.setToIdentity();
 
       m_program->setUniformValue("u_normalMatrix", normalMatrix);
       break;
+    }
   }
 }
 
@@ -229,5 +229,5 @@ void Model::rotate(float degree, float x, float y, float z) {
 }
 
 void Model::setShader(QString shaderName) {
-   m_shaderName = shaderName;
+  m_shaderName = shaderName;
 }

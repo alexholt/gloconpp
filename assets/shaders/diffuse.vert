@@ -11,10 +11,9 @@ uniform vec3 u_ld;
 
 uniform mat4 u_modelView;
 uniform mat4 u_camera;
-uniform mat3 u_normalMatrix;
 
 void main(void) {
-  vec3 tnorm = normalize(u_normalMatrix * vertexNormal);
+  vec3 tnorm = normalize(inverse(transpose(mat3(u_modelView))) * vertexNormal);
   vec4 eyeCoords = u_modelView * vec4(vertexPosition, 1.0);
   vec3 s = normalize(vec3(u_lightPosition - eyeCoords));
   lightIntensity = u_ld * u_kd * max(dot(s, tnorm), 0.0);
