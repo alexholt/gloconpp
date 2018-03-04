@@ -9,6 +9,9 @@ class GameState : public QObject {
 public:
   GameState();
   ~GameState();
+
+public slots:
+  QString hello();
 };
 
 #endif // GAMESTATE_H

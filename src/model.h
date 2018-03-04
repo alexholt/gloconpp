@@ -60,7 +60,7 @@ protected:
   uint m_numElements = 0;
   uint m_numTexels = 0;
   uint m_numVertices = 0;
-  float m_rotationSpeed = 90.0f / 1000.0f; // 1/4 rotation per second
+  float m_rotationSpeed = 45.0f / 1000.0f;
   QString m_shaderName = "cube";
   bool m_hasTexture = false;
   bool m_shouldRotate = false;

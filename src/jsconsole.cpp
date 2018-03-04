@@ -3,16 +3,16 @@
 JSConsole::JSConsole(QJSEngine* engine) {
   m_engine = engine;
   m_engine->installExtensions(QJSEngine::AllExtensions);
-  QJSValue global = m_engine->globalObject();
-  m_gloconObj = m_engine->newObject();
-  global.setProperty("glocon", m_gloconObj);
+  //QJSValue global = m_engine->globalObject();
+  //m_gloconObj = m_engine->newObject();
+  //global.setProperty("glocon", m_gloconObj);
 
-  QFile script(":/assets/scripts/glocon.js");
-  if (!script.open(QIODevice::ReadOnly)) {
-    throw std::invalid_argument("Unable to find glocon.js");
-  }
+  //QFile script(":/assets/scripts/glocon.js");
+  //if (!script.open(QIODevice::ReadOnly)) {
+  //  throw std::invalid_argument("Unable to find glocon.js");
+  //}
 
-  m_engine->evaluate(script.readAll());
+  //m_engine->evaluate(script.readAll());
 }
 
 JSConsole::~JSConsole() {
@@ -37,6 +37,10 @@ void JSConsole::setDirty(const bool isDirty) {
 
 bool JSConsole::isDirty() {
   return m_isDirty;
+}
+
+QString JSConsole::hello() {
+  return "Hello from the console";
 }
 
 QString JSConsole::evaluate() {

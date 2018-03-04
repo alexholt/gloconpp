@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import Glocon 1.0
+import '../assets/scripts/glocon.js' as Glocon
 
 Item {
   id: screen
@@ -174,7 +175,12 @@ Item {
         (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
         (event.modifiers & Qt.ControlModifier)
       ) {
-        consoleInput.text = eval(consoleInput.text)
+        try {
+          consoleInput.text = eval(consoleInput.text);
+        } catch (err) {
+          consoleInput.text = 'Error: ' + err.message;
+        }
+
         cursorPosition = consoleInput.text.length;
         JSConsole.isDirty = true;
         return false;
@@ -213,6 +219,7 @@ Item {
     window: applicationWindow // applicationWindow added to the global object in main.cpp
     //onContentRectChanged: flickArea.resizeContent(this.contentRect.width(), this.contentRect.height(), flickArea.Center)
     Component.onCompleted: {
+      GameState.renderer = renderer;
       //JSConsole.onPositionChanged.connect(renderer.updatePosition);
       //JSConsole.updatePosition(renderer.x, renderer.y, renderer.z);
     }

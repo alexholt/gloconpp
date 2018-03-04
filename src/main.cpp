@@ -9,9 +9,9 @@
 
 namespace {
 
-QQuickView* view = Q_NULLPTR;
-GameState* gameState = Q_NULLPTR;
-JSConsole* jsConsole = Q_NULLPTR;
+QQuickView* view = nullptr;
+GameState* gameState = nullptr;
+JSConsole* jsConsole = nullptr;
 
 void handleSig(int signum) {
   Q_UNUSED(signum)
@@ -48,8 +48,7 @@ int main(int argc, char **argv) {
   app.setWindowIcon(QIcon(":/assets/icons/app.svg"));
 
   qmlRegisterType<Renderer>("Glocon", 1, 0, "Renderer");
-  qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "gameState", gameStateProvider);
-
+  qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "GameState", gameStateProvider);
   qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
 
   QSurfaceFormat format;

@@ -37,6 +37,7 @@ signals:
 public slots:
   QString evaluate();
   void updatePosition(double, double, double);
+  QString hello();
 };
 
 #endif // JSCONSOLE_H
