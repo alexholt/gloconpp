@@ -26,5 +26,7 @@
         <file>../assets/shaders/solid.frag</file>
         <file>../assets/shaders/solid.vert</file>
         <file>../assets/models/monkey.obj</file>
+        <file>../assets/shaders/ads.frag</file>
+        <file>../assets/shaders/ads.vert</file>
     </qresource>
 </RCC>

@@ -44,4 +44,5 @@ RCC_DIR = ../build/rcc
 
 DISTFILES += \
     $$PWD/assets/shaders/diffuse.frag \
-    $$PWD/assets/shaders/diffuse.vert
+    $$PWD/assets/shaders/diffuse.vert \
+    $$PWD/assets/shaders/ads.vert

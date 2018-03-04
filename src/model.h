@@ -43,7 +43,7 @@ public:
   void setShouldRotate(bool shouldRotate);
 
 protected:
-  void setUniforms(const QMatrix4x4&);
+  void setUniforms(const QMatrix4x4&, const QOpenGLFunctions&);
 
   QOpenGLShaderProgram* m_program;
   bool m_isInitialized = false;

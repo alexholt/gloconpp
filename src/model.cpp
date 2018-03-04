@@ -44,7 +44,7 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
   if (m_hasTexture)
     m_texture->bind();
 
-  setUniforms(cameraMatrix);
+  setUniforms(cameraMatrix, *renderer);
   renderer->glDrawElements(GL_TRIANGLES, m_numElements, GL_UNSIGNED_SHORT, 0);
 
   m_vao->release();
@@ -55,7 +55,7 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
     m_texture->release();
 }
 
-void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
+void Model::setUniforms(const QMatrix4x4& cameraMatrix, const QOpenGLFunctions& renderer) {
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
 
@@ -73,11 +73,24 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix) {
       m_program->setUniformValue("u_lightPosition", QVector4D{0.0, 0.0, 1000.0, 1.0});
       m_program->setUniformValue("u_kd", QVector3D{1.0, 1.0, 1.0});
       m_program->setUniformValue("u_ld", QVector3D{0.5, 0.5, 1.0});
+      break;
+    }
 
-      QMatrix3x3 normalMatrix;
-      normalMatrix.setToIdentity();
+    CASE("ads"): {
+      m_program->setUniformValue("light.position", QVector4D{0.0, 0.0, 1000.0, 1.0});
+      m_program->setUniformValue("light.la", QVector3D{1.0, 0.5, 0.5});
+      m_program->setUniformValue("light.ld", QVector3D{0.5, 0.5, 0.5});
+      m_program->setUniformValue("light.ls", QVector3D{0.5, 0.5, 0.5});
 
-      m_program->setUniformValue("u_normalMatrix", normalMatrix);
+      m_program->setUniformValue("material.ka", QVector3D{0.5, 0.5, 0.5});
+      m_program->setUniformValue("material.kd", QVector3D{0.8, 0.8, 0.2});
+      m_program->setUniformValue("material.ks", QVector3D{0.5, 0.5, 0.5});
+      m_program->setUniformValue("material.shininess", 0.001f);
+
+      //GLuint subIndex = glGetSubroutineIndex(m_program->programId(), GL_VERTEX_SHADER, "diffuseOnly");
+      GLuint subIndex = glGetSubroutineIndex(m_program->programId(), GL_VERTEX_SHADER, "phongModel");
+
+      glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &subIndex);
       break;
     }
   }
