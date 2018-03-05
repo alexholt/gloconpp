@@ -36,7 +36,7 @@ void Cube::initialize() {
   m_isInitialized = true;
 }
 
-void Cube::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
+void Cube::render(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
   if (!m_isInitialized) {
     initialize();
   }
@@ -61,7 +61,7 @@ void Cube::release() {
   m_program->release();
 }
 
-void Cube::justUpdateUniforms(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, QOpenGLShaderProgram* program) {
+void Cube::justUpdateUniforms(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, QOpenGLShaderProgram* program) {
   program->setUniformValue("u_camera", cameraMatrix);
   program->setUniformValue("u_modelView", m_modelViewMatrix);
   renderer->glDrawElements(GL_TRIANGLES, sizeof(m_elements) / sizeof(m_elements[0]), GL_UNSIGNED_SHORT, 0);

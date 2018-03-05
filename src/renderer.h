@@ -6,7 +6,7 @@
 #include <QElapsedTimer>
 #include <QList>
 #include <QOpenGLContext>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QPoint>
@@ -21,7 +21,7 @@
 #include "cube.h"
 #include "worldmap.h"
 
-class Renderer : public QObject, public QOpenGLFunctions {
+class Renderer : public QObject, public QOpenGLFunctions_4_1_Core {
   Q_OBJECT
   Q_PROPERTY(int fps READ fps NOTIFY fpsChanged)
   Q_PROPERTY(double x READ x)

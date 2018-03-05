@@ -9,7 +9,7 @@
 #include <QMap>
 #include <QObject>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
@@ -32,7 +32,7 @@ public:
   Model(bool);
   Model(const Model&);
   ~Model();
-  virtual void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
+  virtual void render(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, const long long);
   void loadFile(const QString&, const QString& = "basic");
   void scale(float);
   void translate(float, float, float);
@@ -43,7 +43,7 @@ public:
   void setShouldRotate(bool shouldRotate);
 
 protected:
-  void setUniforms(const QMatrix4x4&, const QOpenGLFunctions&);
+  void setUniforms(const QMatrix4x4&, QOpenGLFunctions_4_1_Core&);
 
   QOpenGLShaderProgram* m_program;
   bool m_isInitialized = false;
@@ -66,7 +66,7 @@ protected:
   bool m_shouldRotate = false;
 
 private:
-  void initialize(QOpenGLFunctions* gl);
+  void initialize(QOpenGLFunctions_4_1_Core* gl);
 
   QList<QString> m_shaderNames = {"basic"};
   QMap<QString, QOpenGLShaderProgram*> m_shaders;

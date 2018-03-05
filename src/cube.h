@@ -9,10 +9,10 @@ class Cube : public Model {
 public:
   Cube();
   Cube(float, float);
-  void render(QOpenGLFunctions*, const QMatrix4x4&, long long);
+  void render(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, long long);
   void initialize();
   QOpenGLShaderProgram* program();
-  void justUpdateUniforms(QOpenGLFunctions*, const QMatrix4x4&, QOpenGLShaderProgram*);
+  void justUpdateUniforms(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, QOpenGLShaderProgram*);
   void release();
 
 protected:

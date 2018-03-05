@@ -13,7 +13,7 @@
 #include <QFile>
 #include <QMatrix4x4>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_4_1_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
@@ -37,7 +37,7 @@ class WorldMap : public Model {
 public:
   WorldMap(const QString&);
   ~WorldMap();
-  void render(QOpenGLFunctions*, const QMatrix4x4&, const long long);
+  void render(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, const long long);
   void loadMap();
   void createTexture();
 

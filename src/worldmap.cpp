@@ -29,7 +29,7 @@ void WorldMap::teardownGL() {
   delete m_textureVbo;
 }
 
-void WorldMap::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
+void WorldMap::render(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
   Q_UNUSED(elapsed)
 
   if (!m_isInitialized) {

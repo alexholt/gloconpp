@@ -28,7 +28,7 @@ Model::Model(const Model& other) : Model(other.m_hasTexture) {
   m_shaderName = other.m_shaderName;
 }
 
-void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
+void Model::render(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
   if (!m_isInitialized) {
     initialize(renderer);
   }
@@ -55,7 +55,7 @@ void Model::render(QOpenGLFunctions* renderer, const QMatrix4x4& cameraMatrix, c
     m_texture->release();
 }
 
-void Model::setUniforms(const QMatrix4x4& cameraMatrix, const QOpenGLFunctions& renderer) {
+void Model::setUniforms(const QMatrix4x4& cameraMatrix, QOpenGLFunctions_4_1_Core& renderer) {
   m_program->setUniformValue("u_camera", cameraMatrix);
   m_program->setUniformValue("u_modelView", m_modelViewMatrix);
 
@@ -88,9 +88,9 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix, const QOpenGLFunctions& 
       m_program->setUniformValue("material.shininess", 0.001f);
 
       //GLuint subIndex = glGetSubroutineIndex(m_program->programId(), GL_VERTEX_SHADER, "diffuseOnly");
-      GLuint subIndex = glGetSubroutineIndex(m_program->programId(), GL_VERTEX_SHADER, "phongModel");
+      GLuint subIndex = renderer.glGetSubroutineIndex(m_program->programId(), GL_VERTEX_SHADER, "phongModel");
 
-      glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &subIndex);
+      renderer.glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &subIndex);
       break;
     }
   }
@@ -106,7 +106,7 @@ void Model::setShouldRotate(bool shouldRotate) {
 
 #define BUFFER_OFFSET(o) ((const void*) (o))
 
-void Model::initialize(QOpenGLFunctions* gl) {
+void Model::initialize(QOpenGLFunctions_4_1_Core* gl) {
   m_program = new QOpenGLShaderProgram;
   m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/" + m_shaderName + ".vert");
   m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/" + m_shaderName + ".frag");
