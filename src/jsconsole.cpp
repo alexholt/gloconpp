@@ -60,5 +60,3 @@ void JSConsole::updatePosition(double x, double y, double z) {
   updateProp(z);
   #undef updateProp
 }
-
-

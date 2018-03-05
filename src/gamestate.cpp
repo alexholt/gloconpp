@@ -1,9 +1,11 @@
 #include "gamestate.h"
 
+#include <QDebug>
+
 GameState::GameState() {}
 
 GameState::~GameState() {}
 
-QString GameState::hello() {
-  return "Hello from gameState";
+void GameState::hello() {
+  qDebug() << "Hello from gameState";
 }

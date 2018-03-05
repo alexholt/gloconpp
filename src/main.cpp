@@ -37,6 +37,10 @@ QObject* consoleProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
   return jsConsole;
 }
 
+void logToJSConsole(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+  jsConsole->setText(msg);
+}
+
 } // End anonymous namespace
 
 int main(int argc, char **argv) {
@@ -50,6 +54,9 @@ int main(int argc, char **argv) {
   qmlRegisterType<Renderer>("Glocon", 1, 0, "Renderer");
   qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "GameState", gameStateProvider);
   qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
+
+  // TODO: This is not working
+  //qInstallMessageHandler(logToJSConsole);
 
   QSurfaceFormat format;
   format.setRenderableType(QSurfaceFormat::OpenGL);

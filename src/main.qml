@@ -176,7 +176,12 @@ Item {
         (event.modifiers & Qt.ControlModifier)
       ) {
         try {
-          consoleInput.text = eval(consoleInput.text);
+          var result = eval(consoleInput.text);
+          if (typeof result == 'string') {
+            consoleInput.text = result;
+          } else {
+            consoleInput.text = '[' + typeof result + ']';
+          }
         } catch (err) {
           consoleInput.text = 'Error: ' + err.message;
         }
@@ -219,7 +224,8 @@ Item {
     window: applicationWindow // applicationWindow added to the global object in main.cpp
     //onContentRectChanged: flickArea.resizeContent(this.contentRect.width(), this.contentRect.height(), flickArea.Center)
     Component.onCompleted: {
-      GameState.renderer = renderer;
+      JSConsole.sayHello.connect(GameState.hello);
+      GameState.sendUpdate.connect(renderer.receiveUpdate);
       //JSConsole.onPositionChanged.connect(renderer.updatePosition);
       //JSConsole.updatePosition(renderer.x, renderer.y, renderer.z);
     }

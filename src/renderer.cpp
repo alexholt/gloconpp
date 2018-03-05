@@ -201,3 +201,13 @@ double Renderer::y() {
 double Renderer::z() {
   return m_camera.position().z();
 }
+
+QString Renderer::receiveUpdate(QJSValue data) {
+  if (data.isString())
+    qDebug() << "We have received the update: [" << data.toString() << "]";
+  if (data.isObject()) {
+    if (data.hasProperty("shouldRotate"))
+      m_monkey.setShouldRotate(data.property("shouldRotate").toBool());
+  }
+  return "We have received the update";
+}

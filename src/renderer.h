@@ -90,6 +90,7 @@ public slots:
   double onPanY(float);
   void updatePosition(double, double, double);
   void teardownGL();
+  QString receiveUpdate(QJSValue);
 };
 
 #endif // RENDERER_H

@@ -1,6 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <QJSValue>
 #include <QObject>
 
 class GameState : public QObject {
@@ -11,7 +12,10 @@ public:
   ~GameState();
 
 public slots:
-  QString hello();
+  void hello();
+
+signals:
+  void sendUpdate(QJSValue);
 };
 
 #endif // GAMESTATE_H

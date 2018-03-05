@@ -33,6 +33,7 @@ private:
 signals:
   void textChanged();
   void positionChanged(double, double, double);
+  void sayHello();
 
 public slots:
   QString evaluate();
