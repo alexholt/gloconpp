@@ -41,11 +41,12 @@ public:
 
   bool shouldRotate() const;
   void setShouldRotate(bool shouldRotate);
+  void destroyResources();
 
 protected:
   void setUniforms(const QMatrix4x4&, QOpenGLFunctions_4_1_Core&);
 
-  QOpenGLShaderProgram* m_program;
+  QOpenGLShaderProgram* m_program = nullptr;
   bool m_isInitialized = false;
   QMatrix4x4 m_modelViewMatrix;
   Mesh m_meshData;

@@ -203,12 +203,36 @@ double Renderer::z() {
   return m_camera.position().z();
 }
 
+#define GET_PROP(prop, type) \
+data.property(prop).to##type()
+
+#define CHECK_PROP(prop, type) \
+if (data.hasProperty(prop) && data.property(prop).is##type()) { \
+  auto PROP = GET_PROP(prop, type);
+
+#define END_CHECK }
+
 QString Renderer::receiveUpdate(QJSValue data) {
   if (data.isString())
     qDebug() << "We have received the update: [" << data.toString() << "]";
-  if (data.isObject()) {
-    if (data.hasProperty("shouldRotate"))
-      m_monkey.setShouldRotate(data.property("shouldRotate").toBool());
-  }
+
+  if (!data.isObject())
+    qWarning() << "Updates should be objects";
+
+  CHECK_PROP("shouldRotate", Bool)
+    m_monkey.setShouldRotate(PROP);
+  END_CHECK
+
+  CHECK_PROP("echo", String)
+    qDebug() << PROP;
+  END_CHECK
+
+  CHECK_PROP("activeShader", String)
+    m_monkey.setShader(PROP);
+  END_CHECK
+
   return "We have received the update";
 }
+
+#undef CHECK_PROP
+#undef GET_PROP

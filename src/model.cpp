@@ -107,6 +107,7 @@ void Model::setShouldRotate(bool shouldRotate) {
 #define BUFFER_OFFSET(o) ((const void*) (o))
 
 void Model::initialize(QOpenGLFunctions_4_1_Core* gl) {
+  if (m_program != nullptr) delete m_program;
   m_program = new QOpenGLShaderProgram;
   m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/" + m_shaderName + ".vert");
   m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/" + m_shaderName + ".frag");
@@ -114,10 +115,10 @@ void Model::initialize(QOpenGLFunctions_4_1_Core* gl) {
   m_program->link();
   m_program->bind();
 
-  m_vao->create();
+  if (!m_vao->isCreated()) m_vao->create();
   m_vao->bind();
 
-  m_vertexVbo->create();
+  if (!m_vertexVbo->isCreated()) m_vertexVbo->create();
   m_vertexVbo->bind();
   m_vertexVbo->allocate(m_vertices, m_numVertices * 8 * sizeof(float));
   m_program->enableAttributeArray(0);
@@ -129,7 +130,7 @@ void Model::initialize(QOpenGLFunctions_4_1_Core* gl) {
   gl->glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, stride, BUFFER_OFFSET(3 * sizeof(float)));
   gl->glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, stride, BUFFER_OFFSET(5 * sizeof(float)));
 
-  m_elementVbo->create();
+  if (!m_elementVbo->isCreated()) m_elementVbo->create();
   m_elementVbo->bind();
   m_elementVbo->allocate(m_elements, m_numElements * sizeof(ushort));
 
@@ -146,6 +147,16 @@ void Model::initialize(QOpenGLFunctions_4_1_Core* gl) {
   }
 
   m_isInitialized = true;
+}
+
+#undef BUFFER_OFFSET
+
+void Model::destroyResources() {
+  if (m_isInitialized) {
+    m_vao->destroy();
+    m_vertexVbo->destroy();
+    m_elementVbo->destroy();
+  }
 }
 
 void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
@@ -243,4 +254,5 @@ void Model::rotate(float degree, float x, float y, float z) {
 
 void Model::setShader(QString shaderName) {
   m_shaderName = shaderName;
+  m_isInitialized = false;
 }
