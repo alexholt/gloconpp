@@ -38,7 +38,7 @@ void TerritoryTest::getSuperTriangleTestCase() {
   QList<QVector3D> triPoints;
   triPoints << superTriangle.bottom() << superTriangle.top() << superTriangle.left();
 
-  QVERIFY(superTriangle.bottom().x() <= box.x2());
+  QVERIFY(superTriangle.bottom().x() >= box.x2());
 }
 
 void TerritoryTest::isClockwiseTestCase() {

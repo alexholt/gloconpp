@@ -51,7 +51,7 @@ void TriangleTest::testCaseContains() {
 }
 
 void TriangleTest::windingTestCase() {
-  QVERIFY(m_subject->isClockwise());
+  QVERIFY(!m_subject->isClockwise());
 
   Triangle other(
     QVector3D{0.0f, 1.0f, 0.0f},
@@ -59,5 +59,5 @@ void TriangleTest::windingTestCase() {
     QVector3D{1.0f, 0.0f, 0.0f}
   );
 
-  QVERIFY(m_subject->isClockwise());
+  QVERIFY(!m_subject->isClockwise());
 }

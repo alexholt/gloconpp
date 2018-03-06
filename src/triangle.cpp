@@ -13,31 +13,9 @@ Triangle::Triangle() {
 }
 
 Triangle::Triangle(const QVector3D& top, const QVector3D& left, const QVector3D& bottom) {
-  QList<QVector3D> points;
-  points << top << left << bottom;
   m_top = top;
   m_left = left;
   m_bottom = bottom;
-
-  // Make sure the points are actually in order or the isValid algorithm won't work right
-  //std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
-  //  if (qFuzzyCompare(second.y(), first.y()))
-  //    return first.x() > second.x();
-  //  return first.y() > second.y();
-  //});
-
-  //m_top = points[0];
-
-  //points.removeAll(points[0]);
-
-  //std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
-  //  if (qFuzzyCompare(second.x(), first.x()))
-  //    return first.y() > second.y();
-  //  return first.x() > second.x();
-  //});
-
-  //m_left = points[0];
-  //m_bottom = points[1];
 }
 
 Triangle::Triangle(const QVector2D& top, const QVector2D& left, const QVector2D& bottom) :
@@ -109,10 +87,20 @@ bool Triangle::sharesVertex(const Triangle& other) const {
 }
 
 bool Triangle::isValid() {
+  QList<QVector3D> points;
+  points << m_top << m_left << m_bottom;
+
+  // Make sure the points are actually in order or the isValid algorithm won't work right
+  std::sort(points.begin(), points.end(), [](const QVector3D& first, const QVector3D& second) -> bool {
+    if (qFuzzyCompare(second.y(), first.y()))
+      return first.x() < second.x();
+    return first.y() < second.y();
+  });
+
   // len(ab) + len(bc) == len(ac) iff they are colinear
-  auto a = m_top;
-  auto b = m_left;
-  auto c = m_bottom;
+  auto a = points[0];
+  auto b = points[1];
+  auto c = points[2];
 
   return !qFuzzyCompare((b - a).length() + (c - b).length(), (c - a).length());
 }
