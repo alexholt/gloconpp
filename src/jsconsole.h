@@ -10,6 +10,7 @@
 class JSConsole : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+  Q_PROPERTY(QString lastText READ lastText WRITE setLastText)
   Q_PROPERTY(bool isDirty READ isDirty WRITE setDirty)
 
 public:
@@ -17,10 +18,12 @@ public:
   ~JSConsole();
   operator QString() const;
   QString text();
+  QString lastText();
   bool isDirty();
   void setText(const QString&);
   void setDirty(bool);
   void keyPressEvent(QKeyEvent*);
+  void setLastText(const QString&);
 
 private:
   QString m_text{"Enter text"};

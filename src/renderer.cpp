@@ -1,4 +1,5 @@
 #include "renderer.h"
+
 #include "glocon.h"
 
 Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {

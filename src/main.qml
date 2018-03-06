@@ -157,6 +157,12 @@ Item {
 
     Keys.priority: Keys.BeforeItem
     Keys.onPressed: {
+      var isControl = false;
+
+      if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) {
+        isControl = true;
+      }
+
       if (event.key === Qt.Key_Escape) {
         flickArea.focus = true;
         return false;
@@ -166,26 +172,42 @@ Item {
         return toggleConsole();
       }
 
+      if (event.key === Qt.Key_Up) {
+        consoleInput.text = JSConsole.lastText;
+        JSConsole.isDirty = false;
+        return;
+      }
+
+      if (isControl && event.key === Qt.Key_E) {
+        cursorPosition = consoleInput.text.length;
+        return;
+      }
+
+      if (isControl && event.key === Qt.Key_E) {
+        cursorPosition = consoleInput.text.length;
+        return;
+      }
+
       if (JSConsole.isDirty) {
         JSConsole.isDirty = false;
         consoleInput.text = '';
       }
 
-      if (
-        (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) &&
-        (event.modifiers & Qt.ControlModifier)
-      ) {
+      if (isControl && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
+        var output = '';
         try {
           var result = eval(consoleInput.text);
           if (typeof result == 'string') {
-            consoleInput.text = result;
+            output = result;
           } else {
-            consoleInput.text = '[' + typeof result + ']';
+            output = '[' + typeof result + ']';
           }
         } catch (err) {
-          consoleInput.text = 'Error: ' + err.message;
+          output = 'Error: ' + err.message;
         }
 
+        JSConsole.lastText = consoleInput.text;
+        consoleInput.text = output;
         cursorPosition = consoleInput.text.length;
         JSConsole.isDirty = true;
         return false;

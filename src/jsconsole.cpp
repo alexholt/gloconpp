@@ -27,8 +27,16 @@ QString JSConsole::text() {
   return m_text;
 }
 
+QString JSConsole::lastText() {
+  return m_lastText;
+}
+
 void JSConsole::setText(const QString& newText) {
   m_text = newText;
+}
+
+void JSConsole::setLastText(const QString& newText) {
+  m_lastText = newText;
 }
 
 void JSConsole::setDirty(const bool isDirty) {
