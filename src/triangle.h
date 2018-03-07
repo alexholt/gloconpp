@@ -33,6 +33,7 @@ public:
 
   bool isValid();
   bool isClockwise();
+  bool isAcute();
 
   QVector3D normal();
 

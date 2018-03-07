@@ -61,3 +61,16 @@ void TriangleTest::windingTestCase() {
 
   QVERIFY(!m_subject->isClockwise());
 }
+
+void TriangleTest::acuteTestCase() {
+  QVERIFY(m_subject->isAcute());
+
+  delete m_subject;
+  m_subject = new Triangle(
+    QVector3D{1000.0f, 0.0f, 0.0f},
+    QVector3D{0.0f, 1.0f, 0.0f},
+    QVector3D{0.0f, -1.0f, 0.0f}
+  );
+
+  QVERIFY(!m_subject->isAcute());
+}

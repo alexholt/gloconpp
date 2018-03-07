@@ -22,6 +22,7 @@ private slots:
   void testCaseisValid();
   void testCaseContains();
   void windingTestCase();
+  void acuteTestCase();
 };
 
 #endif // TST_TRIANGLETEST_H

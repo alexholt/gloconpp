@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <QDebug>
 #include <QVector3D>
 #include <QVector2D>
@@ -132,6 +133,25 @@ bool Triangle::isClockwise() {
   }
 
   return (area / 2) < 0;
+}
+
+bool Triangle::isAcute() {
+  // ø  = arcos( (u . v) / (|u| * |v|) )
+  auto angleBetween = [](const QVector3D& first, const QVector3D& second) {
+    return acos(QVector3D::dotProduct(first, second) / (first.length() * second.length()));
+  };
+
+  auto first = m_top - m_bottom;
+  auto second = m_top - m_left;
+  auto third = m_left - m_bottom;
+
+  const auto HALF_PI = M_PI / 2.0 ;
+
+  return (
+    angleBetween(m_top - m_bottom, m_left - m_bottom) > HALF_PI ||
+    angleBetween(m_top - m_left, m_bottom - m_left) > HALF_PI ||
+    angleBetween(m_left - m_top, m_bottom - m_top) > HALF_PI
+  );
 }
 
 QVector3D Triangle::normal() {
