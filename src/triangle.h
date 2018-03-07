@@ -34,6 +34,8 @@ public:
   bool isValid();
   bool isClockwise();
 
+  QVector3D normal();
+
 private:
   QVector3D m_top;
   QVector3D m_left;

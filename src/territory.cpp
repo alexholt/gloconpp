@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <limits>
 #include <numeric>
+#include <random>
 #include <QVector3D>
 
 #include "circle.h"
@@ -310,24 +312,45 @@ void Territory::buildMesh() {
 
   QList<QVector3D> triangluated;
   for (auto triangle : m_mesh) {
-    triangluated << triangle.top() << triangle.left() << triangle.bottom();
+    std::vector<float> heights = {0.0f, 1.0f, 5.0f, 10.0f};
+    std::random_device rd;
+    std::mt19937 algo(rd());
+    std::shuffle(heights.begin(), heights.end(), algo);
+
+    QVector3D top = triangle.top();
+    QVector3D left = triangle.left();
+    QVector3D bottom = triangle.bottom();
+
+    top.setZ(heights[0]);
+    left.setZ(heights[1]);
+    bottom.setZ(heights[2]);
+
+    triangluated << top << left << bottom;
   }
 
   m_numVertices = triangluated.length();
   m_vertices = new float[m_numVertices * 8];
 
-
+  QVector3D normal;
   for (int i = 0; i < triangluated.length(); i++) {
     int p = i * 8;
     m_vertices[p + 0] = triangluated[i].x() - 1000.0f;
     m_vertices[p + 1] = -triangluated[i].y() + 500.0f;
-    m_vertices[p + 2] = 10.0f + 10.0f * 0.001;
+    m_vertices[p + 2] = triangluated[i].z();
 
     m_vertices[p + 3] = 0.0f;
     m_vertices[p + 4] = 0.0f;
-    m_vertices[p + 5] = 0.0f;
-    m_vertices[p + 6] = 0.0f;
-    m_vertices[p + 7] = 0.0f;
+
+    if (i % 3 == 0) {
+      auto cur = triangluated[i];
+      auto next = triangluated[i + 1];
+      auto finale = triangluated[i + 2];
+      normal = Triangle(cur, next, finale).normal();
+    }
+
+    m_vertices[p + 5] = normal.x();
+    m_vertices[p + 6] = normal.y();
+    m_vertices[p + 7] = normal.z();
   }
 
   m_numElements = m_mesh.length() * 3;

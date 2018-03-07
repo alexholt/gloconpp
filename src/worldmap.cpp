@@ -111,7 +111,7 @@ void WorldMap::loadMap() {
     if (!territory.attribute("class").split("/\\s/").contains("ignore")) {
       auto name = territory.attribute("data-name");
       m_territories[name] = new Territory(territory.attribute("d"), name, true);
-      m_territories[name]->setShader("solid");
+      m_territories[name]->setShader("ads");
       m_territories[name]->buildMesh();
     }
   }

@@ -134,6 +134,12 @@ bool Triangle::isClockwise() {
   return (area / 2) < 0;
 }
 
+QVector3D Triangle::normal() {
+  auto norman = QVector3D::crossProduct(bottom() - top(), left() - top());
+  norman.normalize();
+  return norman;
+}
+
 QDebug operator<<(QDebug debug, const Triangle& tri) {
   QDebugStateSaver saver(debug);
   debug.nospace() << '(' << tri.top() << ", " << tri.left() << tri.bottom() << ')';
