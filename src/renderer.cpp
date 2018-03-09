@@ -17,23 +17,28 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   emit contentRectChanged();
 
   m_tank.loadFile(":/assets/models/tank.obj", "cube");
+  m_tank.scale(10.0f);
   m_tank.translate(10.0f, 0.0f, 0.0f);
   m_tank.rotate(90.0f, 1.0f, 0.0f, 0.0f);
 
   m_mars.loadFile(":/assets/models/mars.obj");
-  m_mars.translate(-20.0f, 0.0f, 30.0f);
+  m_mars.scale(10.0f);
+  m_mars.translate(-20.0f, 50.0f, 30.0f);
   m_mars.scale(10.0f);
 
   m_planes[0].loadFile(":/assets/models/plane.obj", "fuzzycircle");
+  m_planes[0].scale(10.0f);
   m_planes[0].translate(10.0f, 0.0f, 20.0f);
   m_planes[0].scale(10.0f);
 
   m_planes[1].loadFile(":/assets/models/plane.obj", "diffuse");
+  m_planes[1].scale(10.0f);
   m_planes[1].translate(50.0f, 0.0f, 20.0f);
   m_planes[1].scale(10.0f);
 
   m_monkey.loadFile(":/assets/models/monkey.obj", "ads");
-  m_monkey.translate(-50.0f, 0.0f, 20.0f);
+  m_monkey.scale(10.0f);
+  m_monkey.translate(-50.0f, 50.0f, 20.0f);
   m_monkey.scale(10.0f);
   m_monkey.setShouldRotate(true);
 }
@@ -124,7 +129,7 @@ void Renderer::paint() {
   glDepthFunc(GL_LESS);
   glDepthMask(GL_TRUE);
 
-  glEnable(GL_CULL_FACE);
+  //glEnable(GL_CULL_FACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

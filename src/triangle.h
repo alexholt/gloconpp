@@ -4,6 +4,7 @@
 #include <QVector3D>
 
 #include "edge.h"
+#include "glocon.h"
 
 class Circle;
 
@@ -14,6 +15,7 @@ public:
   Triangle(const QVector3D&, const QVector3D&, const QVector3D&);
   Triangle(const QVector2D&, const QVector2D&, const QVector2D&);
   Triangle(const Triangle&);
+  void setPoints(const QVector3D&, const QVector3D&, const QVector3D&);
   Circle circumCircle();
 
   const QVector3D& top() const;
@@ -36,6 +38,7 @@ public:
   bool isAcute();
 
   QVector3D normal();
+  std::pair<Triangle, Triangle> split();
 
 private:
   QVector3D m_top;

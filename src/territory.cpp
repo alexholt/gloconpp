@@ -310,41 +310,70 @@ void Territory::buildMesh() {
     }
   }
 
-  QList<QVector3D> triangluated;
-  for (auto triangle : m_mesh) {
-    std::vector<float> heights = {0.0f, 1.0f, 5.0f, 10.0f};
-    std::random_device rd;
-    std::mt19937 algo(rd());
-    std::shuffle(heights.begin(), heights.end(), algo);
+  QList<QVector3D> triangulated;
+  for (int i = 0; i < m_mesh.length(); i++) {
+    auto triangle = m_mesh[i];
 
     QVector3D top = triangle.top();
     QVector3D left = triangle.left();
     QVector3D bottom = triangle.bottom();
+    auto x = -1000.0f;
+    auto y = 500.0f;
+    top.setX(top.x() + x);
+    top.setY(-top.y() + y);
+    left.setX(left.x() + x);
+    left.setY(-left.y() + y);
+    bottom.setX(bottom.x() + x);
+    bottom.setY(-bottom.y() + y);
 
-    top.setZ(heights[0]);
-    left.setZ(heights[1]);
-    bottom.setZ(heights[2]);
+    triangle.setPoints(top, left, bottom);
+    m_mesh.replace(i, triangle);
 
-    triangluated << top << left << bottom;
+    triangulated << top << left << bottom;
   }
 
-  m_numVertices = triangluated.length();
+  buildVerticesFromPointList(triangulated);
+}
+
+void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
+  m_canRenderMutex.lock();
+  m_canRender = false;
+  m_canRenderMutex.unlock();
+  if (m_vertices != nullptr ) delete[] m_vertices;
+  if (m_elements != nullptr ) delete[] m_elements;
+  m_isInitialized = false;
+
+  m_numVertices = points.length();
   m_vertices = new float[m_numVertices * 8];
 
+  for (int i = 0; i < points.length(); i++) {
+    std::vector<float> heights = {10.0f, 15.0f, 20.0f};
+    std::random_device rd;
+    std::mt19937 algo(rd());
+    std::shuffle(heights.begin(), heights.end(), algo);
+    points[i].setZ(heights.front());
+
+    for (int j = 0; j < points.length(); j++) {
+      if (points[i] != points[j] && points[j].x() == points[i].x() && points[j].y() == points[i].y()) {
+        points[j].setZ(heights.front());
+      }
+    }
+  }
+
   QVector3D normal;
-  for (int i = 0; i < triangluated.length(); i++) {
+  for (int i = 0; i < points.length(); i++) {
     int p = i * 8;
-    m_vertices[p + 0] = triangluated[i].x() - 1000.0f;
-    m_vertices[p + 1] = -triangluated[i].y() + 500.0f;
-    m_vertices[p + 2] = triangluated[i].z();
+    m_vertices[p + 0] = points[i].x();
+    m_vertices[p + 1] = points[i].y();
+    m_vertices[p + 2] = points[i].z();
 
     m_vertices[p + 3] = 0.0f;
     m_vertices[p + 4] = 0.0f;
 
     if (i % 3 == 0) {
-      auto cur = triangluated[i];
-      auto next = triangluated[i + 1];
-      auto finale = triangluated[i + 2];
+      auto cur = points[i];
+      auto next = points[i + 1];
+      auto finale = points[i + 2];
       normal = Triangle(cur, next, finale).normal();
     }
 
@@ -353,10 +382,33 @@ void Territory::buildMesh() {
     m_vertices[p + 7] = normal.z();
   }
 
-  m_numElements = m_mesh.length() * 3;
+  m_numElements = m_numVertices * 3;
   m_elements = new ushort[m_numElements];
 
   for (uint i = 0; i < m_numElements; i++) {
     m_elements[i] = i;
   }
+  m_canRenderMutex.lock();
+  m_canRender = true;
+  m_canRenderMutex.unlock();
+}
+
+void Territory::subdivide() {
+  auto points = QList<QVector3D>();
+
+  for (auto tri : m_mesh) {
+    auto pair = tri.split();
+
+      points
+          << pair.first.top()
+          << pair.first.left()
+          << pair.first.bottom()
+
+          << pair.second.top()
+          << pair.second.left()
+          << pair.second.bottom()
+      ;
+  }
+
+  buildVerticesFromPointList(points);
 }

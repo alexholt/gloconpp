@@ -1,8 +1,9 @@
+#include "tst_triangletest.h"
+
 #include <QtTest>
 
+#include "glocon.h"
 #include "triangle.h"
-
-#include "tst_triangletest.h"
 
 TriangleTest::TriangleTest() {
 
@@ -63,7 +64,7 @@ void TriangleTest::windingTestCase() {
 }
 
 void TriangleTest::acuteTestCase() {
-  QVERIFY(m_subject->isAcute());
+  QVERIFY(!m_subject->isAcute());
 
   delete m_subject;
   m_subject = new Triangle(
@@ -72,5 +73,30 @@ void TriangleTest::acuteTestCase() {
     QVector3D{0.0f, -1.0f, 0.0f}
   );
 
-  QVERIFY(!m_subject->isAcute());
+  QVERIFY(m_subject->isAcute());
+}
+
+void TriangleTest::splitTestCase() {
+  Triangle subject(
+    QVector3D{1000.0f, 0.0f, 0.0f},
+    QVector3D{0.0f, 1.0f, 0.0f},
+    QVector3D{0.0f, -1.0f, 0.0f}
+  );
+
+  QVERIFY(subject.isAcute());
+
+  subject = Triangle(
+    QVector3D{1000.0f, 0.0f, 0.0f},
+    QVector3D{0.0f, 1.0f, 0.0f},
+    QVector3D{1000.0f, -1.0f, 0.0f}
+  );
+
+  QVERIFY(!subject.isAcute());
+
+  while (!subject.isAcute()) {
+    auto tris = subject.split();
+    subject = tris.first;
+  }
+
+  QVERIFY(subject.isAcute());
 }

@@ -3,9 +3,13 @@
 #include <QDebug>
 #include <QVector3D>
 #include <QVector2D>
+#include <utility>
 
 #include "circle.h"
+#include "glocon.h"
 #include "triangle.h"
+
+typedef std::pair<Triangle, Triangle> PairOfTriangles;
 
 Triangle::Triangle() {
   m_top = QVector3D{0.0f, 1.0f, 0.0f};
@@ -31,6 +35,12 @@ Triangle::Triangle(const Triangle& other) {
   m_top = other.top();
   m_left = other.left();
   m_bottom = other.bottom();
+}
+
+void Triangle::setPoints(const QVector3D& top, const QVector3D& left, const QVector3D& bottom) {
+  m_top = top;
+  m_left = left;
+  m_bottom = bottom;
 }
 
 Circle Triangle::circumCircle() {
@@ -136,21 +146,13 @@ bool Triangle::isClockwise() {
 }
 
 bool Triangle::isAcute() {
-  // ø  = arcos( (u . v) / (|u| * |v|) )
-  auto angleBetween = [](const QVector3D& first, const QVector3D& second) {
-    return acos(QVector3D::dotProduct(first, second) / (first.length() * second.length()));
-  };
-
-  auto first = m_top - m_bottom;
-  auto second = m_top - m_left;
-  auto third = m_left - m_bottom;
-
   const auto HALF_PI = M_PI / 2.0 ;
 
+  using namespace glocon;
   return (
-    angleBetween(m_top - m_bottom, m_left - m_bottom) > HALF_PI ||
-    angleBetween(m_top - m_left, m_bottom - m_left) > HALF_PI ||
-    angleBetween(m_left - m_top, m_bottom - m_top) > HALF_PI
+    angleBetween(m_top - m_bottom, m_left - m_bottom) < HALF_PI &&
+    angleBetween(m_top - m_left, m_bottom - m_left) < HALF_PI &&
+    angleBetween(m_left - m_top, m_bottom - m_top) < HALF_PI
   );
 }
 
@@ -160,9 +162,44 @@ QVector3D Triangle::normal() {
   return norman;
 }
 
+std::pair<Triangle, Triangle> Triangle::split() {
+  auto first = glocon::angleBetween(m_top - m_bottom, m_left - m_bottom);
+  auto second = glocon::angleBetween(m_top - m_left, m_bottom - m_left);
+  auto third = glocon::angleBetween(m_left - m_top, m_bottom - m_top);
+
+  std::vector<float> angles;
+  angles.push_back(first);
+  angles.push_back(second);
+  angles.push_back(third);
+
+  std::sort(angles.begin(), angles.end());
+  auto max = angles.back();
+
+  Triangle firstChild;
+  Triangle secondChild;
+
+  if (max == first) {
+    auto midpoint = glocon::midpoint(m_left, m_top);
+    firstChild = Triangle(m_top, midpoint, m_bottom);
+    secondChild = Triangle(m_left, midpoint, m_bottom);
+
+  } else if (max == second) {
+    auto midpoint = glocon::midpoint(m_bottom, m_top);
+    firstChild = Triangle(m_top, midpoint, m_left);
+    secondChild = Triangle(m_bottom, midpoint, m_left);
+
+  } else if (max == third) {
+    auto midpoint = glocon::midpoint(m_left, m_bottom);
+    firstChild = Triangle(m_bottom, midpoint, m_top);
+    secondChild = Triangle(m_left, midpoint, m_top);
+  }
+
+  return std::make_pair(firstChild, secondChild);
+}
+
 QDebug operator<<(QDebug debug, const Triangle& tri) {
   QDebugStateSaver saver(debug);
-  debug.nospace() << '(' << tri.top() << ", " << tri.left() << tri.bottom() << ')';
+  debug.nospace() << '[' << tri.top() << ", " << tri.left() << ", " << tri.bottom() << ']';
 
   return debug;
 }

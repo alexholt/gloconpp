@@ -2,10 +2,14 @@
 #define GLOCON_H
 
 #include <algorithm>
+#include <cmath>
+#include <exception>
+#include <utility>
 #include <QProcess>
 #include <QString>
 #include <QStringList>
-#include <exception>
+
+#include "triangle.h"
 
 #define DEFINE_DYNAMICPROP(type, name, defaultValue) \
    public: \
@@ -52,7 +56,30 @@ constexpr long long hash(const char* str) {
 
 namespace glocon {
 
-QString shell(const QString& cmd, const QStringList& args = QStringList());
+inline QString shell(const QString& cmd, const QStringList& args) {
+  QProcess shell;
+  shell.start(cmd, args);
+  if (!shell.waitForStarted())
+    throw std::runtime_error((QString("Cannot execute shell command ") + cmd).toStdString());
+
+  if (!shell.waitForFinished())
+    throw std::runtime_error((QString("Shell command did not finish ") + cmd).toStdString());
+
+  QByteArray result = shell.readAll();
+  return result;
+}
+
+// ø  = arcos( (u . v) / (|u| * |v|) )
+inline auto angleBetween(const QVector3D& first, const QVector3D& second) {
+  return acos(QVector3D::dotProduct(first, second) / (first.length() * second.length()));
+}
+
+inline auto midpoint(const QVector3D& first,  const QVector3D& second) {
+  auto x = (first.x() + second.x()) / 2.0f;
+  auto y = (first.y() + second.y()) / 2.0f;
+  auto z = (first.z() + second.z()) / 2.0f;
+  return QVector3D{x, y, z};
+}
 
 } // End namespace glocon
 

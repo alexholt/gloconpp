@@ -29,6 +29,8 @@ Model::Model(const Model& other) : Model(other.m_hasTexture) {
 }
 
 void Model::render(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
+  if (!m_canRender) return;
+
   if (!m_isInitialized) {
     initialize(renderer);
   }
@@ -198,7 +200,6 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
   }
 
   aiMesh* mesh = scene->mMeshes[0];
-  m_meshData.elementCount = mesh->mNumFaces * 3;
 
   m_numVertices = mesh->mNumVertices;
   m_vertices = new float[m_numVertices * 8];
@@ -236,8 +237,6 @@ void Model::loadFile(const QString& modelFilePath, const QString& shaderName) {
     m_elements[i * 3 + 1] = mesh->mFaces[i].mIndices[1];
     m_elements[i * 3 + 2] = mesh->mFaces[i].mIndices[2];
   }
-
-  scale(10.0f);
 }
 
 void Model::scale(float factor) {

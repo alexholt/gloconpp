@@ -15,17 +15,6 @@
 #include <QOpenGLVertexArrayObject>
 #include <QString>
 
-struct Mesh {
-  QOpenGLVertexArrayObject* vao;
-  QOpenGLBuffer* vbo;
-  QOpenGLBuffer* indices;
-  int elementCount;
-};
-
-struct ShaderMode {
-
-};
-
 class Model : public QObject {
 public:
   Model();
@@ -49,7 +38,6 @@ protected:
   QOpenGLShaderProgram* m_program = nullptr;
   bool m_isInitialized = false;
   QMatrix4x4 m_modelViewMatrix;
-  Mesh m_meshData;
   QOpenGLVertexArrayObject* m_vao;
   QOpenGLBuffer* m_vertexVbo = nullptr;
   QOpenGLBuffer* m_elementVbo = nullptr;
@@ -65,6 +53,8 @@ protected:
   QString m_shaderName = "cube";
   bool m_hasTexture = false;
   bool m_shouldRotate = false;
+  bool m_canRender = true;
+  QMutex m_canRenderMutex;
 
 private:
   void initialize(QOpenGLFunctions_4_1_Core* gl);

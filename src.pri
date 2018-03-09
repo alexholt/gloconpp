@@ -2,7 +2,6 @@ SOURCES += \
     $$PWD/src/jsconsole.cpp \
     $$PWD/src/worldmap.cpp \
     $$PWD/src/camera.cpp \
-    $$PWD/src/glocon.cpp \
     $$PWD/src/territory.cpp \
     $$PWD/src/renderer.cpp \
     $$PWD/src/model.cpp \

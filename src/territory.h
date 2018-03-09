@@ -27,6 +27,8 @@ public:
   bool fuzzyVertexCompare(const QVector3D&, const QVector3D&) const;
   bool isClockwise();
   QString getName();
+  void subdivide();
+  void buildVerticesFromPointList(QList<QVector3D>);
 
 private:
   QString m_path;
