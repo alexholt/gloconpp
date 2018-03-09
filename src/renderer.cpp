@@ -23,7 +23,7 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
 
   m_mars.loadFile(":/assets/models/mars.obj");
   m_mars.scale(10.0f);
-  m_mars.translate(-20.0f, 50.0f, 30.0f);
+  m_mars.translate(-20.0f, 20.0f, 30.0f);
   m_mars.scale(10.0f);
 
   m_planes[0].loadFile(":/assets/models/plane.obj", "fuzzycircle");
@@ -38,7 +38,7 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
 
   m_monkey.loadFile(":/assets/models/monkey.obj", "ads");
   m_monkey.scale(10.0f);
-  m_monkey.translate(-50.0f, 50.0f, 20.0f);
+  m_monkey.translate(-50.0f, 20.0f, 20.0f);
   m_monkey.scale(10.0f);
   m_monkey.setShouldRotate(true);
 }
