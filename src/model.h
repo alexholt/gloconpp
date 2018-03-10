@@ -7,6 +7,7 @@
 #include <exception>
 #include <QDebug>
 #include <QMap>
+#include <QMutex>
 #include <QObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions_4_1_Core>

@@ -167,7 +167,7 @@ std::pair<Triangle, Triangle> Triangle::split() {
   auto second = glocon::angleBetween(m_top - m_left, m_bottom - m_left);
   auto third = glocon::angleBetween(m_left - m_top, m_bottom - m_top);
 
-  std::vector<float> angles;
+  std::vector<double> angles;
   angles.push_back(first);
   angles.push_back(second);
   angles.push_back(third);
