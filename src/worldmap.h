@@ -51,6 +51,8 @@ public:
   };
 
   void forEach(std::function<void(QMap<QString, Territory*>::const_iterator)>);
+  Territory& territory(const QString&);
+  void removeTerritory(const QString&);
 
 private:
   QVector3D m_position{-1, 0, 1};

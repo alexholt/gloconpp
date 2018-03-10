@@ -39,6 +39,9 @@ public:
 
   QVector3D normal();
   std::pair<Triangle, Triangle> split();
+  float topLeftAngle();
+  float topBottomAngle();
+  float leftBottomAngle();
 
 private:
   QVector3D m_top;

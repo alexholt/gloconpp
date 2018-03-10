@@ -29,6 +29,8 @@ public:
   QString getName();
   void subdivide();
   void buildVerticesFromPointList(QList<QVector3D>);
+  void intersection(Territory&);
+  QList<QVector3D> pointList();
 
 private:
   QString m_path;
@@ -43,6 +45,7 @@ private:
   void stateChange(QString);
   QList<QVector2D*>& getPointArray();
   QString m_name = "?";
+  void subdivideSingle(Triangle tri, QList<Triangle>& subdivided);
 };
 
 #endif // TERRITORY_H

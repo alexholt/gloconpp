@@ -76,6 +76,8 @@ private:
 
   Model m_monkey;
 
+  Territory m_lattice{"m 300,0 500,0 0,200 -500,0 z", "lattice"};
+
 signals:
   void fpsChanged();
   void windowChanged();

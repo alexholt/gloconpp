@@ -41,6 +41,12 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_monkey.translate(-50.0f, 20.0f, 20.0f);
   m_monkey.scale(10.0f);
   m_monkey.setShouldRotate(true);
+
+  m_lattice.setShader("ads");
+  m_lattice.buildMesh();
+  for (int i = 0; i < 13; i++) {
+    m_lattice.subdivide();
+  }
 }
 
 Renderer::~Renderer() {
@@ -111,6 +117,9 @@ void Renderer::initializeMap() {
     cube->scale(10);
     m_cubeList << cube;
   });
+
+  m_lattice.intersection(m_worldMap.territory("United States"));
+  m_worldMap.removeTerritory("United States");
 }
 
 void Renderer::paint() {
@@ -142,6 +151,7 @@ void Renderer::paint() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   m_worldMap.render(this, *m_renderCameraMatrix, elapsed);
+  m_lattice.render(this, *m_renderCameraMatrix, elapsed);
 
   for (int i = 0; i < m_cubeList.length(); i++) {
     m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);

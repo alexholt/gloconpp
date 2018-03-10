@@ -197,6 +197,18 @@ std::pair<Triangle, Triangle> Triangle::split() {
   return std::make_pair(firstChild, secondChild);
 }
 
+float Triangle::topLeftAngle() {
+  return glocon::angleBetween(m_top - m_bottom, m_left - m_bottom);
+}
+
+float Triangle::topBottomAngle() {
+  return glocon::angleBetween(m_top - m_left, m_bottom - m_left);
+}
+
+float Triangle::leftBottomAngle() {
+  return glocon::angleBetween(m_left - m_top, m_bottom - m_top);
+}
+
 QDebug operator<<(QDebug debug, const Triangle& tri) {
   QDebugStateSaver saver(debug);
   debug.nospace() << '[' << tri.top() << ", " << tri.left() << ", " << tri.bottom() << ']';

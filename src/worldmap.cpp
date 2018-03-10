@@ -156,3 +156,12 @@ void WorldMap::createTexture() {
   m_texture->setMagnificationFilter(QOpenGLTexture::Linear);
   m_texture->bind();
 }
+
+Territory& WorldMap::territory(const QString& name) {
+  return *m_territories[name];
+}
+
+void WorldMap::removeTerritory(const QString& name) {
+  delete m_territories[name];
+  m_territories.remove(name);
+}

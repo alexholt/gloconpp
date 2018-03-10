@@ -49,6 +49,7 @@ void TriangleTest::testCaseContains() {
   );
   QVERIFY(m_subject->contains(QVector3D{0.5f, 0.1f, 0.0f}));
   QVERIFY(!m_subject->contains(QVector3D{-0.5f, 0.5f, 0.0f}));
+  QVERIFY(m_subject->contains(QVector3D{0.5f, 0.49f, 0.0f}));
 }
 
 void TriangleTest::windingTestCase() {

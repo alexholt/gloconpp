@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <limits>
 #include <numeric>
 #include <random>
@@ -8,6 +9,8 @@
 #include "edge.h"
 #include "territory.h"
 #include "triangle.h"
+
+#define COMPARE_EPSILON 1.0f
 
 Territory::Territory(const QString& path) {
   m_path = path;
@@ -347,17 +350,18 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
   m_vertices = new float[m_numVertices * 8];
 
   for (int i = 0; i < points.length(); i++) {
-    std::vector<float> heights = {10.0f, 15.0f, 20.0f};
-    std::random_device rd;
-    std::mt19937 algo(rd());
-    std::shuffle(heights.begin(), heights.end(), algo);
-    points[i].setZ(heights.front());
+    //std::vector<float> heights = {10.0f, 15.0f, 20.0f};
+    //std::random_device rd;
+    //std::mt19937 algo(rd());
+    //std::shuffle(heights.begin(), heights.end(), algo);
+    //points[i].setZ(heights.front());
+    points[i].setZ(10.0f);
 
-    for (int j = 0; j < points.length(); j++) {
-      if (points[i] != points[j] && points[j].x() == points[i].x() && points[j].y() == points[i].y()) {
-        points[j].setZ(heights.front());
-      }
-    }
+    //for (int j = 0; j < points.length(); j++) {
+    //  if (points[i] != points[j] && points[j].x() == points[i].x() && points[j].y() == points[i].y()) {
+    //    points[j].setZ(heights.front());
+    //  }
+    //}
   }
 
   QVector3D normal;
@@ -388,6 +392,7 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
   for (uint i = 0; i < m_numElements; i++) {
     m_elements[i] = i;
   }
+
   m_canRenderMutex.lock();
   m_canRender = true;
   m_canRenderMutex.unlock();
@@ -395,20 +400,63 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
 
 void Territory::subdivide() {
   auto points = QList<QVector3D>();
+  QList<Triangle> mesh;
 
   for (auto tri : m_mesh) {
     auto pair = tri.split();
-
-      points
-          << pair.first.top()
-          << pair.first.left()
-          << pair.first.bottom()
-
-          << pair.second.top()
-          << pair.second.left()
-          << pair.second.bottom()
-      ;
+    mesh << pair.first << pair.second;
+    points
+      << pair.first.top()
+      << pair.first.left()
+      << pair.first.bottom()
+      << pair.second.top()
+      << pair.second.left()
+      << pair.second.bottom()
+    ;
   }
 
+  m_mesh = mesh;
   buildVerticesFromPointList(points);
 }
+
+void Territory::intersection(Territory& other) {
+  auto otherMesh = other.getMesh();
+  QList<Triangle> mesh;
+
+  for (auto tri : m_mesh) {
+    bool shouldAdd = false;
+
+    for (auto i = otherMesh.begin(); i != otherMesh.end(); i++) {
+      auto otherTri = *i;
+      if ((tri.contains(otherTri.bottom()) || tri.contains(otherTri.left()) || tri.contains(otherTri.top())) ||
+        (otherTri.contains(tri.bottom()) || otherTri.contains(tri.left()) || otherTri.contains(tri.top()))) {
+        shouldAdd = true;
+        break;
+      }
+    }
+
+    if (shouldAdd) {
+      mesh << tri;
+    }
+  }
+
+  QList<QVector3D> newPoints;
+  for (auto tri : mesh) {
+    newPoints << tri.top() << tri.bottom() << tri.left();
+  }
+
+  m_mesh = mesh;
+  buildVerticesFromPointList(newPoints);
+}
+
+QList<QVector3D> Territory::pointList() {
+  auto points = QList<QVector3D>();
+
+  for (auto tri : m_mesh) {
+    points << tri.top() << tri.left() << tri.bottom();
+  }
+
+  return points;
+}
+
+#undef COMPARE_EPSILON
