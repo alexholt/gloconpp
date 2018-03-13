@@ -64,13 +64,8 @@ Item {
     contentWidth: 2000
     contentHeight: 1000
     Component.onCompleted: {
-      contentX = 2000 / 2 - screen.width / 2
-      contentY = 1000 / 2 - screen.height / 2
+      renderer.updatePosition(0, 0, currentScale);
     }
-    //contentWidth: mapImage.sourceSize.width + 1
-    //contentHeight: mapImage.sourceSize.height + 1
-    //contentX: mapImage.sourceSize.width / 2
-    //contentY: mapImage.sourceSize.height / 2
     Keys.onPressed: {
       if (event.key === Qt.Key_Escape) {
         consoleInput.focus = true;

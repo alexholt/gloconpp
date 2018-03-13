@@ -34,11 +34,13 @@ void Camera::setAspectRatio(double width, double height) {
   m_screenVec.setY(height);
   m_perspective.setToIdentity();
   m_perspective.perspective(FOV, m_aspectRatio, NEAR, FAR);
+  updateMatrix();
 }
 
 void Camera::updateMatrix() {
   m_matrix.setToIdentity();
   m_matrix.perspective(FOV, m_aspectRatio, NEAR, FAR);
+  m_matrix.rotate(-60.0f, 1.0f, 0.0f, 0.0f);
   m_matrix.translate(m_position);
 }
 
@@ -48,27 +50,14 @@ void Camera::translate(float x, float y, float z) {
 }
 
 void Camera::moveTo(double x, double y, double z) {
-  //auto cameraDistance = -m_position.z();
-  //QVector3D probe1{0, 0, -cameraDistance};
-  //QVector3D probe2{1, 0, -cameraDistance};
-
-  //auto mappedProbe1 = m_perspective * probe1;
-  //auto mappedProbe2 = m_perspective * probe2;
-
-  //auto screenSpaceProbe1 = (mappedProbe1 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
-  //auto screenSpaceProbe2 = (mappedProbe2 * 0.5 + QVector3D{0.5, 0.5, 0}) * m_screenVec;
-  //auto screenSpaceDelta = screenSpaceProbe2.x() - screenSpaceProbe1.x();
-  //auto ratio = 1 / screenSpaceDelta;
-
-  //x *= ratio;
-  //y *= ratio;
-
   x -= 1000;
   y -= 500;
 
   m_position = QVector3D{
-      static_cast<float>(-x), static_cast<float>(y), static_cast<float>(z)
-};
+    static_cast<float>(-x),
+    static_cast<float>(y),
+    static_cast<float>(z)
+  };
   updateMatrix();
 }
 

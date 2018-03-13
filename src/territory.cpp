@@ -4,6 +4,7 @@
 #include <numeric>
 #include <random>
 #include <QVector3D>
+#include <QVector2D>
 
 #include "circle.h"
 #include "edge.h"
@@ -349,19 +350,21 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
   m_numVertices = points.length();
   m_vertices = new float[m_numVertices * 8];
 
+  QMap<std::string, float> lookup;
   for (int i = 0; i < points.length(); i++) {
-    //std::vector<float> heights = {10.0f, 15.0f, 20.0f};
-    //std::random_device rd;
-    //std::mt19937 algo(rd());
-    //std::shuffle(heights.begin(), heights.end(), algo);
-    //points[i].setZ(heights.front());
-    points[i].setZ(10.0f);
+    auto point = points[i];
+    std::string vec;
+    vec += std::to_string(point.x());
+    vec += ',';
+    vec += std::to_string(point.y());
 
-    //for (int j = 0; j < points.length(); j++) {
-    //  if (points[i] != points[j] && points[j].x() == points[i].x() && points[j].y() == points[i].y()) {
-    //    points[j].setZ(heights.front());
-    //  }
-    //}
+    if (!lookup.contains(vec)) {
+      std::vector<float> heights = {10.0f, 15.0f, 20.0f};
+      std::random_device rd;
+      std::mt19937 algo(rd());
+      std::shuffle(heights.begin(), heights.end(), algo);
+      lookup.insert(vec, heights.front());
+    }
   }
 
   QVector3D normal;
@@ -369,7 +372,13 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
     int p = i * 8;
     m_vertices[p + 0] = points[i].x();
     m_vertices[p + 1] = points[i].y();
-    m_vertices[p + 2] = points[i].z();
+    auto point = points[i];
+    std::string vec;
+    vec += std::to_string(point.x());
+    vec += ',';
+    vec += std::to_string(point.y());
+    m_vertices[p + 2] = lookup[vec];
+    points[i].setZ(m_vertices[p + 2]);
 
     m_vertices[p + 3] = 0.0f;
     m_vertices[p + 4] = 0.0f;
@@ -458,5 +467,3 @@ QList<QVector3D> Territory::pointList() {
 
   return points;
 }
-
-#undef COMPARE_EPSILON
