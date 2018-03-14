@@ -18,8 +18,7 @@ DISTFILES += \
     assets/textures/marsmap1k.jpg \
     assets/models/mars.fbx \
     assets/models/mars.fbx \
-    assets/models/mars.fbx \
-    ../assets/models/monkey.obj
+    assets/models/mars.fbx
 
 RESOURCES += \
     gloconpp.qrc

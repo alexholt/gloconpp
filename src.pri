@@ -41,7 +41,4 @@ OBJECTS_DIR = ../build/obj
 MOC_DIR = ../build/moc
 RCC_DIR = ../build/rcc
 
-DISTFILES += \
-    $$PWD/assets/shaders/diffuse.frag \
-    $$PWD/assets/shaders/diffuse.vert \
-    $$PWD/assets/shaders/ads.vert
+DISTFILES +=
