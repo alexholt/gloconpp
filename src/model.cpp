@@ -95,6 +95,20 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix, QOpenGLFunctions_4_1_Cor
       renderer.glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &subIndex);
       break;
     }
+
+    CASE("multiads"): {
+      m_program->setUniformValue("material.ka", QVector3D{0.2, 0.2, 0.2});
+      m_program->setUniformValue("material.kd", QVector3D{0.2, 0.2, 0.2});
+      m_program->setUniformValue("material.ks", QVector3D{0.2, 0.2, 0.2});
+      m_program->setUniformValue("material.shininess", 1.0f);
+
+      m_program->setUniformValue("lights[0].position", QVector4D{-400.0f, 200.0f, 200.0f, 1.0f});
+      m_program->setUniformValue("lights[0].intensity", QVector3D{0.0f, 0.0f, 0.5f});
+
+      m_program->setUniformValue("lights[1].position", QVector4D{-600.0f, 200.0f, 200.0f, 1.0f});
+      m_program->setUniformValue("lights[1].intensity", QVector3D{0.0f, 0.5f, 0.0f});
+      break;
+    }
   }
 }
 

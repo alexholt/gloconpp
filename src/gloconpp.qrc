@@ -28,5 +28,7 @@
         <file>../assets/models/monkey.obj</file>
         <file>../assets/shaders/ads.frag</file>
         <file>../assets/shaders/ads.vert</file>
+        <file>../assets/shaders/multiads.vert</file>
+        <file>../assets/shaders/multiads.frag</file>
     </qresource>
 </RCC>

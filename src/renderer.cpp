@@ -36,15 +36,14 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_planes[1].translate(50.0f, 0.0f, 20.0f);
   m_planes[1].scale(10.0f);
 
-  m_monkey.loadFile(":/assets/models/monkey.obj", "ads");
-  m_monkey.scale(10.0f);
-  m_monkey.translate(-50.0f, 20.0f, 20.0f);
-  m_monkey.scale(10.0f);
+  m_monkey.loadFile(":/assets/models/monkey.obj", "multiads");
+  m_monkey.translate(-500.0f, 200.0f, 200.0f);
+  m_monkey.scale(100.0f);
   m_monkey.setShouldRotate(true);
 
   m_lattice.setShader("ads");
   m_lattice.buildMesh();
-  for (int i = 0; i < 13; i++) {
+  for (int i = 0; i < 10; i++) {
     m_lattice.subdivide();
   }
 }
