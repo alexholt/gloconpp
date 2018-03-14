@@ -1,4 +1,6 @@
 import QtQuick 2.7
+import QtQuick.Controls 1.4
+
 import Glocon 1.0
 import '../assets/scripts/glocon.js' as Glocon
 
@@ -6,6 +8,11 @@ Item {
   id: screen
   width: 800
   height: 800
+
+  FontLoader {
+    id: shareTechMono
+    source: "../assets/fonts/ShareTechMono-Regular.ttf"
+  }
 
   // Hook up currentScale, mapCenterX and mapCenterY to the map renderer
   // Assuming that (0, 0) is the center of the content
@@ -110,12 +117,32 @@ Item {
     anchors.bottom: parent.bottom
     anchors.left: parent.left
     anchors.right: parent.right
+
+    Row {
+      anchors.right: consoleBackground.right
+      anchors.verticalCenter: consoleBackground.verticalCenter
+      height: consoleBackground.height - 40
+
+      Slider {
+        id: sliderOne
+        value: 0.5
+        orientation: Qt.Vertical
+        height: parent.height
+      }
+
+      Slider {
+        id: sliderTwo
+        value: 0.5
+        orientation: Qt.Vertical
+        height: parent.height
+      }
+    }
   }
 
   Rectangle {
     color: Qt.rgba(0, 0, 0, 0.8)
     height: 55
-    width: 450
+    width: 480
     anchors.top: parent.top
     anchors.left: parent.left
   }
@@ -128,6 +155,7 @@ Item {
 
     Text {
       font.pixelSize: 23;
+      font.family: shareTechMono.name
       color: "green"
       text: {
         var point = contentToCenterWorld(flickArea.contentX, flickArea.contentY);
@@ -139,11 +167,12 @@ Item {
 
   TextEdit {
     id: consoleInput
+    font.family: shareTechMono.name
+    font.pixelSize: 18;
     visible: false
     color: "green"
     wrapMode: Text.WordWrap
     text: JSConsole.text
-    font.family: "PT Mono"
     anchors.right: parent.right
     anchors.left: parent.left
     anchors.top: consoleBackground.top
@@ -221,8 +250,8 @@ Item {
       color: "green"
       text: renderer.fps
       anchors.centerIn: parent
-      font.family: "PT Mono"
       font.pixelSize: 32
+      font.family: shareTechMono.name
     }
   }
 

@@ -30,5 +30,6 @@
         <file>../assets/shaders/ads.vert</file>
         <file>../assets/shaders/multiads.vert</file>
         <file>../assets/shaders/multiads.frag</file>
+        <file>../assets/fonts/ShareTechMono-Regular.ttf</file>
     </qresource>
 </RCC>
