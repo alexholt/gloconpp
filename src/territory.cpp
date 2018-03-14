@@ -13,6 +13,70 @@
 
 #define COMPARE_EPSILON 1.0f
 
+QVector2D fract(QVector3D arg) {
+  float intPart;
+  float fractX = std::modf(arg.x(), &intPart);
+  float fractY = std::modf(arg.y(), &intPart);
+  return QVector2D{fractX, fractY};
+}
+
+float fract(float arg) {
+  float intPart;
+  float fract = std::modf(arg, &intPart);
+  return fract;
+}
+
+QVector2D floor(QVector2D arg) {
+  return QVector2D{std::floor(arg.x()), std::floor(arg.y())};
+}
+
+QVector2D hash(QVector2D x) {
+    const QVector2D k = QVector2D( 0.3183099f, 0.3678794f );
+    x = x*k + QVector2D{k.y(), k.x()};
+    auto retVec = 2.0f * fract( 16.0f * k*fract(x.x()*x.y()*(x.x()+x.y())) );
+    retVec.setX(retVec.x() - 1.0f);
+    retVec.setY(retVec.y() - 1.0f);
+    return retVec;
+}
+
+// Noise function based on https://www.shadertoy.com/view/XdXBRH
+float noised(QVector2D p) {
+    QVector2D i = floor( p );
+    QVector2D f = fract(p);
+
+#if 1
+    // quintic interpolation
+    QVector2D vecTimes6 = f * 6;
+    QVector2D vecMinus2 = f;
+    vecMinus2.setX(vecMinus2.x() - 2.0f);
+    vecMinus2.setY(vecMinus2.y() - 2.0f);
+    vecTimes6.setX(vecTimes6.x() - 15.0f);
+    vecTimes6.setY(vecTimes6.y() - 15.0f);
+    vecTimes6 *= f;
+    vecTimes6 = QVector2D{vecTimes6.x() + 10.0f, vecTimes6.y() + 10.0f};
+    QVector2D u = f*f*f*vecTimes6;
+    vecMinus2 *= f;
+    vecMinus2 = QVector2D{vecMinus2.x() + 10.0f, vecMinus2.y() + 10.0f};
+    QVector2D du = 30.0*f*f*vecMinus2;
+#else
+    // cubic interpolation
+    QVector2D u = f*f*(3.0-2.0*f);
+    QVector2D du = 6.0*f*(1.0-f);
+#endif
+
+    QVector2D ga = hash( i + QVector2D(0.0,0.0) );
+    QVector2D gb = hash( i + QVector2D(1.0,0.0) );
+    QVector2D gc = hash( i + QVector2D(0.0,1.0) );
+    QVector2D gd = hash( i + QVector2D(1.0,1.0) );
+
+    float va = QVector2D::dotProduct( ga, f - QVector2D(0.0,0.0) );
+    float vb = QVector2D::dotProduct( gb, f - QVector2D(1.0,0.0) );
+    float vc = QVector2D::dotProduct( gc, f - QVector2D(0.0,1.0) );
+    float vd = QVector2D::dotProduct( gd, f - QVector2D(1.0,1.0) );
+
+    return va + u.x()*(vb-va) + u.y()*(vc-va) + u.x()*u.y()*(va-vb-vc+vd);
+}
+
 Territory::Territory(const QString& path) {
   m_path = path;
 }
@@ -359,11 +423,9 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
     vec += std::to_string(point.y());
 
     if (!lookup.contains(vec)) {
-      std::vector<float> heights = {10.0f, 15.0f, 20.0f};
-      std::random_device rd;
-      std::mt19937 algo(rd());
-      std::shuffle(heights.begin(), heights.end(), algo);
-      lookup.insert(vec, heights.front());
+      auto scale = 1 / 2.0f;
+      auto height = 10.0f + std::abs(noised(QVector2D{point.x() / scale, point.y() / scale}));
+      lookup.insert(vec, height);
     }
   }
 
