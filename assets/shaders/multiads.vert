@@ -49,7 +49,7 @@ void main(void) {
   lightIntensity = vec3(0.0);
 
   for (int i = 0; i < 2; i++) {
-    lightIntensity = phongModel(i, eyePosition, eyeNorm);
+    lightIntensity += phongModel(i, eyePosition, eyeNorm);
   }
 
   gl_Position = u_camera * u_modelView * vec4(vertexPosition, 1.0);

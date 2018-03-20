@@ -16,6 +16,7 @@ public slots:
 
 signals:
   void sendUpdate(QJSValue);
+
 };
 
 #endif // GAMESTATE_H

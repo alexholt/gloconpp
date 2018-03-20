@@ -125,16 +125,18 @@ Item {
 
       Slider {
         id: sliderOne
-        value: 0.5
+        stepSize: 0.01
         orientation: Qt.Vertical
         height: parent.height
+        onValueChanged: GameState.sendUpdate({"lightOneIntensity": value})
       }
 
       Slider {
         id: sliderTwo
-        value: 0.5
+        stepSize: 0.01
         orientation: Qt.Vertical
         height: parent.height
+        onValueChanged: GameState.sendUpdate({"lightTwoIntensity": value})
       }
     }
   }

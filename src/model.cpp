@@ -98,15 +98,15 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix, QOpenGLFunctions_4_1_Cor
 
     CASE("multiads"): {
       m_program->setUniformValue("material.ka", QVector3D{0.2, 0.2, 0.2});
-      m_program->setUniformValue("material.kd", QVector3D{0.2, 0.2, 0.2});
-      m_program->setUniformValue("material.ks", QVector3D{0.2, 0.2, 0.2});
+      m_program->setUniformValue("material.kd", QVector3D{0.5, 0.5, 0.5});
+      m_program->setUniformValue("material.ks", QVector3D{0.8, 0.8, 0.8});
       m_program->setUniformValue("material.shininess", 1.0f);
 
       m_program->setUniformValue("lights[0].position", QVector4D{-400.0f, 200.0f, 200.0f, 1.0f});
-      m_program->setUniformValue("lights[0].intensity", QVector3D{0.0f, 0.0f, 0.5f});
+      m_program->setUniformValue("lights[0].intensity", m_lightIntensities[0]);
 
       m_program->setUniformValue("lights[1].position", QVector4D{-600.0f, 200.0f, 200.0f, 1.0f});
-      m_program->setUniformValue("lights[1].intensity", QVector3D{0.0f, 0.5f, 0.0f});
+      m_program->setUniformValue("lights[1].intensity", m_lightIntensities[1]);
       break;
     }
   }
@@ -268,4 +268,15 @@ void Model::rotate(float degree, float x, float y, float z) {
 void Model::setShader(QString shaderName) {
   m_shaderName = shaderName;
   m_isInitialized = false;
+}
+
+void Model::setLight(int index, float intensity) {
+  auto light = &m_lightIntensities[index];
+  auto originalLight = &m_originalLightIntensities[index];
+  auto x = originalLight->x();
+  auto y = originalLight->y();
+  auto z = originalLight->z();
+  light->setX(x * intensity);
+  light->setY(y * intensity);
+  light->setZ(z * intensity);
 }

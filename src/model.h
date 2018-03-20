@@ -32,6 +32,7 @@ public:
   bool shouldRotate() const;
   void setShouldRotate(bool shouldRotate);
   void destroyResources();
+  void setLight(int, float);
 
 protected:
   void setUniforms(const QMatrix4x4&, QOpenGLFunctions_4_1_Core&);
@@ -56,8 +57,14 @@ protected:
   bool m_shouldRotate = false;
   bool m_canRender = true;
   QMutex m_canRenderMutex;
+  QList<QVector3D> m_originalLightIntensities = {
+    QVector3D{0.8f, 0.8f, 0.0f},
+    QVector3D{0.0f, 0.0f, 0.8f},
+  };
+  QList<QVector3D> m_lightIntensities = m_originalLightIntensities;
 
 private:
+
   void initialize(QOpenGLFunctions_4_1_Core* gl);
 
   QList<QString> m_shaderNames = {"basic"};

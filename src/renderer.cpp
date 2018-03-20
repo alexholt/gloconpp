@@ -39,7 +39,7 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_monkey.loadFile(":/assets/models/monkey.obj", "multiads");
   m_monkey.translate(-500.0f, 200.0f, 200.0f);
   m_monkey.scale(100.0f);
-  m_monkey.setShouldRotate(true);
+  m_monkey.setShouldRotate(false);
 
   m_lattice.setShader("ads");
   m_lattice.buildMesh();
@@ -243,6 +243,16 @@ QString Renderer::receiveUpdate(QJSValue data) {
 
   CHECK_PROP("activeShader", String)
     m_monkey.setShader(PROP);
+  END_CHECK
+
+  CHECK_PROP("lightOneIntensity", Number)
+    auto prop = static_cast<float>(PROP);
+    m_monkey.setLight(0, prop);
+  END_CHECK
+
+  CHECK_PROP("lightTwoIntensity", Number)
+    auto prop = static_cast<float>(PROP);
+    m_monkey.setLight(1, prop);
   END_CHECK
 
   return "We have received the update";
