@@ -18,12 +18,8 @@ WorldMap::~WorldMap() {
     delete i.value();
     ++i;
   }
-}
-
-void WorldMap::teardownGL() {
   delete m_textureData;
   delete m_tex;
-  m_program->release();
   delete m_vao;
   delete m_vertexVbo;
   delete m_textureVbo;

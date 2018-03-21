@@ -17,11 +17,13 @@
 #include <QString>
 
 class Model : public QObject {
+  Q_OBJECT
+
 public:
   Model();
   Model(bool);
   Model(const Model&);
-  ~Model();
+  virtual ~Model();
   virtual void render(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, const long long);
   void loadFile(const QString&, const QString& = "basic");
   void scale(float);
@@ -32,7 +34,8 @@ public:
   bool shouldRotate() const;
   void setShouldRotate(bool shouldRotate);
   void destroyResources();
-  void setLight(int, float);
+  QMatrix4x4 matrix();
+  QOpenGLShaderProgram* program();
 
 protected:
   void setUniforms(const QMatrix4x4&, QOpenGLFunctions_4_1_Core&);
@@ -57,11 +60,6 @@ protected:
   bool m_shouldRotate = false;
   bool m_canRender = true;
   QMutex m_canRenderMutex;
-  QList<QVector3D> m_originalLightIntensities = {
-    QVector3D{0.8f, 0.8f, 0.0f},
-    QVector3D{0.0f, 0.0f, 0.8f},
-  };
-  QList<QVector3D> m_lightIntensities = m_originalLightIntensities;
 
 private:
 

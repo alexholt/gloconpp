@@ -11,7 +11,8 @@ SOURCES += \
     $$PWD/src/triangle.cpp \
     $$PWD/src/scene.cpp \
     $$PWD/src/edge.cpp \
-    $$PWD/src/rect.cpp
+    $$PWD/src/rect.cpp \
+    $$PWD/src/light.cpp
 
 HEADERS += \
     $$PWD/src/jsconsole.h \
@@ -28,7 +29,8 @@ HEADERS += \
     $$PWD/src/triangle.h \
     $$PWD/src/scene.h \
     $$PWD/src/edge.h \
-    $$PWD/src/rect.h
+    $$PWD/src/rect.h \
+    $$PWD/src/light.h
 
 DESTDIR = ../build
 

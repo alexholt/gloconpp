@@ -19,6 +19,7 @@
 
 #include "camera.h"
 #include "cube.h"
+#include "light.h"
 #include "worldmap.h"
 
 class Renderer : public QObject, public QOpenGLFunctions_4_1_Core {
@@ -64,6 +65,7 @@ private:
   void printGLInfo();
   double m_lastZoom = 0;
 
+  QList<Light> m_lights;
   // Models
   QList<Cube*> m_cubeList;
   Model m_tank;

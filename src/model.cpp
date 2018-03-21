@@ -16,16 +16,17 @@ Model::Model(bool hasTexture) :
   m_hasTexture = hasTexture;
 }
 
+Model::Model(const Model& other) : Model(other.m_hasTexture) {
+  m_modelViewMatrix = std::move(other.m_modelViewMatrix);
+  m_shaderName = other.m_shaderName;
+}
+
 Model::~Model() {
   if (m_vertices != nullptr)
     delete[] m_vertices;
 
   if (m_elements != nullptr)
     delete[] m_elements;
-}
-
-Model::Model(const Model& other) : Model(other.m_hasTexture) {
-  m_shaderName = other.m_shaderName;
 }
 
 void Model::render(QOpenGLFunctions_4_1_Core* renderer, const QMatrix4x4& cameraMatrix, const long long elapsed) {
@@ -102,11 +103,6 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix, QOpenGLFunctions_4_1_Cor
       m_program->setUniformValue("material.ks", QVector3D{0.8, 0.8, 0.8});
       m_program->setUniformValue("material.shininess", 1.0f);
 
-      m_program->setUniformValue("lights[0].position", QVector4D{-400.0f, 200.0f, 200.0f, 1.0f});
-      m_program->setUniformValue("lights[0].intensity", m_lightIntensities[0]);
-
-      m_program->setUniformValue("lights[1].position", QVector4D{-600.0f, 200.0f, 200.0f, 1.0f});
-      m_program->setUniformValue("lights[1].intensity", m_lightIntensities[1]);
       break;
     }
   }
@@ -270,13 +266,10 @@ void Model::setShader(QString shaderName) {
   m_isInitialized = false;
 }
 
-void Model::setLight(int index, float intensity) {
-  auto light = &m_lightIntensities[index];
-  auto originalLight = &m_originalLightIntensities[index];
-  auto x = originalLight->x();
-  auto y = originalLight->y();
-  auto z = originalLight->z();
-  light->setX(x * intensity);
-  light->setY(y * intensity);
-  light->setZ(z * intensity);
+QMatrix4x4 Model::matrix() {
+  return m_modelViewMatrix;
+}
+
+QOpenGLShaderProgram* Model::program() {
+  return m_program;
 }

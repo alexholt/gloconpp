@@ -14,6 +14,8 @@
 
 class Territory : public Model {
 
+  Q_OBJECT
+
 public:
   Territory(const QString&);
   Territory(const QString&, const QString&);

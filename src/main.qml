@@ -180,6 +180,11 @@ Item {
     anchors.top: consoleBackground.top
     anchors.margins: 10
     onTextChanged: JSConsole.text = consoleInput.text
+    Component.onCompleted: {
+      JSConsole.textChanged.connect(function() {
+         consoleInput.text = JSConsole.text;
+      });
+    }
 
     Keys.priority: Keys.BeforeItem
     Keys.onPressed: {
@@ -274,6 +279,7 @@ Item {
     Component.onCompleted: {
       JSConsole.sayHello.connect(GameState.hello);
       GameState.sendUpdate.connect(renderer.receiveUpdate);
+
       //JSConsole.onPositionChanged.connect(renderer.updatePosition);
       //JSConsole.updatePosition(renderer.x, renderer.y, renderer.z);
     }

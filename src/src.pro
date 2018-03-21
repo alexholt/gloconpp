@@ -24,5 +24,3 @@ RESOURCES += \
     gloconpp.qrc
 
 CONFIG += c++1z
-
-HEADERS +=

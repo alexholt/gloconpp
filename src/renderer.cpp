@@ -46,6 +46,12 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   for (int i = 0; i < 10; i++) {
     m_lattice.subdivide();
   }
+
+  m_lights << Light{QVector3D{0.8f, 0.8f, 0.0f}}
+    << Light{QVector3D{0.0f, 0.0f, 0.8f}};
+
+  m_lights[0].translate(-400.0f, 200.0f, 200.0f);
+  m_lights[1].translate(-600.0f, 200.0f, 200.0f);
 }
 
 Renderer::~Renderer() {
@@ -94,7 +100,7 @@ void Renderer::initializeGL() {
 
   QOpenGLContext* context = window()->openglContext();
   connect(context, SIGNAL(aboutToBeDestroyed()), this, SLOT(teardownGL()), Qt::DirectConnection);
-  connect(context, SIGNAL(aboutToBeDestroyed()), &m_worldMap, SLOT(teardownGL()), Qt::DirectConnection);
+  //connect(context, SIGNAL(aboutToBeDestroyed()), &m_worldMap, WorldMap::teardownGL, Qt::DirectConnection);
 
   auto surface = window()->format();
   surface.setSwapInterval(0);
@@ -160,6 +166,17 @@ void Renderer::paint() {
   m_mars.render(this, *m_renderCameraMatrix, elapsed);
   m_planes[0].render(this, *m_renderCameraMatrix, elapsed);
   m_planes[1].render(this, *m_renderCameraMatrix, elapsed);
+
+  auto program = m_monkey.program();
+
+  if (program) {
+    program->bind();
+    program->setUniformValue("lights[0].position", m_lights[0].matrix());
+    program->setUniformValue("lights[0].intensity", m_lights[0].color());
+    program->setUniformValue("lights[1].position", m_lights[1].matrix());
+    program->setUniformValue("lights[1].intensity", m_lights[1].color());
+  }
+
   m_monkey.render(this, *m_renderCameraMatrix, elapsed);
 
   window()->update();
@@ -247,12 +264,12 @@ QString Renderer::receiveUpdate(QJSValue data) {
 
   CHECK_PROP("lightOneIntensity", Number)
     auto prop = static_cast<float>(PROP);
-    m_monkey.setLight(0, prop);
+    m_lights[0].setIntensity(prop);
   END_CHECK
 
   CHECK_PROP("lightTwoIntensity", Number)
     auto prop = static_cast<float>(PROP);
-    m_monkey.setLight(1, prop);
+    m_lights[1].setIntensity(prop);
   END_CHECK
 
   return "We have received the update";

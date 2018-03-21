@@ -32,11 +32,12 @@
 #define Z 1.0f
 
 class WorldMap : public Model {
+
   Q_OBJECT
 
 public:
   WorldMap(const QString&);
-  ~WorldMap();
+  virtual ~WorldMap();
   void render(QOpenGLFunctions_4_1_Core*, const QMatrix4x4&, const long long);
   void loadMap();
   void createTexture();
@@ -59,14 +60,6 @@ private:
   QString m_path;
   QDomDocument m_doc;
   QMap<QString, Territory*> m_territories;
-  GLuint m_textureLocation;
-  GLuint m_selectedTerritoryIdLocation;
-  int m_selectedTerritoryId = -1;
-  GLuint m_cameraMatrixLocation;
-  GLuint m_positionBuffer;
-  GLuint m_texcoordBuffer;
-  GLuint m_positionAttributeLocation;
-  GLuint m_texcoordAttributeLocation;
   QImage* m_textureData;
   QImage* m_tex;
 
@@ -78,9 +71,6 @@ private:
     0.0f, 1.0f,
     0.0f, 0.0f,
   };
-
-public slots:
-  void teardownGL();
 };
 
 #undef HEIGHT
