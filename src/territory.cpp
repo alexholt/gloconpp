@@ -453,13 +453,10 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
       col = QVector3D{col.x() + 0.5f, col.y() + 0.5f, col.z() + 0.5f};
 
       auto val = std::min(std::max(col.x() + 10.0f, 10.0f), 20.0f);
-      //auto val = col.x() + 10.0f;
-      //lookup.insert(vec, val);
-      lookup.insert(vec, 10.0f);
+      lookup.insert(vec, val);
     }
   }
 
-  QVector3D normal;
   for (int i = 0; i < points.length(); i++) {
     int p = i * 8;
     m_vertices[p + 0] = points[i].x();
@@ -474,6 +471,11 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
 
     m_vertices[p + 3] = 0.0f;
     m_vertices[p + 4] = 0.0f;
+  }
+
+  QVector3D normal;
+  for (int i = 0; i < points.length(); i++) {
+    int p = i * 8;
 
     if (i % 3 == 0) {
       auto cur = points[i];
@@ -481,15 +483,11 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
       auto finale = points[i + 2];
       Triangle tri(cur, next, finale);
       normal = tri.normal();
-      normal = QVector3D{0.0f, 0.0f, 1.0f};
     }
 
     m_vertices[p + 5] = normal.x();
     m_vertices[p + 6] = normal.y();
     m_vertices[p + 7] = normal.z();
-    //m_vertices[p + 5] = 0.0f;
-    //m_vertices[p + 6] = 0.0f;
-    //m_vertices[p + 7] = 1.0f;
   }
 
   m_numElements = m_numVertices * 3;
