@@ -43,7 +43,7 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
 
   m_lattice.setShader("ads");
   m_lattice.buildMesh();
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 11; i++) {
     m_lattice.subdivide();
   }
 
@@ -115,15 +115,16 @@ void Renderer::teardownGL() {
 void Renderer::initializeMap() {
   m_worldMap.loadMap();
 
-  float height = 5;
-  m_worldMap.forEach([this, &height](QMap<QString, Territory*>::const_iterator it) {
-    auto cube = new Cube();
-    cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, height++);
-    cube->scale(10);
-    m_cubeList << cube;
-  });
+  //float height = 5;
+  //m_worldMap.forEach([this, &height](QMap<QString, Territory*>::const_iterator it) {
+  //  auto cube = new Cube();
+  //  cube->translate(it.value()->getCentroid()->x() - 1000, -it.value()->getCentroid()->y() + 500, height++);
+  //  cube->scale(10);
+  //  m_cubeList << cube;
+  //});
 
   m_lattice.intersection(m_worldMap.territory("United States"));
+  //m_lattice.rotate(90.0f, 1.0f, 0.0f, 0.0f);
   m_worldMap.removeTerritory("United States");
 }
 
@@ -143,7 +144,7 @@ void Renderer::paint() {
   glDepthFunc(GL_LESS);
   glDepthMask(GL_TRUE);
 
-  //glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

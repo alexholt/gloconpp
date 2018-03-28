@@ -42,6 +42,7 @@ public:
   float topLeftAngle();
   float topBottomAngle();
   float leftBottomAngle();
+  void flip();
 
 private:
   QVector3D m_top;

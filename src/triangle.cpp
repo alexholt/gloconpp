@@ -9,8 +9,6 @@
 #include "glocon.h"
 #include "triangle.h"
 
-typedef std::pair<Triangle, Triangle> PairOfTriangles;
-
 Triangle::Triangle() {
   m_top = QVector3D{0.0f, 1.0f, 0.0f};
   m_left = QVector3D{-1.0f, 0.0f, 0.0f};
@@ -132,17 +130,9 @@ bool Triangle::contains(const QVector3D& v) const {
 
 // See the method in Territory also
 bool Triangle::isClockwise() {
-  QList<QVector3D> vertices;
-  vertices << m_top << m_bottom << m_left;
-
-  float area = 0.0f;
-  for (int i = 0; i < vertices.length(); i++) {
-    auto first = vertices[i];
-    auto second = vertices[(i + 1) % vertices.length()];
-    area += first.x() * second.y() - second.x() * first.y();
-  }
-
-  return (area / 2) < 0;
+  auto sideOne = m_top - m_bottom;
+  auto sideTwo = m_left - m_bottom;
+  return QVector3D::crossProduct(sideOne, sideTwo).z() > 0;
 }
 
 bool Triangle::isAcute() {
@@ -207,6 +197,12 @@ float Triangle::topBottomAngle() {
 
 float Triangle::leftBottomAngle() {
   return glocon::angleBetween(m_left - m_top, m_bottom - m_top);
+}
+
+void Triangle::flip() {
+  auto swap = m_top;
+  m_top = m_left;
+  m_left = swap;
 }
 
 QDebug operator<<(QDebug debug, const Triangle& tri) {

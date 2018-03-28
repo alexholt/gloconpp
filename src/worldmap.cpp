@@ -109,7 +109,6 @@ void WorldMap::loadMap() {
       m_territories[name] = new Territory(territory.attribute("d"), name, true);
       m_territories[name]->setShader("ads");
       m_territories[name]->buildMesh();
-      m_territories[name]->subdivide();
     }
   }
 }

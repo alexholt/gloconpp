@@ -58,9 +58,6 @@ int main(int argc, char **argv) {
   qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "GameState", gameStateProvider);
   qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
 
-  // TODO: This is not working
-  qInstallMessageHandler(logToJSConsole);
-
   QSurfaceFormat format;
   format.setRenderableType(QSurfaceFormat::OpenGL);
   format.setProfile(QSurfaceFormat::CoreProfile);
@@ -75,6 +72,8 @@ int main(int argc, char **argv) {
   view->setResizeMode(QQuickView::SizeRootObjectToView);
   view->setSource(QUrl("qrc:///main.qml"));
   view->show();
+
+  //qInstallMessageHandler(logToJSConsole);
 
   return app.exec();
 }

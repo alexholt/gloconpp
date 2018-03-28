@@ -53,15 +53,17 @@ void TriangleTest::testCaseContains() {
 }
 
 void TriangleTest::windingTestCase() {
-  QVERIFY(!m_subject->isClockwise());
-
   Triangle other(
     QVector3D{0.0f, 1.0f, 0.0f},
     QVector3D{-1.0f, 0.0f, 0.0f},
     QVector3D{1.0f, 0.0f, 0.0f}
   );
 
-  QVERIFY(!m_subject->isClockwise());
+  QVERIFY(other.isClockwise());
+
+  other.flip();
+
+  QVERIFY(!other.isClockwise());
 }
 
 void TriangleTest::acuteTestCase() {
@@ -100,4 +102,23 @@ void TriangleTest::splitTestCase() {
   }
 
   QVERIFY(subject.isAcute());
+}
+
+void TriangleTest::normalTestCase() {
+  Triangle subject(
+    QVector3D{1.0f, 0.0f, 0.0f},
+    QVector3D{-1.0f, 0.0f, 0.0f},
+    QVector3D{0.0f, -1.0f, 0.0f}
+  );
+
+  QVERIFY(subject.normal() == QVector3D(0.0f, 0.0f, -1.0f));
+
+  // Switch the winding and see that we get the opposing vector
+  subject = Triangle(
+    QVector3D{-1.0f, 0.0f, 0.0f},
+    QVector3D{1.0f, 0.0f, 0.0f},
+    QVector3D{0.0f, -1.0f, 0.0f}
+  );
+
+  QVERIFY(subject.normal() == QVector3D(0.0f, 0.0f, 1.0f));
 }

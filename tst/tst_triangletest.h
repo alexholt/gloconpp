@@ -24,6 +24,7 @@ private slots:
   void windingTestCase();
   void acuteTestCase();
   void splitTestCase();
+  void normalTestCase();
 };
 
 #endif // TST_TRIANGLETEST_H

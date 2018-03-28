@@ -40,7 +40,7 @@ QVector2D hash(QVector2D x) {
 }
 
 // Noise function based on https://www.shadertoy.com/view/XdXBRH
-float noised(QVector2D p) {
+QVector3D noised(QVector2D p) {
     QVector2D i = floor( p );
     QVector2D f = fract(p);
 
@@ -74,7 +74,20 @@ float noised(QVector2D p) {
     float vc = QVector2D::dotProduct( gc, f - QVector2D(0.0,1.0) );
     float vd = QVector2D::dotProduct( gd, f - QVector2D(1.0,1.0) );
 
-    return va + u.x()*(vb-va) + u.y()*(vc-va) + u.x()*u.y()*(va-vb-vc+vd);
+    auto z = QVector2D{u.y(), u.x()}*(va-vb-vc+vd) + QVector2D{vb,vc};
+    z = QVector2D{z.x() - va, z.y() - va};
+    z *= du;
+
+    auto yz =
+      ga + u.x()*(gb-ga) + u.y()*(gc-ga) + u.x()*u.y()*(ga-gb-gc+gd) +  // derivatives
+      z
+    ;
+
+    return QVector3D{
+      va + u.x()*(vb-va) + u.y()*(vc-va) + u.x()*u.y()*(va-vb-vc+vd),   // value
+      yz.x(),
+      yz.y()
+    };
 }
 
 Territory::Territory(const QString& path) {
@@ -352,8 +365,9 @@ void Territory::buildMesh() {
 
     Triangle triangle{prev3D, center3D, next3D};
 
-    if (triangle.isClockwise())
-      triangle = Triangle{prev3D, next3D, center3D};
+    if (triangle.isClockwise()) {
+      triangle.flip();
+    }
 
     if (vertices.length() == 1) {
       // We removed the first two so if we started this iteration with 3 we are at 1
@@ -406,10 +420,11 @@ void Territory::buildMesh() {
 void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
   m_canRenderMutex.lock();
   m_canRender = false;
+  m_isInitialized = false;
   m_canRenderMutex.unlock();
+
   if (m_vertices != nullptr ) delete[] m_vertices;
   if (m_elements != nullptr ) delete[] m_elements;
-  m_isInitialized = false;
 
   m_numVertices = points.length();
   m_vertices = new float[m_numVertices * 8];
@@ -423,9 +438,24 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
     vec += std::to_string(point.y());
 
     if (!lookup.contains(vec)) {
-      auto scale = 1 / 2.0f;
-      auto height = 10.0f + std::abs(noised(QVector2D{point.x() / scale, point.y() / scale}));
-      lookup.insert(vec, height);
+      auto scale = 0.1f;
+
+      QVector2D size{-2000.0f, -1000.0f};
+      QVector2D coord{point.x(), point.y()};
+      QVector3D arg = size + coord;
+      arg.setX(arg.x() / size.y());
+      arg.setY(arg.y() / size.y());
+
+      auto height = noised(QVector2D{arg.x() / scale, arg.y() / scale});
+
+      QVector3D col = (height.x() > 0) ? QVector3D{height.y(), height.z(), height.x()} : QVector3D{height.x(), height.x(), height.x()};
+      col *= 0.5f;
+      col = QVector3D{col.x() + 0.5f, col.y() + 0.5f, col.z() + 0.5f};
+
+      auto val = std::min(std::max(col.x() + 10.0f, 10.0f), 20.0f);
+      //auto val = col.x() + 10.0f;
+      //lookup.insert(vec, val);
+      lookup.insert(vec, 10.0f);
     }
   }
 
@@ -449,12 +479,17 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
       auto cur = points[i];
       auto next = points[i + 1];
       auto finale = points[i + 2];
-      normal = Triangle(cur, next, finale).normal();
+      Triangle tri(cur, next, finale);
+      normal = tri.normal();
+      normal = QVector3D{0.0f, 0.0f, 1.0f};
     }
 
     m_vertices[p + 5] = normal.x();
     m_vertices[p + 6] = normal.y();
     m_vertices[p + 7] = normal.z();
+    //m_vertices[p + 5] = 0.0f;
+    //m_vertices[p + 6] = 0.0f;
+    //m_vertices[p + 7] = 1.0f;
   }
 
   m_numElements = m_numVertices * 3;
@@ -470,12 +505,17 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
 }
 
 void Territory::subdivide() {
-  auto points = QList<QVector3D>();
+  QList<QVector3D> points;
   QList<Triangle> mesh;
 
   for (auto tri : m_mesh) {
     auto pair = tri.split();
+
+    if (pair.first.isClockwise()) pair.first.flip();
+    if (pair.second.isClockwise()) pair.second.flip();
+
     mesh << pair.first << pair.second;
+
     points
       << pair.first.top()
       << pair.first.left()
@@ -486,7 +526,19 @@ void Territory::subdivide() {
     ;
   }
 
+  m_canRenderMutex.lock();
+  m_canRender = false;
+  m_canRenderMutex.unlock();
+
   m_mesh = mesh;
+  m_isInitialized = false;
+
+  m_canRenderMutex.lock();
+  m_canRender = true;
+  m_canRenderMutex.unlock();
+
+  qDebug() << "Subdivided and found: " << m_mesh.length();
+
   buildVerticesFromPointList(points);
 }
 
