@@ -152,7 +152,9 @@ void WorldMap::createTexture() {
   m_texture->bind();
 }
 
-Territory& WorldMap::territory(const QString& name) {
+Territory& WorldMap::territory(QString name) {
+  std::string msg(name.toLatin1());
+  if (!m_territories.contains(name)) qFatal("%s does not exist", msg.c_str());
   return *m_territories[name];
 }
 

@@ -4,6 +4,7 @@ layout (location = 0) in vec3 vertexPosition;
 layout (location = 2) in vec3 vertexNormal;
 
 out vec3 lightIntensity;
+out float height;
 
 struct LightInfo {
   vec4 position;
@@ -53,4 +54,5 @@ void main(void) {
   }
 
   gl_Position = u_camera * u_modelView * vec4(vertexPosition, 1.0);
+  height = vertexPosition.z;
 }

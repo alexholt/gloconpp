@@ -98,11 +98,10 @@ void Model::setUniforms(const QMatrix4x4& cameraMatrix, QOpenGLFunctions_4_1_Cor
     }
 
     CASE("multiads"): {
-      m_program->setUniformValue("material.ka", QVector3D{0.2, 0.2, 0.2});
-      m_program->setUniformValue("material.kd", QVector3D{0.5, 0.5, 0.5});
-      m_program->setUniformValue("material.ks", QVector3D{0.8, 0.8, 0.8});
+      m_program->setUniformValue("material.ka", QVector3D{0.2, 0.6, 0.2});
+      m_program->setUniformValue("material.kd", QVector3D{0.5, 0.7, 0.5});
+      m_program->setUniformValue("material.ks", QVector3D{0.8, 0.9, 0.8});
       m_program->setUniformValue("material.shininess", 1.0f);
-
       break;
     }
   }

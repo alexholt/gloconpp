@@ -36,7 +36,7 @@ DESTDIR = ../build
 
 QMAKE_LFLAGS += -v
 
-LIBS += -L/usr/local/lib/ -lassimp
+LIBS += -L/usr/local/lib/ -lassimp -lnoise
 INCLUDEPATH += /usr/local/include
 
 OBJECTS_DIR = ../build/obj

@@ -1,6 +1,7 @@
 #include "renderer.h"
 
 #include "glocon.h"
+#include "territory.h"
 
 Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_fpsTimer.setInterval(1000);
@@ -41,9 +42,9 @@ Renderer::Renderer() : m_worldMap(":assets/maps/just-us.svg"), m_tank(false) {
   m_monkey.scale(100.0f);
   m_monkey.setShouldRotate(false);
 
-  m_lattice.setShader("ads");
+  m_lattice.setShader("multiads");
   m_lattice.buildMesh();
-  for (int i = 0; i < 11; i++) {
+  for (int i = 0; i < 13; i++) {
     m_lattice.subdivide();
   }
 
@@ -157,7 +158,6 @@ void Renderer::paint() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   m_worldMap.render(this, *m_renderCameraMatrix, elapsed);
-  m_lattice.render(this, *m_renderCameraMatrix, elapsed);
 
   for (int i = 0; i < m_cubeList.length(); i++) {
     m_cubeList[i]->render(this, *m_renderCameraMatrix, elapsed);
@@ -177,6 +177,18 @@ void Renderer::paint() {
     program->setUniformValue("lights[1].position", m_lights[1].matrix());
     program->setUniformValue("lights[1].intensity", m_lights[1].color());
   }
+
+  program = m_lattice.program();
+
+  if (program) {
+    program->bind();
+    program->setUniformValue("lights[0].position", m_lights[0].matrix());
+    program->setUniformValue("lights[0].intensity", m_lights[0].color());
+    program->setUniformValue("lights[1].position", m_lights[1].matrix());
+    program->setUniformValue("lights[1].intensity", m_lights[1].color());
+  }
+
+  m_lattice.render(this, *m_renderCameraMatrix, elapsed);
 
   m_monkey.render(this, *m_renderCameraMatrix, elapsed);
 
@@ -245,9 +257,6 @@ if (data.hasProperty(prop) && data.property(prop).is##type()) { \
 #define END_CHECK }
 
 QString Renderer::receiveUpdate(QJSValue data) {
-  if (data.isString())
-    qDebug() << "We have received the update: [" << data.toString() << "]";
-
   if (!data.isObject())
     qWarning() << "Updates should be objects";
 
@@ -271,6 +280,11 @@ QString Renderer::receiveUpdate(QJSValue data) {
   CHECK_PROP("lightTwoIntensity", Number)
     auto prop = static_cast<float>(PROP);
     m_lights[1].setIntensity(prop);
+  END_CHECK
+
+  CHECK_PROP("writePerlinImage", String)
+    Territory ter;
+    ter.writePerlinImage(PROP);
   END_CHECK
 
   return "We have received the update";

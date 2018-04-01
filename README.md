@@ -9,10 +9,11 @@ To enable it in Qt Creator enable the beautifier plugin
 
 ## Dependencies
 
-### Qt 5.10
-Super cool C++ framework
+### ArtisticStyle
+Code formatter
+
 *Mac*
-Use the installer from qt.io
+`brew install astyle`
 
 *Linux*
 Use your distro's package manager
@@ -26,15 +27,23 @@ Asset importing library
 *Linux*
 Use your distro's package manager
 
-### ArtisticStyle
-Code formatter
+### Libnoise
+Noise generation library
 
 *Mac*
-`brew install astyle`
+Visit [this fork](https://github.com/qknight/libnoise) and follow the instructions
+
+*Linux*
+Arch has it in the community repo. Otherwise, just build it yourself as per the mac instrucitons above
+
+### Qt
+Super cool C++ framework
+
+*Mac*
+Use the installer from qt.io
 
 *Linux*
 Use your distro's package manager
-
 
 ## Attributions
 - The Mars texture is from http://planetpixelemporium.com/mars.html

@@ -6,7 +6,7 @@ import '../assets/scripts/glocon.js' as Glocon
 
 Item {
   id: screen
-  width: 800
+  width: 1000
   height: 800
 
   FontLoader {
@@ -30,7 +30,7 @@ Item {
 
   function resizeMap(x, y, scaleUp) {
     zoomStep = scaleUp ? Math.min(maxZoomStep, zoomStep + 1) :
-                            Math.max(0.0, zoomStep - 1);
+      Math.max(0.0, zoomStep - 1);
     flickArea.resizeContent(mapWidth * currentScale, mapHeight * currentScale, Qt.point(x, y));
     flickArea.returnToBounds()
   }
@@ -109,6 +109,7 @@ Item {
     onReleased: mouse.accepted = false
   }
 
+  /*
   Rectangle {
     id: consoleBackground
     visible: false
@@ -122,6 +123,11 @@ Item {
       anchors.right: consoleBackground.right
       anchors.verticalCenter: consoleBackground.verticalCenter
       height: consoleBackground.height - 40
+
+      NoiseViewer {
+        width: 500
+        height: 500
+      }
 
       Slider {
         id: sliderOne
@@ -140,6 +146,7 @@ Item {
       }
     }
   }
+  */
 
   Rectangle {
     color: Qt.rgba(0, 0, 0, 0.8)
@@ -163,85 +170,6 @@ Item {
         var point = contentToCenterWorld(flickArea.contentX, flickArea.contentY);
         return 'Worldspace: (' + point.x.toFixed(2) + ', ' + point.y.toFixed(2) +
           ', ' + scaleToWorldDistance().toFixed(2) + ')';
-      }
-    }
-  }
-
-  TextEdit {
-    id: consoleInput
-    font.family: shareTechMono.name
-    font.pixelSize: 18;
-    visible: false
-    color: "green"
-    wrapMode: Text.WordWrap
-    text: JSConsole.text
-    anchors.right: parent.right
-    anchors.left: parent.left
-    anchors.top: consoleBackground.top
-    anchors.margins: 10
-    onTextChanged: JSConsole.text = consoleInput.text
-    Component.onCompleted: {
-      JSConsole.textChanged.connect(function() {
-         consoleInput.text = JSConsole.text;
-      });
-    }
-
-    Keys.priority: Keys.BeforeItem
-    Keys.onPressed: {
-      var isControl = false;
-
-      if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) {
-        isControl = true;
-      }
-
-      if (event.key === Qt.Key_Escape) {
-        flickArea.focus = true;
-        return false;
-      }
-
-      if (event.key === Qt.Key_QuoteLeft) {
-        return toggleConsole();
-      }
-
-      if (event.key === Qt.Key_Up) {
-        consoleInput.text = JSConsole.lastText;
-        JSConsole.isDirty = false;
-        return;
-      }
-
-      if (isControl && event.key === Qt.Key_E) {
-        cursorPosition = consoleInput.text.length;
-        return;
-      }
-
-      if (isControl && event.key === Qt.Key_E) {
-        cursorPosition = consoleInput.text.length;
-        return;
-      }
-
-      if (JSConsole.isDirty) {
-        JSConsole.isDirty = false;
-        consoleInput.text = '';
-      }
-
-      if (isControl && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
-        var output = '';
-        try {
-          var result = eval(consoleInput.text);
-          if (typeof result == 'string') {
-            output = result;
-          } else {
-            output = '[' + typeof result + ']';
-          }
-        } catch (err) {
-          output = 'Error: ' + err.message;
-        }
-
-        JSConsole.lastText = consoleInput.text;
-        consoleInput.text = output;
-        cursorPosition = consoleInput.text.length;
-        JSConsole.isDirty = true;
-        return false;
       }
     }
   }
@@ -275,13 +203,15 @@ Item {
     property int mapHeight: 1000
 
     window: applicationWindow // applicationWindow added to the global object in main.cpp
-    //onContentRectChanged: flickArea.resizeContent(this.contentRect.width(), this.contentRect.height(), flickArea.Center)
     Component.onCompleted: {
       JSConsole.sayHello.connect(GameState.hello);
       GameState.sendUpdate.connect(renderer.receiveUpdate);
-
-      //JSConsole.onPositionChanged.connect(renderer.updatePosition);
-      //JSConsole.updatePosition(renderer.x, renderer.y, renderer.z);
     }
+  }
+
+  Console {
+    id: consoleInput
+    anchors.bottom: parent.bottom
+    width: parent.width
   }
 }

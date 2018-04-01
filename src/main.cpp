@@ -5,6 +5,7 @@
 
 #include "gamestate.h"
 #include "jsconsole.h"
+#include "noiseviewer.h"
 #include "renderer.h"
 
 namespace {
@@ -55,6 +56,7 @@ int main(int argc, char **argv) {
   app.setWindowIcon(QIcon(":/assets/icons/app.svg"));
 
   qmlRegisterType<Renderer>("Glocon", 1, 0, "Renderer");
+  qmlRegisterType<NoiseViewer>("Glocon", 1, 0, "NoiseViewer");
   qmlRegisterSingletonType<GameState>("Glocon", 1, 0, "GameState", gameStateProvider);
   qmlRegisterSingletonType<JSConsole>("Glocon", 1, 0, "JSConsole", consoleProvider);
 

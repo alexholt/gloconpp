@@ -17,6 +17,7 @@ class Territory : public Model {
   Q_OBJECT
 
 public:
+  Territory();
   Territory(const QString&);
   Territory(const QString&, const QString&);
   Territory(const QString&, const QString&, bool);
@@ -33,6 +34,7 @@ public:
   void buildVerticesFromPointList(QList<QVector3D>);
   void intersection(Territory&);
   QList<QVector3D> pointList();
+  void writePerlinImage(QString&);
 
 private:
   QString m_path;

@@ -52,7 +52,7 @@ public:
   };
 
   void forEach(std::function<void(QMap<QString, Territory*>::const_iterator)>);
-  Territory& territory(const QString&);
+  Territory& territory(QString);
   void removeTerritory(const QString&);
 
 private:

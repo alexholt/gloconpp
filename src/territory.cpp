@@ -3,15 +3,22 @@
 #include <limits>
 #include <numeric>
 #include <random>
+#include <QImageWriter>
+#include <QPainter>
 #include <QVector3D>
 #include <QVector2D>
+#include <noise/noise.h>
 
 #include "circle.h"
 #include "edge.h"
+#include "glocon.h"
 #include "territory.h"
 #include "triangle.h"
 
 #define COMPARE_EPSILON 1.0f
+#define SCALE 2000.0f
+
+using namespace noise;
 
 QVector2D fract(QVector3D arg) {
   float intPart;
@@ -31,16 +38,18 @@ QVector2D floor(QVector2D arg) {
 }
 
 QVector2D hash(QVector2D x) {
-    const QVector2D k = QVector2D( 0.3183099f, 0.3678794f );
-    x = x*k + QVector2D{k.y(), k.x()};
-    auto retVec = 2.0f * fract( 16.0f * k*fract(x.x()*x.y()*(x.x()+x.y())) );
-    retVec.setX(retVec.x() - 1.0f);
-    retVec.setY(retVec.y() - 1.0f);
-    return retVec;
+  const QVector2D k = QVector2D( 0.3183099f, 0.3678794f );
+  x = x*k + QVector2D{k.y(), k.x()};
+  auto retVec = 2.0f * fract( 16.0f * k * fract(x.x() * x.y() * (x.x() + x.y())) );
+  retVec.setX(retVec.x() - 1.0f);
+  retVec.setY(retVec.y() - 1.0f);
+  return retVec;
 }
 
 // Noise function based on https://www.shadertoy.com/view/XdXBRH
 QVector3D noised(QVector2D p) {
+    p.setX(p.x() / SCALE);
+    p.setY(p.y() / SCALE);
     QVector2D i = floor( p );
     QVector2D f = fract(p);
 
@@ -88,6 +97,56 @@ QVector3D noised(QVector2D p) {
       yz.x(),
       yz.y()
     };
+}
+
+float noisedd(QVector2D p) {
+  module::Billow primaryGranite;
+  primaryGranite.SetSeed (0);
+  primaryGranite.SetFrequency (8.0);
+  primaryGranite.SetPersistence (0.625);
+  primaryGranite.SetLacunarity (2.18359375);
+  primaryGranite.SetOctaveCount (6);
+  primaryGranite.SetNoiseQuality (QUALITY_STD);
+
+  // Use Voronoi polygons to produce the small grains for the granite texture.
+  module::Voronoi baseGrains;
+  baseGrains.SetSeed (1);
+  baseGrains.SetFrequency (16.0);
+  baseGrains.EnableDistance (true);
+
+  // Scale the small grain values so that they may be added to the base
+  // granite texture.  Voronoi polygons normally generate pits, so apply a
+  // negative scaling factor to produce bumps instead.
+  module::ScaleBias scaledGrains;
+  scaledGrains.SetSourceModule (0, baseGrains);
+  scaledGrains.SetScale (-0.5);
+  scaledGrains.SetBias (0.0);
+
+  // Combine the primary granite texture with the small grain texture.
+  module::Add combinedGranite;
+  combinedGranite.SetSourceModule (0, primaryGranite);
+  combinedGranite.SetSourceModule (1, scaledGrains);
+
+  // Finally, perturb the granite texture to add realism.
+  module::Turbulence finalGranite;
+  finalGranite.SetSourceModule (0, combinedGranite);
+  finalGranite.SetSeed (2);
+  finalGranite.SetFrequency (4.0);
+  finalGranite.SetPower (1.0 / 8.0);
+  finalGranite.SetRoughness (6);
+
+  model::Plane plane;
+  plane.SetModule(finalGranite);
+  auto val = static_cast<float>(plane.GetValue(p.x(), p.y()));
+  val = std::min(std::max(val, -1.0f), 1.0f);
+  val += 1.0f;
+  val /= 2.0f;
+  val *= 255.0f;
+
+  return val;
+}
+
+Territory::Territory() {
 }
 
 Territory::Territory(const QString& path) {
@@ -423,8 +482,8 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
   m_isInitialized = false;
   m_canRenderMutex.unlock();
 
-  if (m_vertices != nullptr ) delete[] m_vertices;
-  if (m_elements != nullptr ) delete[] m_elements;
+  if (m_vertices != nullptr) delete[] m_vertices;
+  if (m_elements != nullptr) delete[] m_elements;
 
   m_numVertices = points.length();
   m_vertices = new float[m_numVertices * 8];
@@ -438,22 +497,7 @@ void Territory::buildVerticesFromPointList(QList<QVector3D> points) {
     vec += std::to_string(point.y());
 
     if (!lookup.contains(vec)) {
-      auto scale = 0.1f;
-
-      QVector2D size{-2000.0f, -1000.0f};
-      QVector2D coord{point.x(), point.y()};
-      QVector3D arg = size + coord;
-      arg.setX(arg.x() / size.y());
-      arg.setY(arg.y() / size.y());
-
-      auto height = noised(QVector2D{arg.x() / scale, arg.y() / scale});
-
-      QVector3D col = (height.x() > 0) ? QVector3D{height.y(), height.z(), height.x()} : QVector3D{height.x(), height.x(), height.x()};
-      col *= 0.5f;
-      col = QVector3D{col.x() + 0.5f, col.y() + 0.5f, col.z() + 0.5f};
-
-      auto val = std::min(std::max(col.x() + 10.0f, 10.0f), 20.0f);
-      lookup.insert(vec, val);
+      lookup.insert(vec, noisedd(QVector2D(point) / SCALE) / 255.0f * 5.0f + 10.0f);
     }
   }
 
@@ -535,8 +579,6 @@ void Territory::subdivide() {
   m_canRender = true;
   m_canRenderMutex.unlock();
 
-  qDebug() << "Subdivided and found: " << m_mesh.length();
-
   buildVerticesFromPointList(points);
 }
 
@@ -578,4 +620,24 @@ QList<QVector3D> Territory::pointList() {
   }
 
   return points;
+}
+
+void Territory::writePerlinImage(QString& filename) {
+  auto width = 500;
+  auto height = 500;
+  QImage image(width, height, QImage::Format_ARGB32);
+  QPainter painter(&image);
+
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      auto val = noisedd(QVector2D(x, y) / SCALE);
+
+      QColor color(val, val, val);
+      painter.fillRect(x, y, 1, 1, color);
+    }
+  }
+
+  QImageWriter writer(filename + ".png");
+  writer.setFormat("png");
+  writer.write(image);
 }
