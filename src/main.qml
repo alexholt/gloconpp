@@ -56,7 +56,6 @@ Item {
 
   function toggleConsole() {
     consoleInput.visible = !consoleInput.visible;
-    consoleBackground.visible = !consoleBackground.visible;
     flickArea.focus = !consoleInput.visible;
     consoleInput.focus = consoleInput.visible;
     return true;
@@ -211,7 +210,5 @@ Item {
 
   Console {
     id: consoleInput
-    anchors.bottom: parent.bottom
-    width: parent.width
   }
 }
