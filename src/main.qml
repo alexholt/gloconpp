@@ -108,63 +108,19 @@ Item {
     onReleased: mouse.accepted = false
   }
 
-  /*
-  Rectangle {
-    id: consoleBackground
-    visible: false
-    color: Qt.rgba(0, 0, 0, 0.8)
-    height: parent.height / 5
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.right: parent.right
-
-    Row {
-      anchors.right: consoleBackground.right
-      anchors.verticalCenter: consoleBackground.verticalCenter
-      height: consoleBackground.height - 40
-
-      NoiseViewer {
-        width: 500
-        height: 500
-      }
-
-      Slider {
-        id: sliderOne
-        stepSize: 0.01
-        orientation: Qt.Vertical
-        height: parent.height
-        onValueChanged: GameState.sendUpdate({"lightOneIntensity": value})
-      }
-
-      Slider {
-        id: sliderTwo
-        stepSize: 0.01
-        orientation: Qt.Vertical
-        height: parent.height
-        onValueChanged: GameState.sendUpdate({"lightTwoIntensity": value})
-      }
-    }
-  }
-  */
-
   Rectangle {
     color: Qt.rgba(0, 0, 0, 0.8)
-    height: 55
-    width: 480
+    height: 40
+    width: 420
     anchors.top: parent.top
     anchors.left: parent.left
-  }
-
-  // Show the coords and scale
-  Column {
-    anchors.left: parent.left
-    anchors.top: parent.top
-    anchors.margins: 10
 
     Text {
-      font.pixelSize: 23;
+      font.pixelSize: 18;
       font.family: shareTechMono.name
       color: "green"
+      anchors.centerIn: parent
+
       text: {
         var point = contentToCenterWorld(flickArea.contentX, flickArea.contentY);
         return 'Worldspace: (' + point.x.toFixed(2) + ', ' + point.y.toFixed(2) +
@@ -175,7 +131,7 @@ Item {
 
   Rectangle {
     color: Qt.rgba(0, 0, 0, 0.8)
-    height: 60
+    height: 40
     width: 60
     anchors.top: parent.top
     anchors.right: parent.right
@@ -184,7 +140,7 @@ Item {
       color: "green"
       text: renderer.fps
       anchors.centerIn: parent
-      font.pixelSize: 32
+      font.pixelSize: 18
       font.family: shareTechMono.name
     }
   }

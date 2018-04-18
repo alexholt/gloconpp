@@ -17,7 +17,7 @@ Rectangle {
 
     Rectangle {
       id: textInputBackground
-      color: Qt.rgba(0.33, 1.0, 0.001, 0.7);
+      color: Qt.rgba(0, 0, 0, 0.8)
       width: container.width
       height: Math.max(textInput.height - 20, rect.height - 10)
 
@@ -82,6 +82,8 @@ Rectangle {
               var result = eval(textInput.text);
               if (typeof result == 'string') {
                 output = result;
+              } else if (typeof result == 'number') {
+                output = String(result);
               } else {
                 output = '[' + typeof result + ']';
               }
@@ -111,6 +113,7 @@ Rectangle {
       drag.target: handle
       drag.minimumY: 0
       drag.maximumY: 800
+      cursorShape: Qt.SizeVerCursor
     }
   }
 }
