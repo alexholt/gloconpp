@@ -21,86 +21,92 @@ Rectangle {
       width: container.width
       height: Math.max(textInput.height - 20, rect.height - 10)
 
-      TextEdit {
-        id: textInput
-        font.family: shareTechMono.name
-        font.pixelSize: 18;
-        visible: true
-        color: "green"
-        wrapMode: Text.WordWrap
-        text: JSConsole.text
-        onTextChanged: JSConsole.text = textInput.text
-        Component.onCompleted: {
-          JSConsole.textChanged.connect(function() {
-            textInput.text = JSConsole.text;
-          });
-        }
+      MouseArea {
+        anchors.fill: parent
+        onClicked: textInput.forceActiveFocus()
 
-        padding: 20
-
-        Keys.priority: Keys.BeforeItem
-        Keys.onPressed: {
-          var isControl = false;
-
-          if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) {
-            isControl = true;
+        TextEdit {
+          id: textInput
+          font.family: shareTechMono.name
+          font.pixelSize: 18;
+          visible: true
+          color: "green"
+          wrapMode: Text.WordWrap
+          text: JSConsole.text
+          onTextChanged: JSConsole.text = textInput.text
+          Component.onCompleted: {
+            JSConsole.textChanged.connect(function() {
+              textInput.text = JSConsole.text;
+            });
           }
 
-          if (event.key === Qt.Key_Escape) {
-            flickArea.focus = true;
-            return false;
-          }
+          padding: 20
 
-          if (event.key === Qt.Key_QuoteLeft) {
-            return toggleConsole();
-          }
+          Keys.priority: Keys.BeforeItem
+          Keys.onPressed: {
+            var isControl = false;
 
-          if (event.key === Qt.Key_Up) {
-            textInput.text = JSConsole.lastText;
-            JSConsole.isDirty = false;
-            return;
-          }
-
-          if (isControl && event.key === Qt.Key_E) {
-            cursorPosition = textInput.text.length;
-            return;
-          }
-
-          if (isControl && event.key === Qt.Key_E) {
-            cursorPosition = textInput.text.length;
-            return;
-          }
-
-          if (JSConsole.isDirty) {
-            JSConsole.isDirty = false;
-            textInput.text = '';
-          }
-
-          if (isControl && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
-            var output = '';
-            try {
-              var result = eval(textInput.text);
-              if (typeof result == 'string') {
-                output = result;
-              } else if (typeof result == 'number') {
-                output = String(result);
-              } else {
-                output = '[' + typeof result + ']';
-              }
-            } catch (err) {
-              output = 'Error: ' + err.message;
+            if (event.modifiers & (Qt.ControlModifier | Qt.MetaModifier)) {
+              isControl = true;
             }
 
-            JSConsole.lastText = textInput.text;
-            textInput.text = output;
-            cursorPosition = textInput.text.length;
-            JSConsole.isDirty = true;
-            return false;
+            if (event.key === Qt.Key_Escape) {
+              flickArea.focus = true;
+              return false;
+            }
+
+            if (event.key === Qt.Key_QuoteLeft) {
+              return toggleConsole();
+            }
+
+            if (event.key === Qt.Key_Up) {
+              textInput.text = JSConsole.lastText;
+              JSConsole.isDirty = false;
+              return;
+            }
+
+            if (isControl && event.key === Qt.Key_E) {
+              cursorPosition = textInput.text.length;
+              return;
+            }
+
+            if (isControl && event.key === Qt.Key_E) {
+              cursorPosition = textInput.text.length;
+              return;
+            }
+
+            if (JSConsole.isDirty) {
+              JSConsole.isDirty = false;
+              textInput.text = '';
+            }
+
+            if (isControl && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
+              var output = '';
+              try {
+                var result = eval(textInput.text);
+                if (typeof result == 'string') {
+                  output = result;
+                } else if (typeof result == 'number') {
+                  output = String(result);
+                } else {
+                  output = '[' + typeof result + ']';
+                }
+              } catch (err) {
+                output = 'Error: ' + err.message;
+              }
+
+              JSConsole.lastText = textInput.text;
+              textInput.text = output;
+              cursorPosition = textInput.text.length;
+              JSConsole.isDirty = true;
+              return false;
+            }
           }
         }
       }
     }
   }
+
 
   Rectangle {
     id: handle
