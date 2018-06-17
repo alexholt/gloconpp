@@ -32,5 +32,6 @@
         <file>../assets/shaders/multiads.frag</file>
         <file>../assets/fonts/ShareTechMono-Regular.ttf</file>
         <file>Console.qml</file>
+        <file>../assets/scripts/Buffer.js</file>
     </qresource>
 </RCC>
