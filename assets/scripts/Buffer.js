@@ -3,13 +3,32 @@ var currentCommand = '';
 var output = '';
 var prompt = '> ';
 var lastCommand = '';
+var cursorPosition = prompt.length
 
 function getOutput() {
   return output + prompt + currentCommand;
 }
 
 function getPosition() {
-  return getOutput().length;
+  return cursorPosition;
+}
+
+function requestPosition(pos) {
+  if (pos === Infinity) {
+    cursorPosition = (output + prompt + currentCommand).length;
+    return;
+  }
+
+  if (pos === -Infinity) {
+    cursorPosition = (output + prompt).length;
+    return;
+  }
+
+  // Is it within the text range of the current command?
+  // Previous commands are not editable
+  if (pos >= (output + prompt).length) {
+    cursorPosition = pos;
+  }
 }
 
 function pressKey(event) {
@@ -20,16 +39,17 @@ function pressKey(event) {
   }
 
   if (event.key === Qt.Key_Up) {
-    return;
-  }
-
-  if (isControl && event.key === Qt.Key_E) {
-    //cursorPosition = textInput.text.length;
-    return;
-  }
-
-  if (isControl && event.key === Qt.Key_E) {
     currentCommand = lastCommand;
+    return;
+  }
+
+  if (isControl && event.key === Qt.Key_A) {
+    requestPosition(-Infinity);
+    return;
+  }
+
+  if (isControl && event.key === Qt.Key_E) {
+    requestPosition(Infinity);
     return;
   }
 
@@ -52,16 +72,32 @@ function pressKey(event) {
     }
 
     currentCommand = '';
-    event.accepted = true
+    requestPosition(Infinity);
+    event.accepted = true;
     return;
   }
 
   if (event.key === Qt.Key_Backspace) {
-    currentCommand = currentCommand.slice(0, -1)
-    event.accepted = true
+    currentCommand = currentCommand.slice(0, cursorPosition - 3) +
+        currentCommand.slice(cursorPosition - 2);
+    requestPosition(cursorPosition - 1);
+    event.accepted = true;
     return;
   }
 
-  currentCommand += event.text
-  event.accepted = true
+  if (event.key === Qt.Key_Left) {
+    requestPosition(cursorPosition - 1);
+    event.accepted = true;
+    return;
+  }
+
+  if (event.key === Qt.Key_Right) {
+    requestPosition(cursorPosition + 1);
+    event.accepted = true;
+    return;
+  }
+
+  currentCommand += event.text;
+  event.accepted = true;
+  cursorPosition = getOutput().length;
 }

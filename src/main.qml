@@ -78,11 +78,6 @@ Item {
         return false;
       }
 
-      if (event.key === Qt.Key_F1) {
-        applicationWindow.close();
-        return false;
-      }
-
       if (event.key === Qt.Key_QuoteLeft) {
         return toggleConsole();
       }

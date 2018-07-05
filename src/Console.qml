@@ -11,6 +11,12 @@ Rectangle {
   height: parent.height
   color: 'transparent'
 
+  onFocusChanged: {
+    if (container.focus) {
+      textInput.forceActiveFocus();
+    }
+  }
+
   ScrollView {
     id: rect
     width: parent.width
@@ -34,6 +40,12 @@ Rectangle {
           color: "green"
           focus: true
           wrapMode: Text.WordWrap
+
+          onCursorPositionChanged: {
+            Buffer.requestPosition(cursorPosition)
+            cursorPosition = Buffer.getPosition()
+          }
+
           Component.onCompleted: {
             text = Buffer.getOutput()
             cursorPosition = Buffer.getPosition()
@@ -48,6 +60,7 @@ Rectangle {
             }
 
             if (event.key === Qt.Key_QuoteLeft) {
+              event.accepted = true;
               return toggleConsole();
             }
 
